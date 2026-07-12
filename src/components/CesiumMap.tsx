@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { Viewer, CameraFlyTo, Entity, BillboardGraphics, ScreenSpaceEventHandler, ScreenSpaceEvent, ImageryLayer, PolylineGraphics } from 'resium';
-import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, OpenStreetMapImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync } from 'cesium';
+import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, ArcGisMapServerImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 import heritageDataRaw from '@/data/heritage.json';
 import treksDataRaw from '@/data/treks.json';
@@ -35,16 +35,17 @@ export default function CesiumMap() {
   const osmAdded = useRef(false);
 
   // Imagery Providers
-  const osmProvider = useMemo(() => {
-    if (!isCesiumReady) return null;
-    return new OpenStreetMapImageryProvider({
-      url: 'https://a.tile.openstreetmap.org/'
-    });
-  }, [isCesiumReady]);
+  const [baseMapProvider, setBaseMapProvider] = useState<import('cesium').ImageryProvider | null>(null);
   const [satProvider, setSatProvider] = useState<import('cesium').ImageryProvider | null | 'failed'>(null);
 
   const pinBuilder = useMemo(() => isCesiumReady ? new PinBuilder() : null, [isCesiumReady]);
   const flatTerrainProvider = useMemo(() => isCesiumReady ? new EllipsoidTerrainProvider() : null, [isCesiumReady]);
+
+  useEffect(() => {
+    ArcGisMapServerImageryProvider.fromUrl(
+      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
+    ).then(provider => setBaseMapProvider(provider));
+  }, []);
 
   useEffect(() => {
     createWorldTerrainAsync().then(provider => {
@@ -57,8 +58,11 @@ export default function CesiumMap() {
     IonImageryProvider.fromAssetId(2).then(provider => {
       setSatProvider(provider);
     }).catch((e) => {
-      console.warn("Failed to load satellite imagery (missing Ion token?)", e);
-      setSatProvider('failed');
+      console.warn("Failed to load satellite imagery (missing Ion token?), using Esri fallback", e);
+      ArcGisMapServerImageryProvider.fromUrl(
+        'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+      ).then(fallbackProvider => setSatProvider(fallbackProvider))
+       .catch(() => setSatProvider('failed'));
     });
   }, []);
 
@@ -158,7 +162,7 @@ export default function CesiumMap() {
 
   const destination = Cartesian3.fromDegrees(76.4, 32.125, 70000);
 
-  if (!terrainProvider || !osmProvider || satProvider === null || !pinBuilder || !flatTerrainProvider) {
+  if (!terrainProvider || !baseMapProvider || satProvider === null || !pinBuilder || !flatTerrainProvider) {
     return (
       <div className="flex items-center justify-center w-full h-full bg-slate-900 text-white">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
@@ -196,7 +200,7 @@ export default function CesiumMap() {
       )}
 
       {showSatellite && satProvider && satProvider !== 'failed' && <ImageryLayer imageryProvider={satProvider} />}
-      {!showSatellite && osmProvider && <ImageryLayer imageryProvider={osmProvider} />}
+      {!showSatellite && baseMapProvider && <ImageryLayer imageryProvider={baseMapProvider} />}
 
       {showTreks && treksData.map((trek) => (
         <Entity
