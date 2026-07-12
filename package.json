@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "npx cpx2 \"node_modules/cesium/Build/Cesium/**/*\" public/cesium",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
