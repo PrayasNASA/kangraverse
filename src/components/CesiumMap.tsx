@@ -40,7 +40,7 @@ export default function CesiumMap() {
       url: 'https://a.tile.openstreetmap.org/'
     });
   }, [isCesiumReady]);
-  const [satProvider, setSatProvider] = useState<import('cesium').ImageryProvider | null>(null);
+  const [satProvider, setSatProvider] = useState<import('cesium').ImageryProvider | null | 'failed'>(null);
 
   const pinBuilder = useMemo(() => isCesiumReady ? new PinBuilder() : null, [isCesiumReady]);
   const flatTerrainProvider = useMemo(() => isCesiumReady ? new EllipsoidTerrainProvider() : null, [isCesiumReady]);
@@ -48,9 +48,17 @@ export default function CesiumMap() {
   useEffect(() => {
     createWorldTerrainAsync().then(provider => {
       setTerrainProvider(provider);
+    }).catch((e) => {
+      console.warn("Failed to load world terrain (missing Ion token?)", e);
+      setTerrainProvider(new EllipsoidTerrainProvider());
     });
 
-    IonImageryProvider.fromAssetId(2).then(provider => setSatProvider(provider));
+    IonImageryProvider.fromAssetId(2).then(provider => {
+      setSatProvider(provider);
+    }).catch((e) => {
+      console.warn("Failed to load satellite imagery (missing Ion token?)", e);
+      setSatProvider('failed');
+    });
   }, []);
 
   // OSM Buildings setup
@@ -149,7 +157,7 @@ export default function CesiumMap() {
 
   const destination = Cartesian3.fromDegrees(76.4, 32.125, 70000);
 
-  if (!terrainProvider || !osmProvider || !satProvider || !pinBuilder || !flatTerrainProvider) {
+  if (!terrainProvider || !osmProvider || satProvider === null || !pinBuilder || !flatTerrainProvider) {
     return (
       <div className="flex items-center justify-center w-full h-full bg-slate-900 text-white">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
@@ -186,7 +194,7 @@ export default function CesiumMap() {
         />
       )}
 
-      {showSatellite && satProvider && <ImageryLayer imageryProvider={satProvider} />}
+      {showSatellite && satProvider && satProvider !== 'failed' && <ImageryLayer imageryProvider={satProvider} />}
       {!showSatellite && osmProvider && <ImageryLayer imageryProvider={osmProvider} />}
 
       {showTreks && treksData.map((trek) => (
