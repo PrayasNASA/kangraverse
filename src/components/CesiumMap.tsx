@@ -12,7 +12,8 @@ const heritageData = heritageDataRaw as HeritageFeature[];
 const treksData = treksDataRaw as Trek[];
 
 if (typeof window !== 'undefined') {
-  (window as unknown as { CESIUM_BASE_URL: string }).CESIUM_BASE_URL = '/cesium';
+  // Use unpkg CDN to bypass Vercel static asset routing issues
+  (window as unknown as { CESIUM_BASE_URL: string }).CESIUM_BASE_URL = 'https://unpkg.com/cesium@1.143.0/Build/Cesium';
   Ion.defaultAccessToken = process.env.NEXT_PUBLIC_CESIUM_ION_TOKEN || '';
 }
 export default function CesiumMap() {
