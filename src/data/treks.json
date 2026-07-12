@@ -1,0 +1,51 @@
+[
+  {
+    "id": "triund_trek",
+    "name": "Triund Trek",
+    "description": "A popular and scenic trek starting from McLeodganj, winding through rhododendron and oak forests up to the Triund ridge with spectacular views of the Dhauladhar range.",
+    "color": "#FF5733",
+    "image_url": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "image_source": "Unsplash",
+    "elevation_m": 2850,
+    "coordinates": [
+      [76.3225, 32.241],
+      [76.3260, 32.247],
+      [76.3310, 32.253],
+      [76.3380, 32.257],
+      [76.3450, 32.260],
+      [76.3530, 32.261]
+    ]
+  },
+  {
+    "id": "kareri_lake_trek",
+    "name": "Kareri Lake Trek",
+    "description": "A beautiful trek through pine and oak forests to a high altitude, shallow, fresh water lake south of the Dhauladhar range.",
+    "color": "#33C1FF",
+    "image_url": "https://images.unsplash.com/photo-1622281896792-5cb072a3922d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "image_source": "Unsplash",
+    "elevation_m": 2934,
+    "coordinates": [
+      [76.2800, 32.265],
+      [76.2850, 32.275],
+      [76.2870, 32.285],
+      [76.2840, 32.298],
+      [76.2790, 32.312]
+    ]
+  },
+  {
+    "id": "indrahar_pass_trek",
+    "name": "Indrahar Pass Trek",
+    "description": "A challenging mountain pass trek in the Dhauladhar range, offering stunning views of the Indian plains and the Pir Panjal mountain range.",
+    "color": "#9C27B0",
+    "image_url": "https://images.unsplash.com/photo-1616421977790-a396264ff47f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "image_source": "Unsplash",
+    "elevation_m": 4342,
+    "coordinates": [
+      [76.3530, 32.261],
+      [76.3550, 32.270],
+      [76.3520, 32.280],
+      [76.3480, 32.290],
+      [76.3450, 32.295]
+    ]
+  }
+]

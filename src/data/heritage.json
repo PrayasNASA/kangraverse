@@ -1,0 +1,1022 @@
+[
+  {
+    "id": "tsuglagkhang",
+    "name": "Tsuglagkhang Complex (Dalai Lama's Temple)",
+    "type": "temple",
+    "long_description": "The Tsuglagkhang Complex on Temple Road in McLeodganj is the official residence of the 14th Dalai Lama and the principal seat of Tibetan Buddhism in exile. Modelled in spirit on Lhasa's Jokhang Temple, the main prayer hall enshrines a gilded Shakyamuni Buddha flanked by Avalokiteshvara and Padmasambhava, and the complex also contains the Namgyal Monastery, the Kalachakra Temple and the Tibet Museum documenting the 1959 exodus. Built after the Dalai Lama's arrival in 1959-60, it draws pilgrims, monks and travellers year-round and becomes the focal point of the Tibetan community during his birthday celebrations every July.",
+    "elevation_m": 1770,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Buddhist_Iconography_in_Temple_-_Tsuglagkhang_Complex_-_McLeod_Ganj_-_Himachal_Pradesh_-_India_%2826765708415%29.jpg",
+    "image_source": "Wikimedia Commons",
+    "video_url": "https://www.youtube.com/results?search_query=Tsuglagkhang+Dalai+Lama+Temple+McLeodganj",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.3225,
+        32.241
+      ]
+    },
+    "longitude": 76.3225,
+    "latitude": 32.241,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "namgyal",
+    "name": "Namgyal Monastery",
+    "type": "monastery",
+    "long_description": "Namgyal Monastery, the personal monastery of the Dalai Lama, was founded in Lhasa in 1564-65 by the second Dalai Lama and relocated to McLeodganj after the 1959 Tibetan uprising. Also called the Namgyal Tantric College, it is home to around 200 monks representing all four schools of Tibetan Buddhism and serves as the ritual centre supporting the Dalai Lama's practices, including Kalachakra and other tantric cycles.",
+    "elevation_m": 1770,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Namgyal+Monastery+McLeodganj",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.3227,
+        32.2411
+      ]
+    },
+    "longitude": 76.3227,
+    "latitude": 32.2411,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "kalachakra_temple",
+    "name": "Kalachakra Temple",
+    "type": "temple",
+    "long_description": "Built in 1992 on the western side of the Tsuglagkhang complex, the Kalachakra Temple is devoted to the Kalachakra ('Wheel of Time') tantric cycle linked to Avalokiteshvara. Its walls carry murals of the Kalachakra mandala with 722 deities, and monks periodically construct and ceremonially dissolve coloured sand mandalas here as a meditation on impermanence.",
+    "elevation_m": 1770,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Kalachakra+Temple+McLeodganj",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.3223,
+        32.2408
+      ]
+    },
+    "longitude": 76.3223,
+    "latitude": 32.2408,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "gyuto_monastery",
+    "name": "Gyuto Tantric Monastery",
+    "type": "monastery",
+    "long_description": "Gyuto Ramoche Temple, about 8 km from McLeodganj near Sidhbari, is the exile seat of the Gyuto Tantric University, historically one of the two great tantric colleges of the Gelug school. Set on a hilltop with sweeping Kangra Valley views, it houses resident monks who specialise in tantric ritual, multiphonic chanting and sand-mandala construction, and its spacious, quieter grounds make it a favourite stop for photographers.",
+    "elevation_m": 1200,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Gyuto+Monastery+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.305,
+        32.185
+      ]
+    },
+    "longitude": 76.305,
+    "latitude": 32.185,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "nechung_monastery",
+    "name": "Nechung Monastery",
+    "type": "monastery",
+    "long_description": "Nechung Monastery, near Gangchen Kyishong below the Library of Tibetan Works and Archives, is the exile seat of the Nechung Oracle, the State Oracle traditionally consulted by the Dalai Lama and Tibetan government on matters of state. The original Lhasa monastery was destroyed after 1959; this rebuilt complex (1977-84) preserves the oracle tradition along with a temple, library and monks' residence.",
+    "elevation_m": 1450,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Nechung+Monastery+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.3211,
+        32.2168
+      ]
+    },
+    "longitude": 76.3211,
+    "latitude": 32.2168,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "tsechokling",
+    "name": "Gompa Dip Tse-Chok Ling (Tsechokling Monastery)",
+    "type": "monastery",
+    "long_description": "Dip Tse-Chok Ling Monastery, between McLeodganj and lower Dharamshala, was re-established in exile in 1992 after the original Tibetan monastery was destroyed following the Chinese occupation. Known locally as Tsechokling Gompa, it is valued for its quiet, understated atmosphere, colourful prayer flags and its role as a working study monastery rather than a major tourist stop.",
+    "elevation_m": 1600,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Tsechokling+Gompa+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.323,
+        32.226
+      ]
+    },
+    "longitude": 76.323,
+    "latitude": 32.226,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "mani_lhakhang",
+    "name": "Mani Lhakhang Stupa",
+    "type": "stupa",
+    "long_description": "The Mani Lhakhang is a Tibetan prayer-wheel stupa/shrine in the McLeodganj area, one of several smaller devotional structures that pilgrims circumambulate clockwise while spinning the wheels inscribed with the mantra Om Mani Padme Hum, in keeping with everyday Tibetan Buddhist devotional practice around the town's monasteries.",
+    "elevation_m": 1770,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Mani+Lhakhang+Stupa+McLeodganj",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.321,
+        32.238
+      ]
+    },
+    "longitude": 76.321,
+    "latitude": 32.238,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "library_tibetan_works",
+    "name": "Library of Tibetan Works and Archives",
+    "type": "institute",
+    "long_description": "Founded in 1970 at the Dalai Lama's initiative, the Library of Tibetan Works and Archives at Gangchen Kyishong preserves Tibetan manuscripts, thangkas and cultural artefacts and includes a shrine and museum of religious statuary. It functions both as a research centre for Tibetan Buddhist studies and as a place of quiet reverence for the preserved texts and images it holds.",
+    "elevation_m": 1450,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Library+of+Tibetan+Works+and+Archives+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.3218,
+        32.2168
+      ]
+    },
+    "longitude": 76.3218,
+    "latitude": 32.2168,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "norbulingka_institute",
+    "name": "Norbulingka Institute Temple",
+    "type": "monastery",
+    "long_description": "The Norbulingka Institute at Sidhpur, founded in 1988-95 under the Dalai Lama's patronage, is named after his summer palace in Lhasa. Its Deden Tsuglakhang ('Seat of Happiness Temple') houses a gilded copper Buddha statue over four metres tall and murals of every Dalai Lama's life, set within Japanese-inspired gardens, and the institute also trains artisans in thangka painting, wood carving and appliqué.",
+    "elevation_m": 1310,
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Sakyamuni_statue,_Norbulingka_Institute,_Dharamsala.jpg",
+    "image_source": "Wikimedia Commons",
+    "video_url": "https://www.youtube.com/results?search_query=Norbulingka+Institute+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.329,
+        32.191
+      ]
+    },
+    "longitude": 76.329,
+    "latitude": 32.191,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "bhagsunath",
+    "name": "Bhagsunath Temple",
+    "type": "temple",
+    "long_description": "Bhagsunath Temple in Bhagsu village, about 2 km from McLeodganj, is dedicated to Shiva (as Bhageshwar) and the serpent deity Nag Devta. Legend tells of King Bhagsu, mortally wounded by Nag Devta for stealing water from a sacred lake, whose dying wish gave rise to the spring-fed pools before the temple. Gorkha settlers who arrived in the early 19th century made it their spiritual anchor and built the stone bathing tanks beside it.",
+    "elevation_m": 1750,
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Bhagsu_nag_temple.jpg",
+    "image_source": "Wikimedia Commons",
+    "video_url": "https://www.youtube.com/results?search_query=Bhagsunath+Temple+Bhagsu+McLeodganj",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.333,
+        32.246
+      ]
+    },
+    "longitude": 76.333,
+    "latitude": 32.246,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "st_john_wilderness",
+    "name": "St. John in the Wilderness Church",
+    "type": "church",
+    "long_description": "St. John in the Wilderness, in a deodar forest near Forsyth Ganj, is a neo-Gothic Anglican church built around 1852 in grey stone, with Belgian stained-glass windows donated by Lady Elgin. Its cemetery holds the grave of the Earl of Elgin, a former Viceroy of India, and of many victims of the devastating 1905 Kangra earthquake, making it one of the last intact traces of McLeodganj's British hill-station era.",
+    "elevation_m": 1700,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=St+John+in+the+Wilderness+Church+McLeodganj",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.315,
+        32.23
+      ]
+    },
+    "longitude": 76.315,
+    "latitude": 32.23,
+    "religion": "Christianity"
+  },
+  {
+    "id": "dal_mata_temple",
+    "name": "Dal Mata Temple (near Dal Lake)",
+    "type": "temple",
+    "long_description": "A small Devi shrine stands beside Dal Lake in the Tapovan area near Naddi, a pine-ringed lake regarded as sacred by local Gaddi shepherd communities and visited by pilgrims performing a small mela here in September. The lake and its temple are a quiet counterpoint to the busier monasteries of central McLeodganj.",
+    "elevation_m": 1775,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Dal+Lake+Temple+McLeodganj+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.312,
+        32.222
+      ]
+    },
+    "longitude": 76.312,
+    "latitude": 32.222,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "kunal_pathri",
+    "name": "Kunal Pathri Temple",
+    "type": "temple",
+    "long_description": "Kunal Pathri Temple, on a forested hillside above Dharamshala en route to Naddi, is a small Devi shrine built into a natural rock cleft and reached by a short uphill walk through deodar woods. It is a popular short pilgrimage and picnic hike for locals and is considered one of the older devi shrines in the immediate Dharamshala hills.",
+    "elevation_m": 1650,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Kunal+Pathri+Temple+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.316,
+        32.207
+      ]
+    },
+    "longitude": 76.316,
+    "latitude": 32.207,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "indru_nag",
+    "name": "Indru Nag Temple",
+    "type": "temple",
+    "long_description": "Indru Nag Temple, near Dharamkot above McLeodganj, is dedicated to a local Nag (serpent) deity and is venerated by the Gaddi shepherd community for protection and rain. Set among forest trails close to the Triund route, it is as much a trekking waypoint as a pilgrimage stop.",
+    "elevation_m": 1900,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Indru+Nag+Temple+Dharamkot+McLeodganj",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.328,
+        32.207
+      ]
+    },
+    "longitude": 76.328,
+    "latitude": 32.207,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "masroor",
+    "name": "Masroor Rock Cut Temples",
+    "type": "temple",
+    "long_description": "The Masroor Temples are monolithic rock-cut Hindu shrines carved from a hillside, dated to the early-to-mid 8th century in the Nagara style and often called the 'Himalayan Pyramid'. Surviving imagery honours Shiva, Vishnu, Devi and Surya together; the complex was left unfinished and later damaged, most severely by the 1905 Kangra earthquake, though its monolithic build kept it largely standing, and a reflecting pool before it remains one of its most photographed features.",
+    "elevation_m": 800,
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Masroor_Rock_Cut_Temples.jpg",
+    "image_source": "Wikimedia Commons",
+    "video_url": "https://www.youtube.com/results?search_query=Masroor+Rock+Cut+Temples+Kangra",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.136,
+        32.073
+      ]
+    },
+    "longitude": 76.136,
+    "latitude": 32.073,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "jwalamukhi",
+    "name": "Jwalamukhi Devi Temple",
+    "type": "temple",
+    "long_description": "Jwalamukhi Temple, about 35 km southeast of Kangra, is a revered Shakti Peetha with no idol: naturally burning blue flames fed by underground gas are worshipped directly as the goddess. Tradition holds this is where the tongue of Sati fell; the temple's present form reflects Mughal, Punjabi and Maratha rebuilding, with Maharaja Ranjit Singh gilding its dome, and it draws vast crowds during the Navratri fairs.",
+    "elevation_m": 610,
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Jwalamukhi_temple,kangra,_himachal_pradesh..JPG",
+    "image_source": "Wikimedia Commons",
+    "video_url": "https://www.youtube.com/results?search_query=Jwalamukhi+Devi+Temple+Kangra",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.326,
+        31.878
+      ]
+    },
+    "longitude": 76.326,
+    "latitude": 31.878,
+    "religion": "Unknown"
+  },
+  {
+    "id": "brajeshwari_devi",
+    "name": "Brajeshwari Devi (Bajreshwari) Temple, Kangra",
+    "type": "temple",
+    "long_description": "The Brajeshwari Devi Temple in Kangra town is one of the most ancient Shakti shrines in the region, historically famed for the immense wealth once housed there, which drew repeated raids including Mahmud of Ghazni's in 1009 CE. Rebuilt after the catastrophic 1905 Kangra earthquake destroyed the earlier structure, it remains an important stop on the Kangra Valley's Devi pilgrimage circuit alongside Jwalamukhi and Chintpurni.",
+    "elevation_m": 730,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Brajeshwari+Devi+Temple+Kangra",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.271,
+        32.099
+      ]
+    },
+    "longitude": 76.271,
+    "latitude": 32.099,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "aghanjar_mahadev",
+    "name": "Aghanjar Mahadev Temple, Khaniyara",
+    "type": "temple",
+    "long_description": "Aghanjar Mahadev Temple, in Khaniyara village about 9 km from Dharamshala at the foothills of the Dhauladhar, is a roughly 500-year-old Shiva shrine set beside a forest stream with a small waterfall. Local legend holds that Arjuna performed penance here before the Mahabharata war and received Shiva's blessing and the Pashupata Astra; the name derives from 'Aghan' (sin) and 'jar' (destroyer). The site is especially known for its Akhanda Dhuna, a sacred fire said to have burned continuously for centuries, and draws large crowds during Maha Shivratri and Sawan.",
+    "elevation_m": 1100,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Aghanjar+Mahadev+Temple+Khaniyara+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.393,
+        32.258
+      ]
+    },
+    "longitude": 76.393,
+    "latitude": 32.258,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "gupteshwar_mahadev",
+    "name": "Gupteshwar Mahadev Shivling",
+    "type": "shrine",
+    "long_description": "Within the Aghanjar Mahadev complex, hidden beneath a large natural boulder beside the stream, lies the Gupteshwar Mahadev Shivling, a self-manifest (swayambhu) lingam devotees say Arjuna himself established. Despite the adjoining stream's tendency to swell, the lingam is said never to have been submerged, a phenomenon locals attribute to divine protection.",
+    "elevation_m": 1095,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Gupteshwar+Mahadev+Shivling+Khaniyara",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.393,
+        32.258
+      ]
+    },
+    "longitude": 76.393,
+    "latitude": 32.258,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "akhanda_dhuna",
+    "name": "Akhanda Dhuna, Aghanjar Mahadev",
+    "type": "shrine",
+    "long_description": "The Akhanda Dhuna at Aghanjar Mahadev is a sacred fire pit maintained without interruption for generations by successive priests, said to trace back to the meditation and samadhi of a saint locally remembered as Baba Bharti. Pilgrims regard the ever-burning flame as a symbol of continuous devotion and a purifying presence at the temple.",
+    "elevation_m": 1095,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Akhanda+Dhuna+Aghanjar+Mahadev+Khaniyara",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.393,
+        32.258
+      ]
+    },
+    "longitude": 76.393,
+    "latitude": 32.258,
+    "religion": "Unknown"
+  },
+  {
+    "id": "baba_bharti_samadhi",
+    "name": "Baba Bharti Samadhi Shrine",
+    "type": "shrine",
+    "long_description": "A samadhi shrine within the Aghanjar Mahadev grounds commemorates Baba Bharti, whose meditation and eventual samadhi at this spot is locally credited with kindling the temple's centuries-old sacred fire. The shrine is a modest but reverently maintained stop for devotees visiting the wider Khaniyara temple complex.",
+    "elevation_m": 1095,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Baba+Bharti+Samadhi+Khaniyara+Dharamshala",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.393,
+        32.258
+      ]
+    },
+    "longitude": 76.393,
+    "latitude": 32.258,
+    "religion": "Unknown"
+  },
+  {
+    "id": "chamunda_devi",
+    "name": "Chamunda Devi Temple",
+    "type": "temple",
+    "long_description": "Chamunda Devi Temple (Chamunda Nandikeshwar Dham) on the banks of the Baner River, between Dharamshala and Palampur, is dedicated to Chamunda, the fierce form of Durga said to have slain the demons Chanda and Munda. The present riverside temple dates to around the 16th century, replacing a remote older hilltop shrine, and the idol is kept wrapped in cloth and flanked by Hanuman and Bhairav; a Shiva lingam sits in a small cave at the rear. It draws large Navratri crowds and has a bathing kund on site.",
+    "elevation_m": 1000,
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Chamunda_Devi_Temple_25.JPG",
+    "image_source": "Wikimedia Commons",
+    "video_url": "https://www.youtube.com/results?search_query=Chamunda+Devi+Temple+Palampur",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.402,
+        32.146
+      ]
+    },
+    "longitude": 76.402,
+    "latitude": 32.146,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "nandikeshwar_mahadev",
+    "name": "Nandikeshwar Mahadev Cave Shrine",
+    "type": "shrine",
+    "long_description": "A marble staircase within the Chamunda Devi complex descends to a small cave housing a Shiva lingam known as Nandikeshwar Mahadev, reflecting the site's dual dedication to Shiva and Shakti. Many pilgrims visit both the goddess shrine above and this cooler, quieter cave shrine below in a single circuit.",
+    "elevation_m": 995,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Nandikeshwar+Mahadev+Chamunda+Devi+Palampur",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.402,
+        32.146
+      ]
+    },
+    "longitude": 76.402,
+    "latitude": 32.146,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "jakhni_mata",
+    "name": "Jakhni Mata Temple",
+    "type": "temple",
+    "long_description": "Shree Jakhni Mata Temple, atop Chandpur village about 5 km from Palampur, is dedicated to Devi Latti Jakhni and offers panoramic views of the Dhauladhar range, tea gardens and the Kangra Valley from its hilltop perch. It is reached by a steep climb or scenic drive through pine forest and is especially vibrant during Navratri.",
+    "elevation_m": 1250,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Jakhni+Mata+Temple+Palampur",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.5,
+        32.14
+      ]
+    },
+    "longitude": 76.5,
+    "latitude": 32.14,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "baijnath",
+    "name": "Baijnath Temple",
+    "type": "temple",
+    "long_description": "Baijnath Temple is a Nagara-style Shiva temple in Baijnath town, built in 1204 CE by two merchant brothers, Ahuka and Manyuka, to enshrine a Shivalinga worshipped as Vaidyanath, 'Lord of Physicians'. Sanskrit and Takri inscriptions in the mandapa record its history, and folklore links the site to Ravana, who is said to have set the linga down here en route to Lanka, which is why Dussehra is traditionally not celebrated here. Sansar Chand of Kangra carried out major repairs in 1786, and the temple, protected today by the Archaeological Survey of India, draws large crowds for monthly Shivratri and the annual Mahashivratri festival.",
+    "elevation_m": 1125,
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/BaijNath.jpg",
+    "image_source": "Wikimedia Commons",
+    "video_url": "https://www.youtube.com/results?search_query=Baijnath+Temple+Himachal+Pradesh",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.645,
+        32.051
+      ]
+    },
+    "longitude": 76.645,
+    "latitude": 32.051,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "tashijong",
+    "name": "Tashi Jong Monastery",
+    "type": "monastery",
+    "long_description": "Tashi Jong ('Auspicious Valley'), near Palampur, is built around Khampagar Monastery, seat of the Khamtrul Rinpoche lineage of the Drukpa Kagyu school. Founded by the 8th Khamtrul Rinpoche after fleeing Kham in the late 1950s, the settlement was completed by 1973 and is especially known for its togdens, yogis who undertake long solitary retreats practising Mahamudra and the Six Yogas of Naropa. The monastery also produces thangkas, woodcarving and textiles and hosts an annual masked Cham dance festival honouring Padmasambhava.",
+    "elevation_m": 1200,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified for this specific site; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Tashi+Jong+Monastery+Palampur",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.6,
+        32.03
+      ]
+    },
+    "longitude": 76.6,
+    "latitude": 32.03,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "palpung_sherabling",
+    "name": "Palpung Sherabling Monastery",
+    "type": "monastery",
+    "long_description": "Palpung Sherabling Monastery, in the Bhattu forest about 6 km from Bir and roughly 40 km from Palampur, is the principal Indian seat of the 12th Kenting Tai Situpa, a senior regent of the Karma Kagyu lineage. Spread across some 30 acres, the complex includes a monastic college (shedra), a 12-metre Buddha statue with intricate woodwork, retreat centres and nunnery facilities, and it draws Buddhist scholars and pilgrims from across India, Nepal and Tibet.",
+    "elevation_m": 1450,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Palpung+Sherabling+Monastery+Bir",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.652,
+        32.028
+      ]
+    },
+    "longitude": 76.652,
+    "latitude": 32.028,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "bundla_shiva_temple",
+    "name": "Shiva Temple, Bundla Tea Estate",
+    "type": "temple",
+    "long_description": "A small Shiva shrine within the Bundla Tea Estate near Palampur combines traditional Himachali hill architecture, with a sloping slate roof and wooden carvings, with a tranquil setting amid tea gardens. It is a modest but well-loved stop for visitors combining a temple visit with a walk through the estate's plantations.",
+    "elevation_m": 1250,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Bundla+Tea+Estate+Shiva+Temple+Palampur",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.56,
+        32.108
+      ]
+    },
+    "longitude": 76.56,
+    "latitude": 32.108,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "sherabling_nunnery",
+    "name": "Sherabling Nunnery / Retreat Shrines",
+    "type": "monastery",
+    "long_description": "Adjoining Palpung Sherabling Monastery, a nunnery and dedicated retreat centre allow ordained nuns and long-term retreatants to pursue traditional Karma Kagyu meditation practice under the guidance of resident lamas, forming a quieter, less-visited counterpart to the main monastery's public temple halls.",
+    "elevation_m": 1460,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Sherabling+Nunnery+Retreat+Bir+Palampur",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.655,
+        32.026
+      ]
+    },
+    "longitude": 76.655,
+    "latitude": 32.026,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "chokling_monastery",
+    "name": "Chokling Monastery",
+    "type": "monastery",
+    "long_description": "Chokling Monastery (Pema Ewam Chögar Gyurme Ling), in the heart of the Bir Tibetan Colony, is the exile seat of the Chokling tulku lineage descended from the great tertön Chokgyur Lingpa. Founded by the settlement's founder, the 3rd Neten Chokling, it features a grand prayer hall and a giant golden statue of Padmasambhava, and hosts an eight-day masked Drubchen ritual dance cycle; the 1999 film 'The Cup' was shot on its grounds.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Chokling+Monastery+Bir",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.719,
+        32.044
+      ]
+    },
+    "longitude": 76.719,
+    "latitude": 32.044,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "sakya_dirru",
+    "name": "Sakya Dirru Monastery",
+    "type": "monastery",
+    "long_description": "Sakya Dirru is a small, brightly blue-painted monastery representing the Sakya school of Tibetan Buddhism, standing out in the fields on the edge of the Bir Tibetan Colony. Far quieter than the larger monasteries nearby, it offers a peaceful, almost-always-empty stop on a walking circuit of the Colony's four Buddhist traditions.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Sakya+Dirru+Monastery+Bir",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.722,
+        32.041
+      ]
+    },
+    "longitude": 76.722,
+    "latitude": 32.041,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "dzongsar_college",
+    "name": "Dzongsar Khyentse Chökyi Lödrö College of Dialectics",
+    "type": "monastery",
+    "long_description": "The Dzongsar Khyentse Chökyi Lödrö College of Dialectics, in Chauntra east of Bir, is a large modern monastic college for advanced Buddhist philosophical studies under Dzongsar Jamyang Khyentse Rinpoche, home to several hundred monks. It represents the Rimé (non-sectarian) tradition and is a major centre for formal Buddhist logic and debate training in the region.",
+    "elevation_m": 1350,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Dzongsar+Institute+Chauntra+Bir",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.75,
+        32.06
+      ]
+    },
+    "longitude": 76.75,
+    "latitude": 32.06,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "deer_park_institute",
+    "name": "Deer Park Institute",
+    "type": "institute",
+    "long_description": "The Deer Park Institute, in the Bir Tibetan Colony, is a centre for the study of classical Indian wisdom traditions, founded under the guidance of Dzongsar Khyentse Rinpoche on the site of a former monastery. Open to visitors of any background, it offers short courses, talks and retreats on Buddhist philosophy, yoga and Indian contemplative traditions in a rimé, non-sectarian spirit.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Deer+Park+Institute+Bir",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.718,
+        32.043
+      ]
+    },
+    "longitude": 76.718,
+    "latitude": 32.043,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "tsering_jong",
+    "name": "Tsering Jong Monastery",
+    "type": "monastery",
+    "long_description": "Tsering Jong Monastery, close to Bir's Tibetan Colony, is one of the settlement's smaller Buddhist establishments, offering a quiet, contemplative complex for resident monks that receives far fewer visitors than the larger Chokling and Sherabling monasteries nearby.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Tsering+Jong+Monastery+Bir",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.715,
+        32.048
+      ]
+    },
+    "longitude": 76.715,
+    "latitude": 32.048,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "nyingyang_monastery",
+    "name": "Nyingyang (Ngyingyang) Monastery",
+    "type": "monastery",
+    "long_description": "Nyingyang Monastery is one of the lesser-known Tibetan Buddhist establishments scattered through the Bir area, typically covered on the same day-long two-wheeler circuit that takes in Bir's larger monasteries, and valued for its calm, uncrowded courtyard.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Nyingyang+Monastery+Bir+Billing",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.716,
+        32.045
+      ]
+    },
+    "longitude": 76.716,
+    "latitude": 32.045,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "drukpa_kagyu_bir",
+    "name": "Drukpa Kagyu Monastery, Bir",
+    "type": "monastery",
+    "long_description": "A Drukpa Kagyu monastery in the Bir area represents another branch of the Kagyu lineage present in the Tibetan Colony, offering resident monks a space for study and ritual practice distinct from the Karma Kagyu tradition centred at nearby Palpung Sherabling.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Drukpa+Kagyu+Monastery+Bir+Himachal",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.72,
+        32.042
+      ]
+    },
+    "longitude": 76.72,
+    "latitude": 32.042,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "palyul_monastery",
+    "name": "Palyul Monastery, Bir",
+    "type": "monastery",
+    "long_description": "Palyul Monastery in Bir represents the Palyul branch of the Nyingma tradition, one of the four principal Nyingma monastic seats, offering a quiet complex for prayer and study within the wider Tibetan Colony alongside the larger Chokling Monastery.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Palyul+Monastery+Bir+Himachal",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.717,
+        32.043
+      ]
+    },
+    "longitude": 76.717,
+    "latitude": 32.043,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "men_tsee_khang_bir",
+    "name": "Men-Tsee-Khang Shrine, Bir",
+    "type": "shrine",
+    "long_description": "The Bir branch of the Men-Tsee-Khang, the Tibetan Medical and Astrological Institute, combines a working herbal clinic with a small shrine to the Medicine Buddha, reflecting the close historical link between Tibetan medicine and Buddhist ritual practice within the exile community.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Men-Tsee-Khang+Bir+Tibetan+Colony",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.718,
+        32.044
+      ]
+    },
+    "longitude": 76.718,
+    "latitude": 32.044,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "dharmalaya_institute",
+    "name": "Dharmalaya Institute",
+    "type": "institute",
+    "long_description": "The Dharmalaya Institute, near Bir, is a centre for sustainable living and contemplative practice that includes meditation spaces and retreat facilities built using natural, earth-based construction methods, drawing on both Buddhist and broader Indian wisdom traditions in a rural, ecologically-minded setting.",
+    "elevation_m": 1350,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Dharmalaya+Institute+Bir+Himachal",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.7,
+        32.03
+      ]
+    },
+    "longitude": 76.7,
+    "latitude": 32.03,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "bir_colony_stupa",
+    "name": "Bir Tibetan Colony Stupa Grounds",
+    "type": "stupa",
+    "long_description": "The stupa grounds within Bir's Tibetan Colony, founded in 1966 by the 3rd Neten Chokling on land purchased for Tibetan refugee families, anchor the settlement's devotional life alongside its monasteries, market, handicraft centre and clinics, and remain a gathering point during Losar and other Buddhist festivals.",
+    "elevation_m": 1500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Bir+Tibetan+Colony+stupa",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.719,
+        32.044
+      ]
+    },
+    "longitude": 76.719,
+    "latitude": 32.044,
+    "religion": "Buddhism"
+  },
+  {
+    "id": "rewalsar_lake_temples",
+    "name": "Rewalsar Lake Temples & Gurdwara",
+    "type": "temple",
+    "long_description": "Rewalsar, a small hillside town in Mandi district reached from this circuit via Palampur/Bir, is held sacred by Hindus, Sikhs and Buddhists alike, with pagoda-style monasteries, Hindu temples and a Sikh Gurdwara all built around its holy lake. A giant 150-foot statue of Padmasambhava overlooks the waters, and the site preserves old stucco sculptures and murals across its shrines.",
+    "elevation_m": 1360,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Rewalsar+Lake+Temples+Gurdwara+Mandi",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.8384,
+        31.6394
+      ]
+    },
+    "longitude": 76.8384,
+    "latitude": 31.6394,
+    "religion": "Buddhism / Hinduism / Sikhism"
+  },
+  {
+    "id": "padmasambhava_rewalsar",
+    "name": "Padmasambhava Statue, Rewalsar",
+    "type": "shrine",
+    "long_description": "A towering 150-foot statue of Guru Padmasambhava (Guru Rimpoche) overlooks Rewalsar Lake, marking the region's deep historical association with the great 8th-century teacher credited with spreading Mahayana Buddhism into Tibet; local legend links the lake itself to the king of Mandi's attempt to kill Padmasambhava.",
+    "elevation_m": 1365,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Padmasambhava+Statue+Rewalsar",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.839,
+        31.6398
+      ]
+    },
+    "longitude": 76.839,
+    "latitude": 31.6398,
+    "religion": "Buddhism / Hinduism / Sikhism"
+  },
+  {
+    "id": "kangra_fort",
+    "name": "Kangra Fort",
+    "type": "fort",
+    "long_description": "Kangra Fort, historically Nagarkot, is among the oldest and largest forts in the Himalayas, expanded over centuries by the Katoch dynasty and once containing finely carved Hindu and Jain temples, most now in ruins. Famed for its wealth, it drew invasions including Mahmud of Ghazni's raid in 1009 CE; the 1905 Kangra earthquake caused extensive damage, but surviving ramparts, gateways and temple fragments, along with an on-site museum, still convey its former scale.",
+    "elevation_m": 730,
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Kangra_fort_(nagarkot).jpg",
+    "image_source": "Wikimedia Commons",
+    "video_url": "https://www.youtube.com/results?search_query=Kangra+Fort+Himachal+Pradesh",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.257,
+        32.083
+      ]
+    },
+    "longitude": 76.257,
+    "latitude": 32.083,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "chintpurni",
+    "name": "Chintpurni Devi Temple",
+    "type": "temple",
+    "long_description": "Chintpurni Devi Temple, in Una district, is one of the most visited Shakti Peethas in northern India, dedicated to the goddess who 'removes worries' (Chinta). Believed founded by Pandit Mai Das of Chhaproh village, its Himachali architecture and large Navratri fairs draw pilgrims from across the country as part of the broader Kangra Valley devi circuit.",
+    "elevation_m": 940,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Chintpurni+Devi+Temple+Himachal",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.1667,
+        31.7833
+      ]
+    },
+    "longitude": 76.1667,
+    "latitude": 31.7833,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "naina_devi",
+    "name": "Naina Devi Temple",
+    "type": "temple",
+    "long_description": "Naina Devi Temple, on a hilltop above the Gobind Sagar reservoir in Bilaspur district, is another of the celebrated Shakti Peethas of Himachal Pradesh, said to mark the spot where the eyes of Sati fell. It is connected by ropeway to the town below and forms part of the wider regional pilgrimage circuit alongside Chintpurni, Jwalamukhi and Chamunda Devi.",
+    "elevation_m": 1120,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Naina+Devi+Temple+Himachal+Pradesh",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.5667,
+        31.3667
+      ]
+    },
+    "longitude": 76.5667,
+    "latitude": 31.3667,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "andretta_shrine",
+    "name": "Andretta Village Wayside Shrine",
+    "type": "shrine",
+    "long_description": "Andretta, better known as an artists' colony associated with the Sobha Singh Art Gallery and Andretta Pottery, also holds small wayside shrines typical of Kangra Valley villages, where local deities are honoured alongside the area's better-known cultural institutions.",
+    "elevation_m": 1170,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Andretta+Village+Palampur+shrine",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.567,
+        32.117
+      ]
+    },
+    "longitude": 76.567,
+    "latitude": 32.117,
+    "religion": "Unknown"
+  },
+  {
+    "id": "nurpur_krishna_temple",
+    "name": "Krishna Temple, Nurpur",
+    "type": "temple",
+    "long_description": "Nurpur, a historic town in western Kangra district known for its hilltop fort, is home to an old Krishna temple associated with the Pathania rulers of Nurpur, reflecting the town's long-standing Vaishnavite temple tradition alongside its Mughal-influenced fort architecture.",
+    "elevation_m": 620,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Krishna+Temple+Nurpur+Kangra",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        75.8991,
+        32.2988
+      ]
+    },
+    "longitude": 75.8991,
+    "latitude": 32.2988,
+    "religion": "Unknown"
+  },
+  {
+    "id": "baba_baroh_shrines",
+    "name": "Baba Baroh Area Shrines",
+    "type": "shrine",
+    "long_description": "The Baba Baroh area of Kangra district contains a cluster of small local temples and wayside shrines typical of the valley's village religious life, serving nearby agricultural communities rather than functioning as major pilgrimage destinations.",
+    "elevation_m": 700,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Baba+Baroh+temple+Kangra",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.2,
+        32.15
+      ]
+    },
+    "longitude": 76.2,
+    "latitude": 32.15,
+    "religion": "Unknown"
+  },
+  {
+    "id": "guler_radha_krishna",
+    "name": "Guler Village Radha-Krishna Temple",
+    "type": "temple",
+    "long_description": "Guler village, once capital of the princely state of Guler and celebrated as a birthplace of the Pahari miniature painting style, has an old Radha-Krishna temple reflecting the strong Vaishnavite devotional tradition that also inspired the region's Kangra school of painting.",
+    "elevation_m": 800,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Guler+village+Radha+Krishna+Temple+Kangra",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.467,
+        32.033
+      ]
+    },
+    "longitude": 76.467,
+    "latitude": 32.033,
+    "religion": "Unknown"
+  },
+  {
+    "id": "trilokpur_temples",
+    "name": "Trilokpur Temples",
+    "type": "temple",
+    "long_description": "Trilokpur's Shiva and Devi temples are a well-known pilgrimage cluster in Himachal Pradesh; note that the most prominent Trilokpur temple complex lies in Sirmaur district near Nahan, some distance from the Kangra Valley core of this itinerary, so travellers wanting to include it should treat it as a separate side trip rather than part of a single-day Kangra circuit.",
+    "elevation_m": 500,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Trilokpur+Temple+Himachal+Pradesh",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        77.4,
+        30.5
+      ]
+    },
+    "longitude": 77.4,
+    "latitude": 30.5,
+    "religion": "Hinduism"
+  },
+  {
+    "id": "chamba_devi_wayside",
+    "name": "Chamba Devi Wayside Temple, near Andretta",
+    "type": "shrine",
+    "long_description": "A small wayside Devi shrine along the road near Andretta, informally referred to locally in connection with 'Chamba Devi', serves travellers and villagers passing between Palampur and the Andretta artists' colony; it is a minor, low-key stop rather than a major pilgrimage site.",
+    "elevation_m": 1150,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Chamba+Devi+wayside+temple+Andretta+Palampur",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.565,
+        32.115
+      ]
+    },
+    "longitude": 76.565,
+    "latitude": 32.115,
+    "religion": "Hinduism"
+  }
+]

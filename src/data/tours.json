@@ -1,0 +1,37 @@
+[
+  {
+    "id": "tour_spiritual",
+    "name": "Spiritual Circuit",
+    "description": "A journey through some of the most revered ancient temples and monasteries in the Kangra Valley.",
+    "stops": [
+      "masroor",
+      "brajeshwari_devi",
+      "chamunda_devi",
+      "tsuglagkhang",
+      "baijnath"
+    ]
+  },
+  {
+    "id": "tour_tibetan",
+    "name": "Tibetan Monastic Tour",
+    "description": "Explore the prominent Tibetan Buddhist monasteries established in exile across Dharamshala and Bir.",
+    "stops": [
+      "tsuglagkhang",
+      "namgyal",
+      "gyuto_monastery",
+      "palpung_sherabling",
+      "chokling_monastery"
+    ]
+  },
+  {
+    "id": "tour_hidden_gems",
+    "name": "Hidden Forest Shrines",
+    "description": "Discover secluded shrines and small temples nestled in the dense forests of the Dhauladhar foothills.",
+    "stops": [
+      "st_john_wilderness",
+      "dal_mata_temple",
+      "kunal_pathri",
+      "aghanjar_mahadev"
+    ]
+  }
+]
