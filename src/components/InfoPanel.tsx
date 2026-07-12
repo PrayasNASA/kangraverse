@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, MapPin, Mountain, ExternalLink, PlaySquare, Heart, ChevronLeft, ChevronRight, Check, Play, Pause, Download } from 'lucide-react';
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
@@ -11,6 +11,14 @@ const heritageData = heritageDataRaw as HeritageFeature[];
 
 export default function InfoPanel() {
   const { selectedFeature, setSelectedFeature, favorites, toggleFavorite, activeTour, setActiveTour, currentTourStep, setCurrentTourStep, setFlyToLocation, isPlayingTour, toggleIsPlayingTour, setIsPlayingTour } = useStore();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleTourStep = (direction: 'next' | 'prev') => {
     if (!activeTour) return;
@@ -56,13 +64,14 @@ export default function InfoPanel() {
     <AnimatePresence>
       {selectedFeature && (
         <motion.div
-          initial={{ x: 400, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 400, opacity: 0 }}
+          initial={isMobile ? { y: '100%', opacity: 0 } : { x: 400, opacity: 0 }}
+          animate={isMobile ? { y: 0, opacity: 1 } : { x: 0, opacity: 1 }}
+          exit={isMobile ? { y: '100%', opacity: 0 } : { x: 400, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="absolute top-4 right-4 z-20 w-96 max-h-[calc(100vh-2rem)] flex flex-col pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 md:top-4 md:right-4 md:bottom-auto md:left-auto z-50 md:z-20 w-full md:w-96 max-h-[85vh] md:max-h-[calc(100vh-2rem)] flex flex-col pointer-events-none"
         >
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.2)] overflow-hidden pointer-events-auto flex flex-col max-h-full">
+          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t md:border border-white/40 dark:border-slate-800/60 rounded-t-3xl md:rounded-2xl shadow-[0_-16px_40px_rgba(0,0,0,0.2)] md:shadow-[0_16px_40px_rgba(0,0,0,0.2)] overflow-hidden pointer-events-auto flex flex-col max-h-full">
+
             
             {/* Hero Image Section */}
             <div className="relative h-48 w-full bg-slate-200 dark:bg-slate-800 shrink-0">
