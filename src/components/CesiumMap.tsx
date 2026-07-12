@@ -305,22 +305,21 @@ export default function CesiumMap() {
               heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
               disableDepthTestDistance={Number.POSITIVE_INFINITY}
             />
-            <LabelGraphics
-              text={feature.name}
-              font={isSelected ? "bold 16px sans-serif" : "14px sans-serif"}
-              fillColor={Color.WHITE}
-              outlineColor={Color.BLACK}
-              outlineWidth={3}
-              style={LabelStyle.FILL_AND_OUTLINE}
-              verticalOrigin={VerticalOrigin.BOTTOM}
-              horizontalOrigin={HorizontalOrigin.CENTER}
-              pixelOffset={new Cartesian2(0, isSelected ? -60 : -50)}
-              heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
-              showBackground={true}
-              backgroundColor={new Color(0, 0, 0, 0.6)}
-              backgroundPadding={new Cartesian2(6, 4)}
-              disableDepthTestDistance={Number.POSITIVE_INFINITY}
-            />
+            {isSelected && (
+              <LabelGraphics
+                text={feature.name}
+                font="bold 18px sans-serif"
+                fillColor={Color.WHITE}
+                outlineColor={Color.BLACK}
+                outlineWidth={4}
+                style={LabelStyle.FILL_AND_OUTLINE}
+                verticalOrigin={VerticalOrigin.BOTTOM}
+                horizontalOrigin={HorizontalOrigin.CENTER}
+                pixelOffset={new Cartesian2(0, -65)}
+                heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
+                disableDepthTestDistance={Number.POSITIVE_INFINITY}
+              />
+            )}
           </Entity>
         );
       })}
