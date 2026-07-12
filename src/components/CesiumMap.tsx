@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { Viewer, CameraFlyTo, Entity, BillboardGraphics, ScreenSpaceEventHandler, ScreenSpaceEvent, ImageryLayer, PolylineGraphics } from 'resium';
 import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, ArcGisMapServerImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync } from 'cesium';
-import 'cesium/Build/Cesium/Widgets/widgets.css';
 import heritageDataRaw from '@/data/heritage.json';
 import treksDataRaw from '@/data/treks.json';
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
