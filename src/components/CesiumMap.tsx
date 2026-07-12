@@ -26,6 +26,7 @@ export default function CesiumMap() {
     selectedFeature,
     timeOfDay,
     showTreks,
+    isPlayingTour,
   } = useStore();
 
   const [terrainProvider, setTerrainProvider] = useState<TerrainProvider | null>(null);
@@ -99,10 +100,7 @@ export default function CesiumMap() {
     if (viewerRef.current?.cesiumElement) {
       const viewer = viewerRef.current.cesiumElement;
       
-      // Base date (we can use today's date)
       const date = new Date();
-      // Adjust time based on UTC or local, let's use UTC for predictability
-      // Kangra is IST (UTC+5:30), so we might want to offset this so slider feels local
       const istOffsetHours = 5.5;
       const utcHour = timeOfDay - istOffsetHours;
       
@@ -114,6 +112,63 @@ export default function CesiumMap() {
       viewer.scene.globe.enableLighting = true;
     }
   }, [timeOfDay]);
+
+  // Virtual Tour Logic for Treks
+  useEffect(() => {
+    if (isPlayingTour && selectedFeature && 'coordinates' in selectedFeature && viewerRef.current?.cesiumElement) {
+      const viewer = viewerRef.current.cesiumElement;
+      const trek = selectedFeature as Trek;
+      const coords = trek.coordinates;
+      
+      let stop = false;
+      
+      const flyToPoint = (index: number) => {
+        // If state changed or we reached the end, stop
+        if (stop || index >= coords.length || !useStore.getState().isPlayingTour) {
+          if (useStore.getState().isPlayingTour) {
+            useStore.getState().setIsPlayingTour(false);
+          }
+          return;
+        }
+        
+        const pt = coords[index];
+        const nextPt = index < coords.length - 1 ? coords[index + 1] : null;
+        
+        // Calculate heading to next point
+        let heading = 0;
+        if (nextPt) {
+          const dy = nextPt[1] - pt[1];
+          const dx = Math.cos((Math.PI / 180) * pt[1]) * (nextPt[0] - pt[0]);
+          heading = Math.atan2(dx, dy);
+        } else if (index > 0) {
+          // If it's the last point, keep the previous heading
+          const prevPt = coords[index - 1];
+          const dy = pt[1] - prevPt[1];
+          const dx = Math.cos((Math.PI / 180) * prevPt[1]) * (pt[0] - prevPt[0]);
+          heading = Math.atan2(dx, dy);
+        }
+
+        viewer.camera.flyTo({
+          // Fly closer to the ground (200m above) for a majestic drone view
+          destination: Cartesian3.fromDegrees(pt[0], pt[1], (pt[2] || 2500) + 200), 
+          orientation: {
+            heading: heading,
+            // Look forward and slightly down (-10 degrees) to see the massive mountain peaks ahead
+            pitch: CesiumMath.toRadians(-10),
+            roll: 0,
+          },
+          duration: 6, // Slower, smoother transition
+          complete: () => {
+            if (!stop) flyToPoint(index + 1);
+          }
+        });
+      };
+      
+      flyToPoint(0);
+      
+      return () => { stop = true; };
+    }
+  }, [isPlayingTour, selectedFeature]);
 
   const handlePointClick = (movement: { position: import('cesium').Cartesian2 } | { startPosition: import('cesium').Cartesian2; endPosition: import('cesium').Cartesian2 }) => {
     if (!('position' in movement)) return;
@@ -209,7 +264,7 @@ export default function CesiumMap() {
           properties={trek}
         >
           <PolylineGraphics
-            positions={Cartesian3.fromDegreesArray(trek.coordinates.flat())}
+            positions={Cartesian3.fromDegreesArrayHeights(trek.coordinates.flat())}
             material={Color.fromCssColorString(trek.color).withAlpha(0.8)}
             width={4}
             clampToGround={true}

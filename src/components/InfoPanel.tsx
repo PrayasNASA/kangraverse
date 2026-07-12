@@ -1,9 +1,11 @@
 'use client';
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Mountain, ExternalLink, PlaySquare, Heart, ChevronLeft, ChevronRight, Check, Play, Pause } from 'lucide-react';
-import { useStore, HeritageFeature } from '@/store/useStore';
+import { X, MapPin, Mountain, ExternalLink, PlaySquare, Heart, ChevronLeft, ChevronRight, Check, Play, Pause, Download } from 'lucide-react';
+import { useStore, HeritageFeature, Trek } from '@/store/useStore';
 import heritageDataRaw from '@/data/heritage.json';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { downloadGPX } from '@/utils/gpx';
 
 const heritageData = heritageDataRaw as HeritageFeature[];
 
@@ -123,7 +125,7 @@ export default function InfoPanel() {
               </div>
 
               {/* Data fields matching the requirements conditionally */}
-              {!('coordinates' in selectedFeature) && (
+              {!('coordinates' in selectedFeature) ? (
                 <div className="grid grid-cols-2 gap-3 mb-6 border-t border-slate-200 dark:border-slate-800 pt-5">
                   <div className="flex flex-col gap-1">
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Religion</span>
@@ -148,6 +150,44 @@ export default function InfoPanel() {
                     <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
                       {selectedFeature.district || 'Kangra'}
                     </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="mb-6 border-t border-slate-200 dark:border-slate-800 pt-5">
+                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Elevation Profile</h3>
+                  <div className="h-32 w-full mb-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2 border border-slate-100 dark:border-slate-800">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={selectedFeature.coordinates.map((c, i) => ({ dist: i, alt: c[2] || 2000 }))} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="colorAlt" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor={selectedFeature.color || "#4f46e5"} stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor={selectedFeature.color || "#4f46e5"} stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <XAxis dataKey="dist" hide />
+                        <YAxis tick={{ fontSize: 10, fill: '#888' }} axisLine={false} tickLine={false} domain={['dataMin - 100', 'dataMax + 100']} />
+                        <Tooltip 
+                          contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', fontSize: '12px', color: '#fff' }}
+                          labelFormatter={() => ''}
+                          formatter={(value) => [`${value}m`, 'Altitude']}
+                        />
+                        <Area type="monotone" dataKey="alt" stroke={selectedFeature.color || "#4f46e5"} strokeWidth={2} fillOpacity={1} fill="url(#colorAlt)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => downloadGPX(selectedFeature.name, selectedFeature.coordinates)}
+                      className="flex-1 py-2 px-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wide rounded-xl flex items-center justify-center gap-1.5 transition-colors"
+                    >
+                      <Download className="w-3.5 h-3.5" /> GPX
+                    </button>
+                    <button 
+                      onClick={() => toggleIsPlayingTour()}
+                      className={`flex-1 py-2 px-3 text-xs font-bold uppercase tracking-wide rounded-xl flex items-center justify-center gap-1.5 transition-colors ${isPlayingTour ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' : 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400'}`}
+                    >
+                      {isPlayingTour ? <><Pause className="w-3.5 h-3.5" /> Pause</> : <><Play className="w-3.5 h-3.5" /> Play Tour</>}
+                    </button>
                   </div>
                 </div>
               )}
