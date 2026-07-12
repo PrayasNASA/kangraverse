@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "copy-cesium": "npx cpx2 \"node_modules/cesium/Build/Cesium/**/*\" public/cesium",
-    "dev": "npm run copy-cesium && next dev",
-    "build": "npm run copy-cesium && next build",
+    "postinstall": "npx cpx2 \"node_modules/cesium/Build/Cesium/**/*\" public/cesium",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
@@ -28,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "copy-webpack-plugin": "^14.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
