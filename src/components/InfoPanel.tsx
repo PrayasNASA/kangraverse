@@ -32,8 +32,9 @@ export default function InfoPanel() {
         setFlyToLocation({
           lng: nextFeature.longitude,
           lat: nextFeature.latitude,
-          altitude: 2000,
-          pitch: -45,
+          altitude: (nextFeature.elevation_m || 1500) + 1200, // Dynamic altitude
+          pitch: -35,
+          duration: 3, // Slightly longer duration for a more cinematic tour feel
         });
       }
     } else if (direction === 'next') {

@@ -84,8 +84,8 @@ export default function Sidebar() {
       setFlyToLocation({
         lng: firstFeature.longitude,
         lat: firstFeature.latitude,
-        altitude: 2000,
-        pitch: -45,
+        altitude: (firstFeature.elevation_m || 1500) + 1200, // Look down from 1.2km above the feature
+        pitch: -35,
       });
     }
     if (isMobile) {
@@ -98,8 +98,8 @@ export default function Sidebar() {
     setFlyToLocation({
       lng: feature.longitude,
       lat: feature.latitude,
-      altitude: 2000,
-      pitch: -45,
+      altitude: (feature.elevation_m || 1500) + 1200,
+      pitch: -35,
     });
     if (isMobile) {
       setSheetExpanded(false);

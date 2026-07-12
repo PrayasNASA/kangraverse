@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { Viewer, CameraFlyTo, Entity, BillboardGraphics, ScreenSpaceEventHandler, ScreenSpaceEvent, ImageryLayer, PolylineGraphics } from 'resium';
-import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, ArcGisMapServerImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync } from 'cesium';
+import { Viewer, CameraFlyTo, Entity, BillboardGraphics, ScreenSpaceEventHandler, ScreenSpaceEvent, ImageryLayer, PolylineGraphics, LabelGraphics } from 'resium';
+import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, ArcGisMapServerImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync, Cartesian2, HorizontalOrigin, LabelStyle } from 'cesium';
 import heritageDataRaw from '@/data/heritage.json';
 import treksDataRaw from '@/data/treks.json';
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
@@ -27,6 +27,7 @@ export default function CesiumMap() {
     timeOfDay,
     showTreks,
     isPlayingTour,
+    activeTour,
   } = useStore();
 
   const [terrainProvider, setTerrainProvider] = useState<TerrainProvider | null>(null);
@@ -192,9 +193,9 @@ export default function CesiumMap() {
         setFlyToLocation({
           lng: isTrek ? (fullFeature as Trek).coordinates[0][0] : (fullFeature as HeritageFeature).longitude,
           lat: isTrek ? (fullFeature as Trek).coordinates[0][1] : (fullFeature as HeritageFeature).latitude,
-          altitude: 1500,
-          pitch: -45,
-          duration: 1.5,
+          altitude: (fullFeature.elevation_m || 1500) + 1200, // Dynamic altitude
+          pitch: -35,
+          duration: 2.5,
         });
       }
     } else {
@@ -272,19 +273,53 @@ export default function CesiumMap() {
         </Entity>
       ))}
 
+      {/* Tour Path */}
+      {activeTour && (
+        <Entity>
+          <PolylineGraphics
+            positions={Cartesian3.fromDegreesArray(
+              activeTour.stops.flatMap(stopId => {
+                const feature = heritageData.find(f => f.id === stopId);
+                return feature ? [feature.longitude, feature.latitude] : [];
+              })
+            )}
+            material={Color.fromCssColorString('#6366f1').withAlpha(0.6)}
+            width={4}
+            clampToGround={showTerrain}
+          />
+        </Entity>
+      )}
+
       {showMarkers && heritageData.map((feature) => {
         const isSelected = selectedFeature?.id === feature.id;
         return (
           <Entity
             key={feature.id}
             name={feature.name}
-            position={Cartesian3.fromDegrees(feature.longitude, feature.latitude)}
+            position={Cartesian3.fromDegrees(feature.longitude, feature.latitude, feature.elevation_m || 0)}
             properties={feature}
           >
             <BillboardGraphics
               image={pinBuilder.fromColor(getFeatureColor(feature.type, isSelected), isSelected ? 56 : 48).toDataURL()}
               verticalOrigin={VerticalOrigin.BOTTOM}
-              heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.NONE}
+              heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
+              disableDepthTestDistance={Number.POSITIVE_INFINITY}
+            />
+            <LabelGraphics
+              text={feature.name}
+              font={isSelected ? "bold 16px sans-serif" : "14px sans-serif"}
+              fillColor={Color.WHITE}
+              outlineColor={Color.BLACK}
+              outlineWidth={3}
+              style={LabelStyle.FILL_AND_OUTLINE}
+              verticalOrigin={VerticalOrigin.BOTTOM}
+              horizontalOrigin={HorizontalOrigin.CENTER}
+              pixelOffset={new Cartesian2(0, isSelected ? -60 : -50)}
+              heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
+              showBackground={true}
+              backgroundColor={new Color(0, 0, 0, 0.6)}
+              backgroundPadding={new Cartesian2(6, 4)}
+              disableDepthTestDistance={Number.POSITIVE_INFINITY}
             />
           </Entity>
         );
