@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { Viewer, CameraFlyTo, Entity, BillboardGraphics, ScreenSpaceEventHandler, ScreenSpaceEvent, ImageryLayer, PolylineGraphics, LabelGraphics } from 'resium';
-import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, ArcGisMapServerImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync, Cartesian2, HorizontalOrigin, LabelStyle } from 'cesium';
+import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, ArcGisMapServerImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync, Cartesian2, HorizontalOrigin, LabelStyle, BoundingSphere, HeadingPitchRange } from 'cesium';
 import heritageDataRaw from '@/data/heritage.json';
 import treksDataRaw from '@/data/treks.json';
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
@@ -84,13 +84,18 @@ export default function CesiumMap() {
   useEffect(() => {
     if (flyToLocation && viewerRef.current?.cesiumElement) {
       const viewer = viewerRef.current.cesiumElement;
-      viewer.camera.flyTo({
-        destination: Cartesian3.fromDegrees(flyToLocation.lng, flyToLocation.lat, flyToLocation.altitude),
-        orientation: {
-          heading: CesiumMath.toRadians(0),
-          pitch: CesiumMath.toRadians(flyToLocation.pitch),
-          roll: 0,
-        },
+      
+      // Because flyToLocation.altitude includes a ~1200m offset from earlier logic, we subtract it to find the ground
+      // Alternatively, we just use the raw altitude if it's already close to ground, but let's assume it's offset by 1200.
+      const groundAltitude = flyToLocation.altitude > 1200 ? flyToLocation.altitude - 1200 : flyToLocation.altitude;
+      const target = Cartesian3.fromDegrees(flyToLocation.lng, flyToLocation.lat, groundAltitude);
+      
+      viewer.camera.flyToBoundingSphere(new BoundingSphere(target, 0), {
+        offset: new HeadingPitchRange(
+          CesiumMath.toRadians(0), 
+          CesiumMath.toRadians(flyToLocation.pitch), 
+          1200 // Range from the target
+        ),
         duration: flyToLocation.duration || 2.5,
       });
     }
