@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Chatbot from '@/components/Chatbot';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Script src="https://unpkg.com/cesium@1.143.0/Build/Cesium/Cesium.js" strategy="beforeInteractive" />
         {children}
+        <Chatbot />
       </body>
     </html>
   );

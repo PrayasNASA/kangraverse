@@ -15,6 +15,8 @@ if (typeof window !== 'undefined') {
   (window as unknown as { CESIUM_BASE_URL: string }).CESIUM_BASE_URL = 'https://unpkg.com/cesium@1.143.0/Build/Cesium';
   Ion.defaultAccessToken = process.env.NEXT_PUBLIC_CESIUM_ION_TOKEN || '';
 }
+
+
 export default function CesiumMap() {
   const { 
     showTerrain,
@@ -117,6 +119,15 @@ export default function CesiumMap() {
       
       viewer.clock.currentTime = JulianDate.fromDate(date);
       viewer.scene.globe.enableLighting = true;
+      
+      // Add Fog and Atmosphere effects
+      viewer.scene.fog.enabled = true;
+      viewer.scene.fog.density = 0.0002;
+      viewer.scene.fog.screenSpaceErrorFactor = 2.0;
+      if (viewer.scene.skyAtmosphere) {
+        viewer.scene.skyAtmosphere.hueShift = -0.05;
+        viewer.scene.skyAtmosphere.saturationShift = 0.2;
+      }
     }
   }, [timeOfDay]);
 
