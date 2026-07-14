@@ -110,7 +110,7 @@ export default function Sidebar() {
     <>
       {activeTab === 'places' ? (
         <>
-          <div className="px-4 py-3 border-b border-slate-200/50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
+          <div className="px-4 py-2 border-b border-slate-200/50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
             <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               {filteredData.length} {filteredData.length === 1 ? 'Result' : 'Results'} Found
             </h3>
@@ -145,7 +145,7 @@ export default function Sidebar() {
         </>
       ) : (
         <>
-          <div className="px-4 py-3 border-b border-slate-200/50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
+          <div className="px-4 py-2 border-b border-slate-200/50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
             <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Curated Tours
             </h3>
@@ -182,179 +182,227 @@ export default function Sidebar() {
     </>
   );
 
+  const renderTabsAndFilters = () => (
+    <>
+      <div className="flex bg-slate-100/50 dark:bg-slate-800/50 rounded-lg p-1 shrink-0">
+        <button
+          onClick={() => setActiveTab('places')}
+          className={twMerge(
+            "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-semibold transition-all",
+            activeTab === 'places'
+              ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm"
+              : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+          )}
+        >
+          <MapIcon className="w-3.5 h-3.5" /> Places
+        </button>
+        <button
+          onClick={() => setActiveTab('tours')}
+          className={twMerge(
+            "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-semibold transition-all",
+            activeTab === 'tours'
+              ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm"
+              : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+          )}
+        >
+          <Route className="w-3.5 h-3.5" /> Tours
+        </button>
+      </div>
+      
+      {activeTab === 'places' && (
+        <div className="flex flex-col gap-2 shrink-0">
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200/60 dark:border-slate-700/60 flex flex-col gap-2">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter by Religion</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {RELIGIONS.map(rel => {
+                      const isActive = filterReligion === rel;
+                      return (
+                        <button
+                          key={rel}
+                          onClick={() => setFilterReligion(isActive ? null : rel)}
+                          className={twMerge(
+                            "px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors border",
+                            isActive 
+                              ? "bg-indigo-100 dark:bg-indigo-900/40 border-indigo-300 dark:border-indigo-600 text-indigo-700 dark:text-indigo-300" 
+                              : "bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600"
+                          )}
+                        >
+                          {rel}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="overflow-x-auto no-scrollbar flex gap-2 pb-1">
+            {CATEGORIES.map(cat => {
+              const Icon = cat.icon;
+              const isActive = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(isActive ? null : cat.id)}
+                  className={twMerge(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all",
+                    isActive 
+                      ? (cat.id === 'favorites' ? "bg-red-500 text-white shadow-md shadow-red-500/25" : "bg-indigo-600 text-white shadow-md shadow-indigo-500/25")
+                      : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  )}
+                >
+                  <Icon className={twMerge("w-3.5 h-3.5", isActive && cat.id === 'favorites' && "fill-current")} />
+                  {cat.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
+    </>
+  );
+
   return (
     <>
-      <motion.div 
-        initial={{ x: -400, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="absolute top-0 pt-2 px-2 md:pt-0 md:px-0 left-0 right-0 md:top-4 md:left-4 z-20 md:w-80 flex flex-col gap-4 pointer-events-none"
-      >
-        {/* Search & Header Card */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] overflow-hidden pointer-events-auto flex flex-col shrink-0">
-          <div className="p-3 md:p-4 border-b border-slate-200/50 dark:border-slate-700/50">
-            <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 shrink-0">
-                <Compass className="w-4 h-4 md:w-5 md:h-5 text-white" />
+      {/* --- DESKTOP VIEW --- */}
+      {isMounted && !isMobile && (
+        <motion.div 
+          initial={{ x: -400, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+          className="absolute top-4 left-4 z-20 w-80 flex flex-col gap-4 pointer-events-none max-h-[calc(100dvh-2rem)]"
+        >
+          {/* Header Card */}
+          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] overflow-hidden pointer-events-auto flex flex-col shrink-0 p-4 gap-4">
+            {/* Title */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 shrink-0">
+                <Compass className="w-5 h-5 text-white" />
               </div>
-              <div className="flex flex-row md:flex-col items-baseline md:items-start gap-1 md:gap-0">
-                <h1 className="text-base md:text-lg font-bold text-slate-800 dark:text-white leading-tight">KangraVerse</h1>
-                <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">GIS Explorer</p>
+              <div className="flex flex-col">
+                <h1 className="text-lg font-bold text-slate-800 dark:text-white leading-tight">KangraVerse</h1>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">GIS Explorer</p>
               </div>
             </div>
 
-            {/* Tabs */}
-            <div className="flex bg-slate-100/50 dark:bg-slate-800/50 rounded-lg p-1 mb-3 md:mb-4">
-              <button
-                onClick={() => setActiveTab('places')}
+            {/* Search Input */}
+            <div className="relative flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input 
+                  type="text" 
+                  placeholder="Search places..." 
+                  className="w-full bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 transition-all"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <button 
+                onClick={() => setShowFilters(!showFilters)}
                 className={twMerge(
-                  "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-semibold transition-all",
-                  activeTab === 'places'
-                    ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                  "p-2.5 rounded-xl border transition-all flex items-center justify-center flex-shrink-0",
+                  showFilters || filterReligion 
+                    ? "bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-500/25" 
+                    : "bg-slate-100/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700"
                 )}
               >
-                <MapIcon className="w-3.5 h-3.5" />
-                Places
-              </button>
-              <button
-                onClick={() => setActiveTab('tours')}
-                className={twMerge(
-                  "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-semibold transition-all",
-                  activeTab === 'tours'
-                    ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-                )}
-              >
-                <Route className="w-3.5 h-3.5" />
-                Tours
+                <Filter className="w-4 h-4" />
               </button>
             </div>
-            
-            {activeTab === 'places' && (
-              <div className="flex flex-col gap-3">
-                <div className="relative flex gap-2">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <input 
-                      type="text" 
-                      placeholder="Search places, deities..." 
-                      className="w-full bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2 md:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 transition-all h-10 md:h-auto"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                  <button 
-                    onClick={() => setShowFilters(!showFilters)}
-                    className={twMerge(
-                      "p-2 md:p-2.5 rounded-xl border transition-all flex items-center justify-center flex-shrink-0 h-10 w-10 md:w-auto md:h-auto",
-                      showFilters || filterReligion 
-                        ? "bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-500/25" 
-                        : "bg-slate-100/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700"
-                    )}
-                    title="Advanced Filters"
-                  >
-                    <Filter className="w-4 h-4" />
-                  </button>
-                </div>
-                
-                <AnimatePresence>
-                  {showFilters && (
-                    <motion.div 
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200/60 dark:border-slate-700/60 flex flex-col gap-2">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Filter by Religion</span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {RELIGIONS.map(rel => {
-                            const isActive = filterReligion === rel;
-                            return (
-                              <button
-                                key={rel}
-                                onClick={() => setFilterReligion(isActive ? null : rel)}
-                                className={twMerge(
-                                  "px-2.5 py-1 rounded-md text-[10px] font-semibold transition-colors border",
-                                  isActive 
-                                    ? "bg-indigo-100 dark:bg-indigo-900/40 border-indigo-300 dark:border-indigo-600 text-indigo-700 dark:text-indigo-300" 
-                                    : "bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600"
-                                )}
-                              >
-                                {rel}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            )}
+
+            {renderTabsAndFilters()}
           </div>
 
-          {/* Categories (Only in Places tab) */}
-          {activeTab === 'places' && (
-            <div className="p-2 md:p-3 overflow-x-auto no-scrollbar flex gap-2">
-              {CATEGORIES.map(cat => {
-                const Icon = cat.icon;
-                const isActive = selectedCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(isActive ? null : cat.id)}
-                    className={twMerge(
-                      "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all",
-                      isActive 
-                        ? (cat.id === 'favorites' ? "bg-red-500 text-white shadow-md shadow-red-500/25" : "bg-indigo-600 text-white shadow-md shadow-indigo-500/25")
-                        : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-                    )}
-                  >
-                    <Icon className={twMerge("w-3.5 h-3.5", isActive && cat.id === 'favorites' && "fill-current")} />
-                    {cat.label}
-                  </button>
-                )
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Desktop Results List */}
-        {isMounted && !isMobile && (
-          <div className="flex-1 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col pointer-events-auto max-h-[calc(100dvh-250px)]">
+          {/* Results List */}
+          <div className="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col pointer-events-auto">
             {renderResultsList()}
           </div>
-        )}
-      </motion.div>
+        </motion.div>
+      )}
 
-      {/* Mobile Bottom Sheet Results */}
+      {/* --- MOBILE VIEW (APPLE MAPS STYLE BOTTOM SHEET) --- */}
       <AnimatePresence>
         {isMounted && isMobile && (
           <motion.div
             initial={{ y: '100%' }}
-            animate={{ y: sheetExpanded ? '10dvh' : '78dvh' }}
+            animate={{ y: sheetExpanded ? '5dvh' : 'calc(100dvh - 100px)' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={0.2}
+            dragElastic={0.1}
             onDragEnd={(e, info) => {
-              if (info.offset.y < -50 || info.velocity.y < -500) setSheetExpanded(true);
-              if (info.offset.y > 50 || info.velocity.y > 500) setSheetExpanded(false);
+              if (info.offset.y < -30 || info.velocity.y < -300) setSheetExpanded(true);
+              if (info.offset.y > 30 || info.velocity.y > 300) setSheetExpanded(false);
             }}
-            className="fixed top-0 left-0 right-0 bottom-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-white/40 dark:border-slate-800/60 rounded-t-3xl shadow-[0_-8px_32px_rgba(0,0,0,0.15)] flex flex-col pointer-events-auto"
+            className="fixed top-0 left-0 right-0 bottom-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-800/50 rounded-t-[32px] shadow-[0_-8px_40px_rgba(0,0,0,0.12)] flex flex-col pointer-events-auto overflow-hidden"
           >
             {/* Drag Handle */}
             <div 
-              className="w-full py-4 flex justify-center items-center cursor-grab active:cursor-grabbing shrink-0" 
+              className="w-full pt-3 pb-2 flex justify-center items-center cursor-grab active:cursor-grabbing shrink-0" 
               onClick={() => setSheetExpanded(!sheetExpanded)}
             >
               <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full" />
             </div>
             
-            {/* Container for scrollable area, prevent dragging when scrolling */}
-            <div className="flex-1 overflow-hidden flex flex-col" onPointerDownCapture={(e) => e.stopPropagation()}>
+            {/* Search Bar Container */}
+            <div className="px-4 pb-4 shrink-0 flex flex-col gap-4">
+              <div className="relative flex gap-2 items-center">
+                <div className="relative flex-1 group">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                  <input 
+                    type="text" 
+                    placeholder="Search KangraVerse..." 
+                    className="w-full bg-slate-100 dark:bg-slate-800/80 border-none rounded-2xl pl-12 pr-4 py-3.5 text-base focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-800 dark:text-slate-200 placeholder:text-slate-500 font-medium transition-all shadow-sm"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onClick={() => {
+                      if (!sheetExpanded) setSheetExpanded(true);
+                    }}
+                  />
+                </div>
+                {sheetExpanded && (
+                  <motion.button 
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    onClick={() => setShowFilters(!showFilters)}
+                    className={twMerge(
+                      "p-3.5 rounded-2xl transition-all flex items-center justify-center flex-shrink-0 shadow-sm",
+                      showFilters || filterReligion 
+                        ? "bg-indigo-600 text-white shadow-indigo-500/25" 
+                        : "bg-slate-100 dark:bg-slate-800/80 text-slate-500"
+                    )}
+                  >
+                    <Filter className="w-5 h-5" />
+                  </motion.button>
+                )}
+              </div>
+
+              {/* Tabs and Categories - only visible when expanded */}
+              <AnimatePresence>
+                {sheetExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="flex flex-col gap-4 overflow-hidden"
+                  >
+                    {renderTabsAndFilters()}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Scrollable Results */}
+            <div className="flex-1 overflow-hidden flex flex-col bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800/50" onPointerDownCapture={(e) => e.stopPropagation()}>
               {renderResultsList()}
             </div>
           </motion.div>
@@ -363,4 +411,3 @@ export default function Sidebar() {
     </>
   );
 }
-
