@@ -17,7 +17,8 @@
     },
     "longitude": 76.3225,
     "latitude": 32.241,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "High"
   },
   {
     "id": "namgyal",
@@ -37,7 +38,8 @@
     },
     "longitude": 76.3227,
     "latitude": 32.2411,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Low"
   },
   {
     "id": "kalachakra_temple",
@@ -57,7 +59,8 @@
     },
     "longitude": 76.3223,
     "latitude": 32.2408,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "gyuto_monastery",
@@ -77,7 +80,8 @@
     },
     "longitude": 76.305,
     "latitude": 32.185,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "High"
   },
   {
     "id": "nechung_monastery",
@@ -97,7 +101,8 @@
     },
     "longitude": 76.3211,
     "latitude": 32.2168,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "High"
   },
   {
     "id": "tsechokling",
@@ -117,7 +122,8 @@
     },
     "longitude": 76.323,
     "latitude": 32.226,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "mani_lhakhang",
@@ -137,7 +143,8 @@
     },
     "longitude": 76.321,
     "latitude": 32.238,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "library_tibetan_works",
@@ -157,7 +164,8 @@
     },
     "longitude": 76.3218,
     "latitude": 32.2168,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "norbulingka_institute",
@@ -177,7 +185,8 @@
     },
     "longitude": 76.329,
     "latitude": 32.191,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Low"
   },
   {
     "id": "bhagsunath",
@@ -197,7 +206,8 @@
     },
     "longitude": 76.333,
     "latitude": 32.246,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "st_john_wilderness",
@@ -217,7 +227,8 @@
     },
     "longitude": 76.315,
     "latitude": 32.23,
-    "religion": "Christianity"
+    "religion": "Christianity",
+    "vulnerability": "Moderate"
   },
   {
     "id": "dal_mata_temple",
@@ -237,7 +248,8 @@
     },
     "longitude": 76.312,
     "latitude": 32.222,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Low"
   },
   {
     "id": "kunal_pathri",
@@ -257,7 +269,8 @@
     },
     "longitude": 76.316,
     "latitude": 32.207,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "High"
   },
   {
     "id": "indru_nag",
@@ -277,7 +290,8 @@
     },
     "longitude": 76.328,
     "latitude": 32.207,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "masroor",
@@ -297,7 +311,8 @@
     },
     "longitude": 76.136,
     "latitude": 32.073,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "High"
   },
   {
     "id": "jwalamukhi",
@@ -317,7 +332,8 @@
     },
     "longitude": 76.326,
     "latitude": 31.878,
-    "religion": "Unknown"
+    "religion": "Unknown",
+    "vulnerability": "Moderate"
   },
   {
     "id": "brajeshwari_devi",
@@ -337,7 +353,8 @@
     },
     "longitude": 76.271,
     "latitude": 32.099,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Low"
   },
   {
     "id": "aghanjar_mahadev",
@@ -357,7 +374,8 @@
     },
     "longitude": 76.393,
     "latitude": 32.258,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "High"
   },
   {
     "id": "gupteshwar_mahadev",
@@ -377,7 +395,8 @@
     },
     "longitude": 76.393,
     "latitude": 32.258,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "High"
   },
   {
     "id": "akhanda_dhuna",
@@ -397,7 +416,8 @@
     },
     "longitude": 76.393,
     "latitude": 32.258,
-    "religion": "Unknown"
+    "religion": "Unknown",
+    "vulnerability": "Low"
   },
   {
     "id": "baba_bharti_samadhi",
@@ -417,7 +437,8 @@
     },
     "longitude": 76.393,
     "latitude": 32.258,
-    "religion": "Unknown"
+    "religion": "Unknown",
+    "vulnerability": "High"
   },
   {
     "id": "chamunda_devi",
@@ -437,7 +458,8 @@
     },
     "longitude": 76.402,
     "latitude": 32.146,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "nandikeshwar_mahadev",
@@ -457,7 +479,8 @@
     },
     "longitude": 76.402,
     "latitude": 32.146,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "High"
   },
   {
     "id": "jakhni_mata",
@@ -477,7 +500,8 @@
     },
     "longitude": 76.5,
     "latitude": 32.14,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "baijnath",
@@ -497,7 +521,8 @@
     },
     "longitude": 76.645,
     "latitude": 32.051,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Low"
   },
   {
     "id": "tashijong",
@@ -517,7 +542,8 @@
     },
     "longitude": 76.6,
     "latitude": 32.03,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "palpung_sherabling",
@@ -537,7 +563,8 @@
     },
     "longitude": 76.652,
     "latitude": 32.028,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Low"
   },
   {
     "id": "bundla_shiva_temple",
@@ -557,7 +584,8 @@
     },
     "longitude": 76.56,
     "latitude": 32.108,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "sherabling_nunnery",
@@ -577,7 +605,8 @@
     },
     "longitude": 76.655,
     "latitude": 32.026,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "chokling_monastery",
@@ -597,7 +626,8 @@
     },
     "longitude": 76.719,
     "latitude": 32.044,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Low"
   },
   {
     "id": "sakya_dirru",
@@ -617,7 +647,8 @@
     },
     "longitude": 76.722,
     "latitude": 32.041,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Low"
   },
   {
     "id": "dzongsar_college",
@@ -637,7 +668,8 @@
     },
     "longitude": 76.75,
     "latitude": 32.06,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Low"
   },
   {
     "id": "deer_park_institute",
@@ -657,7 +689,8 @@
     },
     "longitude": 76.718,
     "latitude": 32.043,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "High"
   },
   {
     "id": "tsering_jong",
@@ -677,7 +710,8 @@
     },
     "longitude": 76.715,
     "latitude": 32.048,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "High"
   },
   {
     "id": "nyingyang_monastery",
@@ -697,7 +731,8 @@
     },
     "longitude": 76.716,
     "latitude": 32.045,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Low"
   },
   {
     "id": "drukpa_kagyu_bir",
@@ -717,7 +752,8 @@
     },
     "longitude": 76.72,
     "latitude": 32.042,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "High"
   },
   {
     "id": "palyul_monastery",
@@ -737,7 +773,8 @@
     },
     "longitude": 76.717,
     "latitude": 32.043,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "men_tsee_khang_bir",
@@ -757,7 +794,8 @@
     },
     "longitude": 76.718,
     "latitude": 32.044,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "dharmalaya_institute",
@@ -777,7 +815,8 @@
     },
     "longitude": 76.7,
     "latitude": 32.03,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "bir_colony_stupa",
@@ -797,7 +836,8 @@
     },
     "longitude": 76.719,
     "latitude": 32.044,
-    "religion": "Buddhism"
+    "religion": "Buddhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "rewalsar_lake_temples",
@@ -817,7 +857,8 @@
     },
     "longitude": 76.8384,
     "latitude": 31.6394,
-    "religion": "Buddhism / Hinduism / Sikhism"
+    "religion": "Buddhism / Hinduism / Sikhism",
+    "vulnerability": "Moderate"
   },
   {
     "id": "padmasambhava_rewalsar",
@@ -837,7 +878,8 @@
     },
     "longitude": 76.839,
     "latitude": 31.6398,
-    "religion": "Buddhism / Hinduism / Sikhism"
+    "religion": "Buddhism / Hinduism / Sikhism",
+    "vulnerability": "High"
   },
   {
     "id": "kangra_fort",
@@ -857,7 +899,8 @@
     },
     "longitude": 76.257,
     "latitude": 32.083,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Low"
   },
   {
     "id": "chintpurni",
@@ -877,7 +920,8 @@
     },
     "longitude": 76.1667,
     "latitude": 31.7833,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "Low"
   },
   {
     "id": "naina_devi",
@@ -897,7 +941,8 @@
     },
     "longitude": 76.5667,
     "latitude": 31.3667,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "High"
   },
   {
     "id": "andretta_shrine",
@@ -917,7 +962,8 @@
     },
     "longitude": 76.567,
     "latitude": 32.117,
-    "religion": "Unknown"
+    "religion": "Unknown",
+    "vulnerability": "High"
   },
   {
     "id": "nurpur_krishna_temple",
@@ -937,7 +983,8 @@
     },
     "longitude": 75.8991,
     "latitude": 32.2988,
-    "religion": "Unknown"
+    "religion": "Unknown",
+    "vulnerability": "Moderate"
   },
   {
     "id": "baba_baroh_shrines",
@@ -957,7 +1004,8 @@
     },
     "longitude": 76.2,
     "latitude": 32.15,
-    "religion": "Unknown"
+    "religion": "Unknown",
+    "vulnerability": "Low"
   },
   {
     "id": "guler_radha_krishna",
@@ -977,7 +1025,8 @@
     },
     "longitude": 76.467,
     "latitude": 32.033,
-    "religion": "Unknown"
+    "religion": "Unknown",
+    "vulnerability": "Moderate"
   },
   {
     "id": "trilokpur_temples",
@@ -997,7 +1046,8 @@
     },
     "longitude": 77.4,
     "latitude": 30.5,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "High"
   },
   {
     "id": "chamba_devi_wayside",
@@ -1017,6 +1067,94 @@
     },
     "longitude": 76.565,
     "latitude": 32.115,
-    "religion": "Hinduism"
+    "religion": "Hinduism",
+    "vulnerability": "High"
+  },
+
+
+
+  {
+    "id": "rewalsar_lake",
+    "name": "Rewalsar Lake (Tso Pema)",
+    "type": "lake",
+    "long_description": "Rewalsar Lake, known to Tibetan Buddhists as Tso Pema ('Lotus Lake'), is a small, square mid-altitude lake about 22.5 km southwest of Mandi town, revered simultaneously by Hindus, Sikhs and Buddhists. Buddhists associate it with the tantric master Padmasambhava and his consort Mandarava, whose miraculous escape from a funeral pyre is said to have formed the lake; a 37.5 m colossus of Padmasambhava, three monasteries, and floating reed islands ring its shore. Hindus revere three temples here dedicated to Krishna, Shiva and the sage Lomasha, while Sikhs honour a gurdwara built in 1930 to commemorate a month-long stay by Guru Gobind Singh, the tenth Sikh Guru, in 1701. The lake's fish are traditionally never caught, and its 'floating islands' of reed are said to hold the spirit of Padmasambhava.",
+    "elevation_m": 1360,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Rewalsar+Lake+Tso+Pema+Mandi",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.8167,
+        31.625
+      ]
+    },
+    "longitude": 76.8167,
+    "latitude": 31.625,
+    "religion": "Hinduism, Buddhism, Sikhism",
+    "vulnerability": "Moderate"
+  },
+  {
+    "id": "prashar_lake",
+    "name": "Prashar Lake",
+    "type": "lake",
+    "long_description": "Prashar Lake is a small, high-altitude freshwater lake about 49 km north of Mandi town, cradled in a saucer-shaped valley with sweeping views of the Dhauladhar range. A three-storeyed pagoda-style wooden temple dedicated to the sage Parashara stands on its bank, built in the 13th-14th century by Raja Ban Sen of Mandi from a single deodar tree; local legend also credits the lake's creation to Bhima of the Pandavas, who struck the mountainside with his elbow. A small floating island of vegetation drifts across the surface, and the lake's true depth has never been established. It is the site of the annual Saranauhali fair each June and serves as a trailhead for several treks in the surrounding meadows and forest.",
+    "elevation_m": 2730,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Prashar+Lake+Mandi+temple",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        77.1014,
+        31.7543
+      ]
+    },
+    "longitude": 77.1014,
+    "latitude": 31.7543,
+    "religion": "Hinduism",
+    "vulnerability": "Moderate"
+  },
+  {
+    "id": "khajjiar_lake",
+    "name": "Khajjiar Lake",
+    "type": "lake",
+    "long_description": "Khajjiar Lake sits at the centre of a saucer-shaped alpine meadow between Dalhousie and Chamba town, ringed by dense deodar forest, and gives the surrounding hill station its nickname, 'Mini Switzerland of India'. The lake takes its name from Khajji Nag, the serpent deity honoured in the adjoining 12th-century Khajji Nag Temple, whose golden dome blends Hindu and Mughal architectural styles and whose carved mandapa depicts scenes from the Mahabharata. Once a larger body of water, the lake has shrunk markedly over recent decades due to siltation and the spread of spongy marsh vegetation, and conservationists now regard it as nearly vanished in its original form even as the meadow around it remains a major tourist draw for paragliding, zorbing and photography.",
+    "elevation_m": 1920,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Khajjiar+Lake+Chamba+mini+switzerland",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.0581,
+        32.5461
+      ]
+    },
+    "longitude": 76.0581,
+    "latitude": 32.5461,
+    "religion": "Hinduism",
+    "vulnerability": "High"
+  },
+  {
+    "id": "manimahesh_lake",
+    "name": "Manimahesh Lake (Manimahesh Dal)",
+    "type": "lake",
+    "long_description": "Manimahesh Lake is a high-altitude glacial lake at the foot of Manimahesh Kailash Peak in the Bharmour subdivision of Chamba district, considered second in sanctity only to Lake Manasarovar in Tibet and revered as an abode of Lord Shiva. The lake is divided into 'Shiv Karotri', where male pilgrims bathe, and the smaller, warmer 'Gauri Kund', reserved for women in honour of Parvati; a marble image of Shiva known as Chaumukha stands on its bank. Each year in the Hindu month of Bhadon (August-September), several hundred thousand pilgrims, especially from the Gaddi shepherd community, undertake the state-sponsored Manimahesh Yatra, trekking 13 km from Hadsar village to bathe in and circumambulate the lake. The route and high-altitude ecosystem are fragile, and the yatra has occasionally been disrupted by severe weather, landslides, and glacial retreat in the surrounding peaks.",
+    "elevation_m": 4080,
+    "image_url": null,
+    "image_source": "No verified Wikimedia Commons image identified; please verify before publishing.",
+    "video_url": "https://www.youtube.com/results?search_query=Manimahesh+Lake+Yatra+Chamba",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        76.6367,
+        32.3953
+      ]
+    },
+    "longitude": 76.6367,
+    "latitude": 32.3953,
+    "religion": "Hinduism",
+    "vulnerability": "High"
   }
 ]

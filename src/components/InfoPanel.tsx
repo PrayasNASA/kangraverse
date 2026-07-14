@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Mountain, ExternalLink, PlaySquare, Heart, ChevronLeft, ChevronRight, Check, Play, Pause, Download } from 'lucide-react';
+import { X, MapPin, Mountain, ExternalLink, PlaySquare, Heart, ChevronLeft, ChevronRight, Check, Play, Pause, Download, ShieldAlert, Camera } from 'lucide-react';
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
 import heritageDataRaw from '@/data/heritage.json';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
@@ -108,6 +108,15 @@ export default function InfoPanel() {
                   <span className="px-2.5 py-1 rounded-full bg-indigo-500/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-wider text-white">
                     {selectedFeature.type || ('coordinates' in selectedFeature ? 'Trek' : 'Location')}
                   </span>
+                  {'vulnerability' in selectedFeature && selectedFeature.vulnerability && (
+                    <span className={`px-2.5 py-1 rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-wider text-white flex items-center gap-1 ${
+                      selectedFeature.vulnerability === 'High' ? 'bg-rose-500/80' : 
+                      selectedFeature.vulnerability === 'Moderate' ? 'bg-amber-500/80' : 'bg-emerald-500/80'
+                    }`}>
+                      <ShieldAlert className="w-3 h-3" />
+                      {selectedFeature.vulnerability} Risk
+                    </span>
+                  )}
                 </div>
                 <h2 className="text-xl font-bold leading-tight drop-shadow-md">
                   {selectedFeature.name}
@@ -243,10 +252,15 @@ export default function InfoPanel() {
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-2">
-                <button className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-indigo-500/25">
+                <a 
+                  href={`https://www.google.com/maps/search/?api=1&query=${'coordinates' in selectedFeature ? selectedFeature.coordinates[0][1] : selectedFeature.latitude},${'coordinates' in selectedFeature ? selectedFeature.coordinates[0][0] : selectedFeature.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-indigo-500/25"
+                >
                   <MapPin className="w-4 h-4" />
                   Navigate in Google Maps
-                </button>
+                </a>
                 
                 {selectedFeature.video_url && (
                   <a 
@@ -260,10 +274,15 @@ export default function InfoPanel() {
                   </a>
                 )}
                 
-                <button className="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors">
+                <a 
+                  href={`https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(selectedFeature.name)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors"
+                >
                   <ExternalLink className="w-4 h-4" />
                   More Details
-                </button>
+                </a>
               </div>
               
               {selectedFeature.image_source && (

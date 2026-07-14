@@ -19,7 +19,8 @@ export default function CesiumMap() {
   const { 
     showTerrain,
     showSatellite,
-    showMarkers, 
+    showMarkers,
+    showVulnerability,
     setSelectedFeature, 
     flyToLocation, 
     setFlyToLocation,
@@ -208,9 +209,19 @@ export default function CesiumMap() {
     }
   };
 
-  const getFeatureColor = (type: string, isSelected: boolean) => {
+  const getFeatureColor = (feature: HeritageFeature, isSelected: boolean) => {
     if (isSelected) return Color.CYAN;
-    switch(type.toLowerCase()) {
+    
+    if (showVulnerability && feature.vulnerability) {
+      switch(feature.vulnerability) {
+        case 'High': return Color.CRIMSON;
+        case 'Moderate': return Color.GOLD;
+        case 'Low': return Color.LIMEGREEN;
+        default: return Color.WHITE;
+      }
+    }
+
+    switch(feature.type.toLowerCase()) {
       case 'temple': return Color.RED;
       case 'fort': return Color.SLATEGRAY;
       case 'monastery': return Color.ORANGE;
@@ -305,7 +316,7 @@ export default function CesiumMap() {
             properties={feature}
           >
             <BillboardGraphics
-              image={pinBuilder.fromColor(getFeatureColor(feature.type, isSelected), isSelected ? 56 : 48).toDataURL()}
+              image={pinBuilder.fromColor(getFeatureColor(feature, isSelected), isSelected ? 56 : 48).toDataURL()}
               verticalOrigin={VerticalOrigin.BOTTOM}
               heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
               disableDepthTestDistance={Number.POSITIVE_INFINITY}

@@ -1,12 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layers, Mountain, Map as MapIcon, Navigation, Image as ImageIcon, Clock, ChevronDown, Footprints } from 'lucide-react';
+import { Layers, Mountain, Map as MapIcon, Navigation, Image as ImageIcon, Clock, ChevronDown, Footprints, ShieldAlert } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import { twMerge } from 'tailwind-merge';
 
 export default function LayerControl() {
-  const { showTerrain, setShowTerrain, showSatellite, setShowSatellite, showMarkers, setShowMarkers, timeOfDay, setTimeOfDay, showTreks, setShowTreks } = useStore();
+  const { showTerrain, setShowTerrain, showSatellite, setShowSatellite, showMarkers, setShowMarkers, showVulnerability, setShowVulnerability, timeOfDay, setTimeOfDay, showTreks, setShowTreks } = useStore();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
@@ -102,6 +102,26 @@ export default function LayerControl() {
               <span className={twMerge(
                 "w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform duration-200 ease-in-out absolute left-0.5",
                 showMarkers ? "translate-x-5" : "translate-x-0"
+              )} />
+            </button>
+          </div>
+
+          {/* Vulnerability Toggle */}
+          <div 
+            className="flex items-center justify-between cursor-pointer px-1 py-1"
+            onClick={() => setShowVulnerability(!showVulnerability)}
+          >
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 text-rose-500" />
+              Vulnerability Assessment
+            </span>
+            <button className={twMerge(
+              "w-10 h-5 rounded-full transition-colors relative flex items-center shadow-inner",
+              showVulnerability ? "bg-rose-500" : "bg-slate-300 dark:bg-slate-600"
+            )}>
+              <span className={twMerge(
+                "w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform duration-200 ease-in-out absolute left-0.5",
+                showVulnerability ? "translate-x-5" : "translate-x-0"
               )} />
             </button>
           </div>

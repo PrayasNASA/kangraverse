@@ -20,6 +20,7 @@ export interface HeritageFeature {
   deity?: string;
   village?: string;
   district?: string;
+  vulnerability?: 'High' | 'Moderate' | 'Low';
 }
 
 export interface Tour {
@@ -53,6 +54,8 @@ interface AppState {
   setShowTreks: (show: boolean) => void;
   showMarkers: boolean;
   setShowMarkers: (show: boolean) => void;
+  showVulnerability: boolean;
+  setShowVulnerability: (show: boolean) => void;
   timeOfDay: number;
   setTimeOfDay: (time: number) => void;
   
@@ -101,6 +104,8 @@ export const useStore = create<AppState>()(
       setShowTreks: (show) => set({ showTreks: show }),
       showMarkers: true,
       setShowMarkers: (show) => set({ showMarkers: show }),
+      showVulnerability: false,
+      setShowVulnerability: (show) => set({ showVulnerability: show }),
       timeOfDay: 12,
       setTimeOfDay: (time) => set({ timeOfDay: time }),
 
