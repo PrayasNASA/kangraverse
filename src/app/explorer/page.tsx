@@ -11,7 +11,7 @@ const CesiumMap = dynamic(() => import('@/components/CesiumMap'), {
 
 export default function MapPage() {
   return (
-    <main className="relative w-screen h-screen m-0 p-0 overflow-hidden bg-slate-900">
+    <main className="relative w-screen h-[100dvh] m-0 p-0 overflow-hidden bg-slate-900">
       <CesiumMap />
       <Sidebar />
       <InfoPanel />

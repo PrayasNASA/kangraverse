@@ -61,6 +61,8 @@ interface AppState {
   setSelectedFeature: (feature: HeritageFeature | Trek | null) => void;
   activeLocationId: string | null;
   setActiveLocationId: (id: string | null) => void;
+  hoveredFeatureId: string | null;
+  setHoveredFeatureId: (id: string | null) => void;
   flyToLocation: { lng: number; lat: number; altitude: number; pitch: number; duration?: number } | null;
   setFlyToLocation: (loc: { lng: number; lat: number; altitude: number; pitch: number; duration?: number } | null) => void;
 
@@ -106,6 +108,8 @@ export const useStore = create<AppState>()(
       setSelectedFeature: (feature) => set({ selectedFeature: feature }),
       activeLocationId: null,
       setActiveLocationId: (id) => set({ activeLocationId: id }),
+      hoveredFeatureId: null,
+      setHoveredFeatureId: (id) => set({ hoveredFeatureId: id }),
       flyToLocation: null,
       setFlyToLocation: (loc) => set({ flyToLocation: loc }),
 

@@ -323,7 +323,7 @@ export default function Sidebar() {
 
         {/* Desktop Results List */}
         {isMounted && !isMobile && (
-          <div className="flex-1 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col pointer-events-auto max-h-[calc(100vh-250px)]">
+          <div className="flex-1 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col pointer-events-auto max-h-[calc(100dvh-250px)]">
             {renderResultsList()}
           </div>
         )}
@@ -334,7 +334,7 @@ export default function Sidebar() {
         {isMounted && isMobile && (
           <motion.div
             initial={{ y: '100%' }}
-            animate={{ y: sheetExpanded ? '10vh' : '78vh' }}
+            animate={{ y: sheetExpanded ? '10dvh' : '78dvh' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
@@ -343,7 +343,7 @@ export default function Sidebar() {
               if (info.offset.y < -50 || info.velocity.y < -500) setSheetExpanded(true);
               if (info.offset.y > 50 || info.velocity.y > 500) setSheetExpanded(false);
             }}
-            className="fixed top-0 left-0 right-0 bottom-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-white/40 dark:border-slate-800/60 rounded-t-3xl shadow-[0_-8px_32px_rgba(0,0,0,0.15)] flex flex-col pointer-events-auto touch-none"
+            className="fixed top-0 left-0 right-0 bottom-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-white/40 dark:border-slate-800/60 rounded-t-3xl shadow-[0_-8px_32px_rgba(0,0,0,0.15)] flex flex-col pointer-events-auto"
           >
             {/* Drag Handle */}
             <div 

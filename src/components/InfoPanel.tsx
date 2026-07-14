@@ -69,7 +69,7 @@ export default function InfoPanel() {
           animate={isMobile ? { y: 0, opacity: 1 } : { x: 0, opacity: 1 }}
           exit={isMobile ? { y: '100%', opacity: 0 } : { x: 400, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="absolute bottom-0 left-0 right-0 md:top-4 md:right-4 md:bottom-auto md:left-auto z-50 md:z-20 w-full md:w-96 max-h-[85vh] md:max-h-[calc(100vh-2rem)] flex flex-col pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 md:top-4 md:right-4 md:bottom-auto md:left-auto z-50 md:z-20 w-full md:w-96 max-h-[85dvh] md:max-h-[calc(100dvh-2rem)] flex flex-col pointer-events-none"
         >
           <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t md:border border-white/40 dark:border-slate-800/60 rounded-t-3xl md:rounded-2xl shadow-[0_-16px_40px_rgba(0,0,0,0.2)] md:shadow-[0_16px_40px_rgba(0,0,0,0.2)] overflow-hidden pointer-events-auto flex flex-col max-h-full">
 

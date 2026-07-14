@@ -10,7 +10,7 @@ export default function LayerControl() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="absolute bottom-[24vh] right-2 md:bottom-6 md:right-6 z-20 flex flex-col items-end gap-2 pointer-events-none">
+    <div className="absolute bottom-[24dvh] right-2 md:bottom-6 md:right-6 z-20 flex flex-col items-end gap-2 pointer-events-none">
       <AnimatePresence mode="wait">
         {!isCollapsed ? (
           <motion.div
