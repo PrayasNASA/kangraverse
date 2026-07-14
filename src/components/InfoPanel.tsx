@@ -253,7 +253,7 @@ export default function InfoPanel() {
               {/* Action Buttons */}
               <div className="flex flex-col gap-2">
                 <a 
-                  href={`https://www.google.com/maps/search/?api=1&query=${'coordinates' in selectedFeature ? selectedFeature.coordinates[0][1] : selectedFeature.latitude},${'coordinates' in selectedFeature ? selectedFeature.coordinates[0][0] : selectedFeature.longitude}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedFeature.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-indigo-500/25"
