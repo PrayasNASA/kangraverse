@@ -105,14 +105,14 @@ export default function Sidebar() {
   };
 
   const renderResultsList = () => (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       {activeTab === 'places' ? (
         filteredData.length > 0 ? (
           filteredData.map((feature, idx) => (
             <button
               key={feature.id}
               onClick={() => handleSelectFeature(feature)}
-              className="w-full text-left p-4 rounded-[24px] glass-card group flex gap-4 items-center focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50"
+              className="w-full text-left p-4 rounded-[24px] glass-card group flex gap-4 items-start focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 hover:shadow-[0_12px_32px_rgba(108,99,255,0.15)]"
               aria-label={`Select ${feature.name}`}
             >
               <div className="w-[88px] h-[88px] rounded-[20px] overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 shadow-inner relative">
@@ -122,21 +122,21 @@ export default function Sidebar() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                 />
               </div>
-              <div className="flex-1 min-w-0 flex flex-col justify-center h-full py-0.5">
+              <div className="flex-1 min-w-0 flex flex-col justify-start py-0.5">
                 <h4 className="font-[800] text-slate-800 dark:text-slate-100 text-[17px] leading-snug group-hover:text-[var(--primary)] transition-colors truncate">
                   {feature.name}
                 </h4>
-                <div className="flex items-center text-[13px] text-slate-500 dark:text-slate-400 mt-1 mb-2 truncate font-medium">
+                <div className="flex items-center text-[13px] text-slate-500 dark:text-slate-400 mt-1 mb-3 truncate font-medium">
                   <span className="capitalize">{feature.type || 'Location'}</span>
                   <span className="mx-2 opacity-50">•</span>
                   <span>{feature.district || 'Kangra'}</span>
                 </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-center gap-1.5 bg-amber-400/10 px-3 py-1.5 rounded-full border border-amber-400/20">
+                <div className="flex items-center gap-3 mt-auto">
+                  <div className="flex items-center gap-1.5 bg-amber-400/10 px-2.5 py-1 rounded-[12px] border border-amber-400/20">
                     <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                     <span className="text-[12px] font-bold text-amber-700 dark:text-amber-400 leading-none mt-px">4.8</span>
                   </div>
-                  <span className="text-[12px] font-bold text-[var(--primary)] bg-[var(--primary)]/10 px-3 py-1.5 rounded-full border border-[var(--primary)]/20 leading-none mt-px">
+                  <span className="text-[12px] font-bold text-[var(--primary)] bg-[var(--primary)]/10 px-2.5 py-1 rounded-[12px] border border-[var(--primary)]/20 leading-none mt-px">
                     {((idx + 1) * 1.2).toFixed(1)} km
                   </span>
                 </div>
@@ -186,7 +186,7 @@ export default function Sidebar() {
   return (
     <>
       {isMounted && !isMobile && (
-        <div className="absolute top-0 bottom-0 left-0 p-6 z-[40] pointer-events-none flex">
+        <div className="absolute top-[140px] bottom-6 left-6 z-[40] pointer-events-none flex">
           <motion.aside
             initial={{ x: -400, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -289,7 +289,7 @@ export default function Sidebar() {
             </nav>
 
             {/* Explore Places - Flex 1, Scrollable */}
-            <main aria-label="Explore Places" className="flex-1 overflow-y-auto custom-scrollbar p-6 flex flex-col gap-8 z-0">
+            <main aria-label="Explore Places" className="flex-1 overflow-y-auto custom-scrollbar p-6 flex flex-col gap-5 z-0">
               {/* Floating Recent Places */}
               {recentFeatures.length > 0 && !searchQuery && (
                 <section aria-label="Recent Highlights" className="flex flex-col gap-5">
@@ -360,7 +360,7 @@ export default function Sidebar() {
 
                 {renderResultsList()}
                 
-                <button className="w-full mt-2 py-4 text-[14px] font-[800] text-[var(--primary)] bg-[var(--primary)]/5 hover:bg-[var(--primary)]/10 dark:text-indigo-400 dark:bg-indigo-900/20 rounded-[18px] transition-colors flex items-center justify-center gap-2 group shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50">
+                <button className="w-full mt-1 py-4 text-[14px] font-[800] text-[var(--primary)] bg-[var(--primary)]/5 hover:bg-[var(--primary)]/10 dark:text-indigo-400 dark:bg-indigo-900/20 rounded-[18px] transition-colors flex items-center justify-center gap-2 group shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 hover:shadow-[0_8px_24px_rgba(108,99,255,0.15)]">
                   View all {activeTab === 'places' ? 'places' : 'routes'} 
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300 ease-out" />
                 </button>

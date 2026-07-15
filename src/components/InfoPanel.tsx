@@ -83,7 +83,7 @@ export default function InfoPanel() {
           animate={isMobile ? { y: 0, opacity: 1 } : { x: 0, opacity: 1, scale: 1 }}
           exit={isMobile ? { y: '100%', opacity: 0 } : { x: 400, opacity: 0, scale: 0.95 }}
           transition={{ type: 'spring', damping: 30, stiffness: 350, mass: 0.8 }}
-          className="absolute bottom-0 right-0 md:top-24 md:right-6 z-[60] w-full md:w-[460px] h-[92dvh] md:h-auto md:max-h-[calc(100dvh-120px)] flex flex-col pointer-events-none"
+          className="absolute bottom-0 right-0 md:top-[148px] md:right-6 z-[60] w-full md:w-[460px] h-[92dvh] md:h-auto md:max-h-[calc(100dvh-172px)] flex flex-col pointer-events-none"
         >
           <div className="relative flex flex-col h-full bg-transparent rounded-t-[32px] md:rounded-[32px] overflow-hidden pointer-events-auto shadow-[0_30px_80px_-20px_rgba(0,0,0,0.4)] border-0 md:border border-white/20 dark:border-white/10">
             
@@ -124,7 +124,7 @@ export default function InfoPanel() {
             <div className="flex-1 overflow-y-auto custom-scrollbar relative bg-white dark:bg-slate-900 pb-[88px] sm:pb-[96px]">
                
                {/* Sticky Parallax Image Background */}
-               <div className="sticky top-0 w-full h-[340px] z-0">
+               <div className="sticky top-0 w-full h-[280px] z-0">
                   <img 
                     src={selectedFeature.image_url || `https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=800&q=80`} 
                     alt={selectedFeature.name} 
@@ -186,7 +186,7 @@ export default function InfoPanel() {
 
                   {/* Sticky Tabs */}
                   <div className="sticky top-[76px] z-40 bg-white/70 dark:bg-slate-900/70 backdrop-blur-[24px] border-b border-black/5 dark:border-white/5 px-4 shadow-sm transition-colors">
-                    <div className="flex overflow-x-auto no-scrollbar gap-2 py-3">
+                    <div className="flex overflow-x-auto no-scrollbar gap-3 py-3">
                       {TABS.map(tab => (
                         <button
                           key={tab}
@@ -211,7 +211,7 @@ export default function InfoPanel() {
                       <motion.div 
                         initial={{ opacity: 0, y: 10 }} 
                         animate={{ opacity: 1, y: 0 }} 
-                        className="space-y-6 pt-2"
+                        className="space-y-6 pt-4"
                       >
                         <p className="text-[15px] text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                           {('long_description' in selectedFeature ? selectedFeature.long_description : selectedFeature.description)}

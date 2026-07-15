@@ -153,7 +153,7 @@ export default function MapDock() {
       </AnimatePresence>
 
       {/* Main Premium Dock */}
-      <div className="backdrop-blur-[24px] bg-white/70 dark:bg-[#1C1C1E]/70 rounded-full border border-white/60 dark:border-white/10 shadow-[0_20px_60px_rgba(15,23,42,0.15)] p-2 flex items-center z-40 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(15,23,42,0.2)]">
+      <div className="backdrop-blur-[24px] bg-white/70 dark:bg-[#1C1C1E]/70 rounded-full border border-white/60 dark:border-white/10 shadow-[0_20px_60px_rgba(15,23,42,0.15)] p-2.5 flex items-center gap-2 z-40 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(15,23,42,0.2)]">
         {dockItems.map((item, index) => {
           const showDivider = [0, 1, 3, 4].includes(index);
           return (
@@ -162,7 +162,7 @@ export default function MapDock() {
                 <button
                   onClick={item.onClick}
                   className={twMerge(
-                    "w-[46px] h-[46px] sm:w-[54px] sm:h-[54px] rounded-full flex items-center justify-center transition-all duration-300 ease-out relative focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50",
+                    "w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] rounded-full flex items-center justify-center transition-all duration-300 ease-out relative focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50",
                     item.active 
                       ? "bg-white/90 dark:bg-white/20 text-[var(--primary)] dark:text-white shadow-sm" 
                       : "text-slate-700 dark:text-slate-200 hover:bg-white/80 dark:hover:bg-white/15 hover:scale-[1.05] active:scale-[0.95]"
@@ -180,7 +180,7 @@ export default function MapDock() {
               
               {/* Divider */}
               {showDivider && (
-                <div className="w-[1px] h-8 bg-black/10 dark:bg-white/10 mx-1 rounded-full"></div>
+                <div className="w-[1px] h-8 bg-black/10 dark:bg-white/10 ml-2 rounded-full"></div>
               )}
             </div>
           );

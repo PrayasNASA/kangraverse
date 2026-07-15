@@ -34,11 +34,14 @@ const getSafeArea = () => {
       maxY: Math.max(MARGIN + 80, window.innerHeight - BUTTON_SIZE - MARGIN - 80)
     };
   } else {
-    // Sidebar: 420, Details Panel: 400, Top Nav: 80, Bottom Dock: 100
-    const minX = 420 + MARGIN;
-    const maxX = Math.max(minX, window.innerWidth - 400 - BUTTON_SIZE - MARGIN);
-    const minY = MARGIN + 80;
-    const maxY = Math.max(minY, window.innerHeight - 100 - BUTTON_SIZE - MARGIN);
+    // Sidebar: 440px + 24px margin = 464px. Add MARGIN for gap.
+    const minX = 464 + MARGIN;
+    // Details: 460px + 24px margin = 484px.
+    const maxX = Math.max(minX, window.innerWidth - 484 - BUTTON_SIZE - MARGIN);
+    // Top Nav safe area: 140px.
+    const minY = 140 + MARGIN;
+    // Bottom Dock: approx 104px footprint.
+    const maxY = Math.max(minY, window.innerHeight - 104 - BUTTON_SIZE - MARGIN);
 
     return { minX, maxX, minY, maxY };
   }
@@ -211,9 +214,9 @@ export default function Chatbot() {
             dragMomentum={false}
             onDragEnd={handleDragEnd}
             style={{ x, y, position: 'fixed', top: 0, left: 0 }}
-            whileHover={{ scale: 1.1, boxShadow: '0px 0px 30px rgba(108, 99, 255, 0.5)' }}
+            whileHover={{ scale: 1.1, boxShadow: '0px 0px 40px rgba(108, 99, 255, 0.6)' }}
             whileTap={{ scale: 0.95 }}
-            whileDrag={{ scale: 0.95, cursor: 'grabbing', boxShadow: '0px 15px 40px rgba(0,0,0,0.3)' }}
+            whileDrag={{ scale: 0.95, cursor: 'grabbing', boxShadow: '0px 20px 50px rgba(0,0,0,0.4)' }}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}

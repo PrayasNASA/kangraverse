@@ -59,7 +59,7 @@ export default function TopNav() {
               ? "h-[80px] bg-white/70 dark:bg-[#1C1C1E]/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 shadow-sm" 
               : "h-[100px] bg-transparent border-b-0 shadow-none"
           )
-        : "h-[76px] rounded-[28px] px-6 w-full shadow-[0_20px_80px_-15px_rgba(0,0,0,0.15)] border border-white/60 dark:border-white/10 backdrop-blur-[32px] bg-white/70 dark:bg-[#1C1C1E]/70"
+        : "h-[76px] rounded-[28px] px-6 w-full shadow-[0_20px_60px_rgba(15,23,42,0.10)] border border-white/60 dark:border-white/10 backdrop-blur-[32px] bg-white/70 dark:bg-[#1C1C1E]/70"
     )}>
       {isHome && !scrolled && (
         <div 
@@ -187,7 +187,7 @@ export default function TopNav() {
 
   if (isExplorer) {
     return (
-      <div className="fixed top-4 left-4 right-4 lg:top-5 lg:left-1/2 lg:-translate-x-1/2 lg:w-[calc(100%-40px)] z-[100] max-w-[1800px] transition-all duration-500 pointer-events-auto">
+      <div className="fixed top-6 left-6 right-6 lg:top-6 lg:left-1/2 lg:-translate-x-1/2 lg:w-[calc(100%-48px)] z-[100] max-w-[1800px] transition-all duration-500 pointer-events-auto">
         {headerContent}
       </div>
     );

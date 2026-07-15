@@ -18,12 +18,12 @@ export default function MapPage() {
       </div>
       
       {/* Absolute Layout Zones (z-40) */}
-      <div className="absolute inset-0 z-40 pointer-events-none p-6 flex flex-col justify-between">
+      <div className="absolute inset-0 z-40 pointer-events-none p-6 pt-[140px] flex flex-col justify-between">
         {/* TOP ZONE (TopNav will handle this via position fixed/absolute, but we can reserve space if needed) */}
         <div id="zone-top" className="w-full shrink-0 flex justify-center"></div>
         
         {/* MIDDLE ZONES (Left Sidebar + Right InfoPanel) */}
-        <div id="zone-middle" className="flex-1 min-h-0 flex justify-between items-stretch pt-24 pb-4">
+        <div id="zone-middle" className="flex-1 min-h-0 flex justify-between items-stretch pb-4">
           <div id="zone-left" className="h-full flex flex-col justify-start">
             <Sidebar />
           </div>
