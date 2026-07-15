@@ -1,17 +1,22 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Mountain, ExternalLink, PlaySquare, Heart, ChevronLeft, ChevronRight, Check, Play, Pause, Download, ShieldAlert, Camera } from 'lucide-react';
+import { 
+  X, MapPin, Mountain, Heart, Share2, Star,
+  Users, ShieldAlert, BookOpen, TrendingUp, Shield, Activity, Bookmark
+} from 'lucide-react';
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
 import heritageDataRaw from '@/data/heritage.json';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { downloadGPX } from '@/utils/gpx';
+import { twMerge } from 'tailwind-merge';
 
 const heritageData = heritageDataRaw as HeritageFeature[];
 
+const TABS = ['About', 'History', 'Architecture', 'Festivals', 'Gallery'];
+
 export default function InfoPanel() {
-  const { selectedFeature, setSelectedFeature, favorites, toggleFavorite, activeTour, setActiveTour, currentTourStep, setCurrentTourStep, setFlyToLocation, isPlayingTour, toggleIsPlayingTour, setIsPlayingTour } = useStore();
+  const { selectedFeature, setSelectedFeature, favorites, toggleFavorite } = useStore();
   const [isMobile, setIsMobile] = useState(false);
+  const [activeTab, setActiveTab] = useState('About');
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -20,45 +25,44 @@ export default function InfoPanel() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const handleTourStep = (direction: 'next' | 'prev') => {
-    if (!activeTour) return;
-    const nextStep = direction === 'next' ? currentTourStep + 1 : currentTourStep - 1;
-    if (nextStep >= 0 && nextStep < activeTour.stops.length) {
-      setCurrentTourStep(nextStep);
-      const nextFeatureId = activeTour.stops[nextStep];
-      const nextFeature = heritageData.find(f => f.id === nextFeatureId);
-      if (nextFeature) {
-        setSelectedFeature(nextFeature);
-        setFlyToLocation({
-          lng: nextFeature.longitude,
-          lat: nextFeature.latitude,
-          altitude: (nextFeature.elevation_m || 1500) + 1200, // Dynamic altitude
-          pitch: -35,
-          duration: 3, // Slightly longer duration for a more cinematic tour feel
-        });
-      }
-    } else if (direction === 'next') {
-      setActiveTour(null);
-    }
-  };
+  const renderResearchInsights = (feature: HeritageFeature) => {
+    const insights = [
+      { id: 'community', label: 'Community Importance', icon: Users, value: 'Very High', color: 'text-indigo-600 dark:text-indigo-400' },
+      { id: 'vulnerability', label: 'Vulnerability Level', icon: ShieldAlert, value: feature.vulnerability || 'Moderate', color: feature.vulnerability === 'High' ? 'text-red-500' : 'text-amber-500' },
+      { id: 'knowledge', label: 'Traditional Knowledge', icon: BookOpen, value: 'High', color: 'text-emerald-600 dark:text-emerald-400' },
+      { id: 'tourism', label: 'Tourism Pressure', icon: TrendingUp, value: 'High', color: 'text-rose-500 dark:text-rose-400' },
+      { id: 'conservation', label: 'Conservation Priority', icon: Shield, value: 'High', color: 'text-purple-600 dark:text-purple-400' },
+      { id: 'cultural', label: 'Cultural Significance', icon: Activity, value: 'Very High', color: 'text-amber-600 dark:text-amber-400' },
+    ];
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isPlayingTour && activeTour) {
-      timer = setTimeout(() => {
-        handleTourStep('next');
-      }, 10000); // 10 seconds per stop
-    }
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPlayingTour, activeTour, currentTourStep]);
-
-  // Pause if the user manually changes the step
-  const handleManualTourStep = (direction: 'next' | 'prev') => {
-    setIsPlayingTour(false);
-    handleTourStep(direction);
+    return (
+      <div className="mt-8">
+        <div className="flex items-center gap-2 mb-4">
+          <h3 className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+            Research Insights
+          </h3>
+          <InfoIcon className="w-3.5 h-3.5 text-slate-400" />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {insights.map((insight) => {
+            const Icon = insight.icon;
+            return (
+              <div key={insight.id} className="bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 p-3 rounded-xl flex flex-col justify-between h-24">
+                <div className="flex justify-between items-start">
+                  <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 leading-tight pr-2">
+                    {insight.label}
+                  </span>
+                  <Icon className={twMerge("w-4 h-4 shrink-0", insight.color)} />
+                </div>
+                <span className={twMerge("text-sm font-bold mt-2", insight.color)}>
+                  {insight.value}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -69,231 +73,197 @@ export default function InfoPanel() {
           animate={isMobile ? { y: 0, opacity: 1 } : { x: 0, opacity: 1 }}
           exit={isMobile ? { y: '100%', opacity: 0 } : { x: 400, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="absolute bottom-0 left-0 right-0 md:top-4 md:right-4 md:bottom-auto md:left-auto z-50 md:z-20 w-full md:w-96 max-h-[85dvh] md:max-h-[calc(100dvh-2rem)] flex flex-col pointer-events-none"
+          className="absolute bottom-0 right-0 md:top-24 md:right-6 md:bottom-auto z-50 md:z-20 w-full md:w-[480px] max-h-[85dvh] md:max-h-[calc(100dvh-120px)] flex flex-col pointer-events-none"
         >
-          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t md:border border-white/40 dark:border-slate-800/60 rounded-t-3xl md:rounded-2xl shadow-[0_-16px_40px_rgba(0,0,0,0.2)] md:shadow-[0_16px_40px_rgba(0,0,0,0.2)] overflow-hidden pointer-events-auto flex flex-col max-h-full">
+          <div className="bg-white dark:bg-slate-900 border-t md:border border-slate-200/50 dark:border-slate-800/50 rounded-t-[32px] md:rounded-3xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col h-full">
 
-            
-            {/* Hero Image Section */}
-            <div className="relative h-48 w-full bg-slate-200 dark:bg-slate-800 shrink-0">
-              {selectedFeature.image_url ? (
-                <img 
-                  src={selectedFeature.image_url} 
-                  alt={selectedFeature.name} 
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-400">
-                  <Mountain className="w-12 h-12 opacity-50" />
-                </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
-              
+            {/* Close Button on Mobile (floating above image) */}
+            {isMobile && (
               <button 
                 onClick={() => setSelectedFeature(null)}
-                className="absolute top-3 right-3 p-1.5 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white rounded-full transition-colors"
+                className="absolute top-4 right-4 z-10 p-2 bg-black/40 backdrop-blur-md text-white rounded-full"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
-
-              <button 
-                onClick={() => toggleFavorite(selectedFeature.id)}
-                className="absolute top-3 right-12 p-1.5 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white rounded-full transition-colors"
-              >
-                <Heart className={favorites.includes(selectedFeature.id) ? "w-4 h-4 text-red-500 fill-current" : "w-4 h-4"} />
-              </button>
-
-              <div className="absolute bottom-3 left-4 right-4 text-white">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="px-2.5 py-1 rounded-full bg-indigo-500/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-wider text-white">
-                    {selectedFeature.type || ('coordinates' in selectedFeature ? 'Trek' : 'Location')}
+            )}
+            
+            {/* Header Image Section */}
+            <div className="relative h-64 w-full bg-slate-200 dark:bg-slate-800 shrink-0">
+              <img 
+                src={selectedFeature.image_url || `https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=800&q=80`} 
+                alt={selectedFeature.name} 
+                className="w-full h-full object-cover"
+              />
+              
+              <div className="absolute top-4 left-4 flex gap-2">
+                <span className="px-3 py-1 rounded-md bg-indigo-600 text-[10px] font-bold uppercase tracking-widest text-white shadow-md">
+                  {selectedFeature.type || 'Location'}
+                </span>
+                {'vulnerability' in selectedFeature && selectedFeature.vulnerability && (
+                  <span className={twMerge(
+                    "px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest text-white flex items-center gap-1 shadow-md",
+                    selectedFeature.vulnerability === 'High' ? 'bg-red-500' : 'bg-amber-500'
+                  )}>
+                    {selectedFeature.vulnerability === 'High' ? <ShieldAlert className="w-3 h-3" /> : null}
+                    {selectedFeature.vulnerability} Risk
                   </span>
-                  {'vulnerability' in selectedFeature && selectedFeature.vulnerability && (
-                    <span className={`px-2.5 py-1 rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-wider text-white flex items-center gap-1 ${
-                      selectedFeature.vulnerability === 'High' ? 'bg-rose-500/80' : 
-                      selectedFeature.vulnerability === 'Moderate' ? 'bg-amber-500/80' : 'bg-emerald-500/80'
-                    }`}>
-                      <ShieldAlert className="w-3 h-3" />
-                      {selectedFeature.vulnerability} Risk
-                    </span>
-                  )}
-                </div>
-                <h2 className="text-xl font-bold leading-tight drop-shadow-md">
-                  {selectedFeature.name}
-                </h2>
+                )}
+              </div>
+
+              {!isMobile && (
+                <button 
+                  onClick={() => setSelectedFeature(null)}
+                  className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/40 backdrop-blur-md text-white rounded-full transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+
+              <div className="absolute bottom-4 right-4 flex gap-2">
+                <button 
+                  onClick={() => toggleFavorite(selectedFeature.id)}
+                  className="w-10 h-10 rounded-xl bg-white/20 hover:bg-white/40 backdrop-blur-md text-white flex items-center justify-center transition-colors shadow-lg"
+                >
+                  <Bookmark className={twMerge("w-5 h-5", favorites.includes(selectedFeature.id) && "fill-current")} />
+                </button>
+                <button 
+                  className="w-10 h-10 rounded-xl bg-white/20 hover:bg-white/40 backdrop-blur-md text-white flex items-center justify-center transition-colors shadow-lg"
+                >
+                  <Share2 className="w-5 h-5" />
+                </button>
               </div>
             </div>
 
             {/* Scrollable Content */}
-            <div className="p-5 overflow-y-auto custom-scrollbar flex-1">
-              <div className="flex items-center gap-4 mb-6 text-sm text-slate-600 dark:text-slate-300">
-                <div className="flex items-center gap-1.5">
-                  <Mountain className="w-4 h-4 text-indigo-500" />
-                  <span className="font-medium">{selectedFeature.elevation_m || 'N/A '}m Elevation</span>
+            <div className="overflow-y-auto custom-scrollbar flex-1 bg-white dark:bg-slate-900 pb-6">
+              
+              <div className="p-6">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white leading-tight mb-3">
+                  {selectedFeature.name}
+                </h2>
+                
+                <div className="flex items-center gap-2 text-sm mb-6 border-b border-slate-100 dark:border-slate-800 pb-6">
+                  <div className="flex text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className={twMerge("w-4 h-4", i < 4 ? "fill-current" : (i === 4 ? "fill-amber-400/50" : ""))} />
+                    ))}
+                  </div>
+                  <span className="font-bold text-slate-800 dark:text-slate-200">4.8</span>
+                  <span className="text-slate-500 dark:text-slate-400">(128 reviews)</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-indigo-500" />
-                  <span className="font-medium">
-                    {('coordinates' in selectedFeature ? selectedFeature.coordinates[0][1] : selectedFeature.latitude).toFixed(4)}, {('coordinates' in selectedFeature ? selectedFeature.coordinates[0][0] : selectedFeature.longitude).toFixed(4)}
-                  </span>
-                </div>
-              </div>
 
-              <div className="prose prose-sm dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
-                <p>{'long_description' in selectedFeature ? selectedFeature.long_description : selectedFeature.description}</p>
-              </div>
-
-              {/* Data fields matching the requirements conditionally */}
-              {!('coordinates' in selectedFeature) ? (
-                <div className="grid grid-cols-2 gap-3 mb-6 border-t border-slate-200 dark:border-slate-800 pt-5">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Religion</span>
-                    <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                      {selectedFeature.religion || 'Not available'}
-                    </span>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                      <Mountain className="w-4 h-4" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Elevation</span>
+                      <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{selectedFeature.elevation_m || '1000'} m</span>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Deity</span>
-                    <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                      {selectedFeature.deity || 'Not available'}
-                    </span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Latitude</span>
+                      <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{('coordinates' in selectedFeature ? selectedFeature.coordinates[0][1] : selectedFeature.latitude).toFixed(4)}° N</span>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Village</span>
-                    <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                      {selectedFeature.village || 'Not available'}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">District</span>
-                    <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                      {selectedFeature.district || 'Kangra'}
-                    </span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Longitude</span>
+                      <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{('coordinates' in selectedFeature ? selectedFeature.coordinates[0][0] : selectedFeature.longitude).toFixed(4)}° E</span>
+                    </div>
                   </div>
                 </div>
-              ) : (
-                <div className="mb-6 border-t border-slate-200 dark:border-slate-800 pt-5">
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Elevation Profile</h3>
-                  <div className="h-32 w-full mb-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2 border border-slate-100 dark:border-slate-800">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={selectedFeature.coordinates.map((c, i) => ({ dist: i, alt: c[2] || 2000 }))} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
-                        <defs>
-                          <linearGradient id="colorAlt" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor={selectedFeature.color || "#4f46e5"} stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor={selectedFeature.color || "#4f46e5"} stopOpacity={0}/>
-                          </linearGradient>
-                        </defs>
-                        <XAxis dataKey="dist" hide />
-                        <YAxis tick={{ fontSize: 10, fill: '#888' }} axisLine={false} tickLine={false} domain={['dataMin - 100', 'dataMax + 100']} />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', fontSize: '12px', color: '#fff' }}
-                          labelFormatter={() => ''}
-                          formatter={(value) => [`${value}m`, 'Altitude']}
-                        />
-                        <Area type="monotone" dataKey="alt" stroke={selectedFeature.color || "#4f46e5"} strokeWidth={2} fillOpacity={1} fill="url(#colorAlt)" />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => downloadGPX(selectedFeature.name, selectedFeature.coordinates)}
-                      className="flex-1 py-2 px-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wide rounded-xl flex items-center justify-center gap-1.5 transition-colors"
-                    >
-                      <Download className="w-3.5 h-3.5" /> GPX
-                    </button>
-                    <button 
-                      onClick={() => toggleIsPlayingTour()}
-                      className={`flex-1 py-2 px-3 text-xs font-bold uppercase tracking-wide rounded-xl flex items-center justify-center gap-1.5 transition-colors ${isPlayingTour ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' : 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400'}`}
-                    >
-                      {isPlayingTour ? <><Pause className="w-3.5 h-3.5" /> Pause</> : <><Play className="w-3.5 h-3.5" /> Play Tour</>}
-                    </button>
-                  </div>
-                </div>
-              )}
 
-              {/* Tour Navigation */}
-              {activeTour && (
-                <div className="mb-6 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800/50">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider line-clamp-1 mr-2">
-                      Tour: {activeTour.name}
-                    </span>
-                    <span className="text-xs text-indigo-500 font-mono font-medium shrink-0">
-                      {currentTourStep + 1} / {activeTour.stops.length}
-                    </span>
-                  </div>
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => handleManualTourStep('prev')}
-                      disabled={currentTourStep === 0}
-                      className="flex-1 py-2 bg-white dark:bg-slate-800 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
-                    >
-                      <ChevronLeft className="w-3.5 h-3.5" /> Prev
-                    </button>
+                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-1">
+                  {('long_description' in selectedFeature ? selectedFeature.long_description : selectedFeature.description)?.substring(0, 150)}...
+                </p>
+                <button className="text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 flex items-center mb-8">
+                  Read more <span className="ml-1">→</span>
+                </button>
+
+                {/* Tabs */}
+                <div className="flex border-b border-slate-200 dark:border-slate-800 mb-6 overflow-x-auto no-scrollbar">
+                  {TABS.map((tab) => (
                     <button
-                      onClick={toggleIsPlayingTour}
-                      className={`flex-1 py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 shadow-sm transition-colors ${isPlayingTour ? 'bg-amber-500 hover:bg-amber-600 text-white' : 'bg-emerald-500 hover:bg-emerald-600 text-white'}`}
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={twMerge(
+                        "px-4 py-3 text-sm font-semibold whitespace-nowrap transition-colors relative",
+                        activeTab === tab 
+                          ? "text-indigo-600 dark:text-indigo-400" 
+                          : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                      )}
                     >
-                      {isPlayingTour ? <><Pause className="w-3.5 h-3.5" /> Pause</> : <><Play className="w-3.5 h-3.5" /> Auto</>}
-                    </button>
-                    <button 
-                      onClick={() => handleManualTourStep('next')}
-                      className="flex-1 py-2 bg-indigo-600 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1 shadow-sm transition-colors hover:bg-indigo-700"
-                    >
-                      {currentTourStep === activeTour.stops.length - 1 ? (
-                        <>Finish <Check className="w-3.5 h-3.5" /></>
-                      ) : (
-                        <>Next <ChevronRight className="w-3.5 h-3.5" /></>
+                      {tab}
+                      {activeTab === tab && (
+                        <motion.div 
+                          layoutId="activeTabIndicator"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 dark:bg-indigo-400"
+                        />
                       )}
                     </button>
-                  </div>
+                  ))}
                 </div>
-              )}
 
-              {/* Action Buttons */}
-              <div className="flex flex-col gap-2">
-                <a 
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedFeature.name)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-indigo-500/25"
-                >
-                  <MapPin className="w-4 h-4" />
-                  Navigate in Google Maps
-                </a>
-                
-                {selectedFeature.video_url && (
-                  <a 
-                    href={selectedFeature.video_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 px-4 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors"
-                  >
-                    <PlaySquare className="w-4 h-4" />
-                    Watch Video
-                  </a>
+                {/* Tab Content Placeholder */}
+                {activeTab === 'About' && (
+                  <div className="space-y-4">
+                    {!('coordinates' in selectedFeature) && (
+                      <div className="grid grid-cols-2 gap-y-4 gap-x-2">
+                        <div>
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Religion</span>
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{selectedFeature.religion || 'Not specified'}</span>
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Deity</span>
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{selectedFeature.deity || 'Not specified'}</span>
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Village</span>
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{selectedFeature.village || 'Not specified'}</span>
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">District</span>
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{selectedFeature.district || 'Kangra'}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
                 
-                <a 
-                  href={`https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(selectedFeature.name)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  More Details
-                </a>
+                {renderResearchInsights(selectedFeature as HeritageFeature)}
               </div>
-              
-              {selectedFeature.image_source && (
-                 <div className="mt-6 text-[10px] text-slate-400 text-center">
-                    Image: {selectedFeature.image_source}
-                 </div>
-              )}
+
+              {/* Footer */}
+              <div className="p-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50 mt-4">
+                <span className="text-xs text-slate-500 font-medium">Data Source: Field Survey 2025</span>
+                <button className="text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 hover:text-indigo-700">
+                  View Details <span className="ml-0.5">→</span>
+                </button>
+              </div>
+
             </div>
           </div>
         </motion.div>
       )}
     </AnimatePresence>
+  );
+}
+
+function InfoIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="16" x2="12" y2="12"/>
+      <line x1="12" y1="8" x2="12.01" y2="8"/>
+    </svg>
   );
 }

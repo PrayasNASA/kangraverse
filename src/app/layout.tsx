@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
 import Chatbot from '@/components/Chatbot';
+import TopNav from '@/components/TopNav';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -11,6 +12,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const cormorant = Cormorant_Garamond({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-cormorant",
 });
 
 export const metadata: Metadata = {
@@ -36,14 +43,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}
     >
       <head>
         <link href="https://unpkg.com/cesium@1.143.0/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
       </head>
       <body className="min-h-full flex flex-col">
         <Script src="https://unpkg.com/cesium@1.143.0/Build/Cesium/Cesium.js" strategy="beforeInteractive" />
-        {children}
+        <TopNav />
+        <main className="flex-1">
+          {children}
+        </main>
         <Chatbot />
       </body>
     </html>

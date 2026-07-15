@@ -1,12 +1,14 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextResponse } from 'next/server';
+import Groq from 'groq-sdk';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY || '',
+});
 
 export async function POST(req: Request) {
-  if (!process.env.GEMINI_API_KEY) {
+  if (!process.env.GROQ_API_KEY) {
     return NextResponse.json(
-      { error: 'Gemini API key is not configured.' },
+      { error: 'Groq API key is not configured.' },
       { status: 500 }
     );
   }
@@ -21,30 +23,23 @@ export async function POST(req: Request) {
       );
     }
 
-    const latestMessage = messages[messages.length - 1].content;
-    
-    // Remove the initial model greeting to ensure history alternates correctly and starts with user
-    let historyMessages = messages.slice(0, -1);
-    if (historyMessages.length > 0 && historyMessages[0].role === 'model' && historyMessages[0].content.includes('Hi there!')) {
-      historyMessages = historyMessages.slice(1);
-    }
-
-    const history = historyMessages.map((msg: any) => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.content }],
+    // Convert messages to standard format
+    const formattedMessages = messages.map((msg: any) => ({
+      role: msg.role === 'model' ? 'assistant' : msg.role,
+      content: msg.content
     }));
 
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-3.5-flash',
-      systemInstruction: 'You are an AI assistant for KangraVerse, a 3D GIS explorer application focused on the Kangra region of Himachal Pradesh. Your goal is to help users understand the region, its temples, monasteries, forts, and trekking routes. Be friendly, concise, and highly informative about the local culture and geography. Always respond using markdown if formatting is needed.'
+    const systemMessage = {
+      role: 'system',
+      content: 'You are an AI assistant for KangraVerse, a 3D GIS explorer application focused on the Kangra region of Himachal Pradesh. Your goal is to help users understand the region, its temples, monasteries, forts, and trekking routes. Be friendly, concise, and highly informative about the local culture and geography. Always respond using markdown if formatting is needed.'
+    };
+
+    const response = await groq.chat.completions.create({
+      model: 'llama-3.1-8b-instant',
+      messages: [systemMessage, ...formattedMessages],
     });
 
-    const chat = model.startChat({
-      history: history,
-    });
-
-    const result = await chat.sendMessage(latestMessage);
-    const text = result.response.text();
+    const text = response.choices[0]?.message?.content || '';
 
     return NextResponse.json({ message: text });
   } catch (error: any) {
