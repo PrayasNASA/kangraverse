@@ -8,6 +8,7 @@ import heritageDataRaw from '@/data/heritage.json';
 import treksDataRaw from '@/data/treks.json';
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
 import { getMarkerSVG } from '@/utils/markers';
+import PlaceImage from '@/components/PlaceImage';
 
 const heritageData = heritageDataRaw as HeritageFeature[];
 const treksData = treksDataRaw as Trek[];
@@ -461,12 +462,22 @@ export default function CesiumMap() {
           style={{ left: hoverPosition.x, top: hoverPosition.y - 48 }}
         >
           <div className="glass-panel p-3 rounded-2xl shadow-2xl flex flex-col items-center w-[220px] border border-white/40 overflow-hidden">
-            {hoveredFeature.image_url && (
+            {hoveredFeature.image_url ? (
               <div className="relative w-full h-28 mb-3 rounded-xl overflow-hidden bg-slate-100">
-                <img 
+                <PlaceImage 
                   src={hoveredFeature.image_url} 
                   alt={hoveredFeature.name} 
-                  className="object-cover w-full h-full" 
+                  type={hoveredFeature.type}
+                  className="w-full h-full object-cover rounded-none"
+                />
+              </div>
+            ) : (
+              <div className="relative w-full h-28 mb-3 rounded-xl overflow-hidden bg-slate-100">
+                 <PlaceImage 
+                  src={null} 
+                  alt={hoveredFeature.name} 
+                  type={hoveredFeature.type}
+                  className="w-full h-full object-cover rounded-none"
                 />
               </div>
             )}

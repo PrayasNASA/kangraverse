@@ -9,6 +9,7 @@ import { useStore, HeritageFeature, Trek } from '@/store/useStore';
 import heritageDataRaw from '@/data/heritage.json';
 import { twMerge } from 'tailwind-merge';
 import { Z_INDEX } from '@/utils/zIndex';
+import PlaceImage from '@/components/PlaceImage';
 
 const heritageData = heritageDataRaw as HeritageFeature[];
 
@@ -127,10 +128,11 @@ export default function InfoPanel() {
                
                {/* Sticky Parallax Image Background */}
                <div className="sticky top-0 w-full h-[280px] z-0">
-                  <img 
-                    src={selectedFeature.image_url || `https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=800&q=80`} 
+                  <PlaceImage 
+                    src={selectedFeature.image_url} 
                     alt={selectedFeature.name} 
-                    className="w-full h-full object-cover"
+                    type={selectedFeature.type}
+                    className="w-full h-full object-cover rounded-none"
                   />
                   {/* Dark gradient for text readability if scrolled down */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />

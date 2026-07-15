@@ -7,6 +7,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { useStore, HeritageFeature, Tour } from '@/store/useStore';
 import { Z_INDEX } from '@/utils/zIndex';
+import PlaceImage from '@/components/PlaceImage';
 import heritageDataRaw from '@/data/heritage.json';
 import toursDataRaw from '@/data/tours.json';
 
@@ -117,9 +118,10 @@ export default function Sidebar() {
               aria-label={`Select ${feature.name}`}
             >
               <div className="w-[88px] h-[88px] rounded-[20px] overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 shadow-inner relative">
-                <img 
-                  src={feature.image_url || `https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=150&h=150&fit=crop`} 
-                  alt="" 
+                <PlaceImage 
+                  src={feature.image_url} 
+                  alt={feature.name} 
+                  type={feature.type}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                 />
               </div>
@@ -325,10 +327,11 @@ export default function Sidebar() {
                               aria-label={`Select recent ${feature.name}`}
                             >
                               <div className="w-[76px] h-[76px] rounded-full overflow-hidden border-2 border-white/60 shadow-md group-hover:shadow-[0_8px_24px_rgba(108,99,255,0.3)] group-hover:border-[var(--primary)] group-focus:ring-2 group-focus:ring-[var(--primary)] group-focus:ring-offset-2 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-105 relative shrink-0">
-                                <img 
-                                  src={feature.image_url || `https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=150&h=150&fit=crop`} 
-                                  alt=""
-                                  className="w-full h-full object-cover"
+                                <PlaceImage 
+                                  src={feature.image_url} 
+                                  alt={feature.name} 
+                                  type="Place"
+                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                                 />
                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
                               </div>
