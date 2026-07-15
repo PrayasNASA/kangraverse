@@ -17,7 +17,8 @@ const NAV_ITEMS = [
 
 export default function TopNav() {
   const pathname = usePathname();
-  const isExplorer = pathname?.includes('/explorer');
+  const isHome = pathname === '/';
+  const isAppRoute = !isHome;
   const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -53,10 +54,8 @@ export default function TopNav() {
     { href: '/stories', label: 'Stories', icon: BookOpen },
     { href: '#', label: 'Research', icon: FlaskConical },
     { href: '#', label: 'Gallery', icon: ImageIcon },
-    ...(!isExplorer ? [{ href: '#', label: 'About Us', icon: Info }] : []),
+    ...(!isAppRoute ? [{ href: '#', label: 'About Us', icon: Info }] : []),
   ];
-
-  const isHome = pathname === '/';
 
   const headerContent = (
     <header 
@@ -106,7 +105,7 @@ export default function TopNav() {
       </Link>
 
       {/* Middle: Conditional based on page */}
-      {isExplorer ? (
+      {isAppRoute ? (
         <div className="hidden lg:block flex-1 max-w-xl mx-8">
           <p className="text-[13px] font-bold text-slate-500 dark:text-slate-400 text-center tracking-wide uppercase">
             Western Himachal Himalayas
@@ -143,7 +142,7 @@ export default function TopNav() {
 
       {/* Right: Actions */}
       <div className="flex items-center gap-3">
-        {isExplorer && (
+        {isAppRoute && (
           <nav className="hidden xl:flex items-center gap-1 mr-2 bg-black/5 dark:bg-white/5 p-1.5 rounded-[20px]">
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== '#' && pathname?.startsWith(link.href));
@@ -174,7 +173,7 @@ export default function TopNav() {
           </nav>
         )}
 
-        {isExplorer && <div className="h-8 w-px bg-black/10 dark:bg-white/10 hidden xl:block mx-2"></div>}
+        {isAppRoute && <div className="h-8 w-px bg-black/10 dark:bg-white/10 hidden xl:block mx-2"></div>}
 
         <button 
           onClick={toggleTheme}
@@ -196,7 +195,7 @@ export default function TopNav() {
     </header>
   );
 
-  if (isExplorer) {
+  if (isAppRoute) {
     return (
       <div style={{ zIndex: Z_INDEX.NAVBAR }} className="fixed top-6 left-6 right-6 lg:top-6 lg:left-1/2 lg:-translate-x-1/2 lg:w-[calc(100%-48px)] max-w-[1800px] transition-all duration-500 pointer-events-auto">
         {headerContent}
