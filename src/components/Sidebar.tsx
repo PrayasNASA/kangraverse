@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Compass, Map as MapIcon, Mountain, Droplets, Landmark, Heart, Route, Filter, Star, ArrowRight } from 'lucide-react';
+import { Search, Map as MapIcon, Route, Filter, Star, ArrowRight, ChevronDown, ChevronUp, History } from 'lucide-react';
 import Fuse from 'fuse.js';
 import { twMerge } from 'tailwind-merge';
 
@@ -17,18 +17,28 @@ const CATEGORIES = [
   { id: 'temple', label: 'Temples' },
   { id: 'monastery', label: 'Monasteries' },
   { id: 'sacred grove', label: 'Sacred Groves' },
-  { id: 'lake', label: 'Water Sources' }, // Mapping 'lake' to Water Sources for now
+  { id: 'lake', label: 'Water Sources' },
   { id: 'tours', label: 'Pilgrimage Routes' },
 ];
 
-const RELIGIONS = ['Hinduism', 'Buddhism', 'Christianity', 'Sikhism', 'Buddhism / Hinduism / Sikhism'];
-
 export default function Sidebar() {
-  const { searchQuery, setSearchQuery, setSelectedFeature, setFlyToLocation, selectedCategory, setSelectedCategory, favorites, activeTour, setActiveTour, filterReligion, setFilterReligion, showFilters, setShowFilters } = useStore();
+  const { 
+    searchQuery, setSearchQuery, 
+    setSelectedFeature, setFlyToLocation, 
+    selectedCategory, setSelectedCategory, 
+    favorites, recentlyViewed, addRecentlyViewed,
+    activeTour, setActiveTour, 
+    filterReligion, showFilters, setShowFilters 
+  } = useStore();
+  
   const [activeTab, setActiveTab] = useState<'places' | 'tours'>('places');
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [sheetExpanded, setSheetExpanded] = useState(false);
+  const [sheetState, setSheetState] = useState<'collapsed' | 'half' | 'expanded'>('half');
+  
+  // Collapsible states
+  const [showCategories, setShowCategories] = useState(true);
+  const [showRecent, setShowRecent] = useState(true);
 
   useEffect(() => {
     setIsMounted(true);
@@ -57,15 +67,21 @@ export default function Sidebar() {
     return result;
   }, [searchQuery, selectedCategory, filterReligion, fuse, favorites]);
 
+  const recentFeatures = useMemo(() => {
+    return recentlyViewed
+      .map(id => heritageData.find(f => f.id === id))
+      .filter(Boolean) as HeritageFeature[];
+  }, [recentlyViewed]);
+
   const handleSelectFeature = (feature: HeritageFeature) => {
     setSelectedFeature(feature);
+    addRecentlyViewed(feature.id);
     setFlyToLocation({
       lng: feature.longitude,
       lat: feature.latitude,
       altitude: (feature.elevation_m || 1500) + 1200,
       pitch: -35,
     });
-    if (isMobile) setSheetExpanded(false);
   };
 
   const handleStartTour = (tour: Tour) => {
@@ -80,7 +96,6 @@ export default function Sidebar() {
         pitch: -35,
       });
     }
-    if (isMobile) setSheetExpanded(false);
   };
 
   const getCategoryCount = (id: string) => {
@@ -90,25 +105,16 @@ export default function Sidebar() {
   };
 
   const renderResultsList = () => (
-    <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200/50 dark:border-slate-800/50 mt-4">
-      <div className="px-6 py-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 shrink-0">
-        <h3 className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-          {activeTab === 'places' ? 'Recently Found' : 'Pilgrimage Routes'}
-        </h3>
-        <span className="text-xs font-medium text-slate-400">
-          {activeTab === 'places' ? `${filteredData.length} results` : `${toursData.length} routes`}
-        </span>
-      </div>
-
-      <div className="overflow-y-auto p-4 flex flex-col gap-2 flex-1 custom-scrollbar">
-        {activeTab === 'places' ? (
+    <div className="flex flex-col gap-2">
+      {activeTab === 'places' ? (
+        filteredData.length > 0 ? (
           filteredData.map((feature, idx) => (
             <button
               key={feature.id}
               onClick={() => handleSelectFeature(feature)}
-              className="w-full text-left p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group flex gap-4 items-center border border-transparent hover:border-slate-100 dark:hover:border-slate-800"
+              className="w-full text-left p-3 rounded-2xl glass-card group flex gap-4 items-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-white/40 dark:hover:bg-slate-800/40 border border-transparent hover:border-white/40"
             >
-              <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0">
+              <div className="w-14 h-14 rounded-[18px] overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 shadow-sm relative">
                 <img 
                   src={feature.image_url || `https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=150&h=150&fit=crop`} 
                   alt={feature.name} 
@@ -116,107 +122,294 @@ export default function Sidebar() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">
+                <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm group-hover:text-[var(--primary)] transition-colors truncate">
                   {feature.name}
                 </h4>
-                <div className="flex items-center text-[11px] text-slate-500 dark:text-slate-400 mt-1 mb-1.5 truncate">
+                <div className="flex items-center text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 mb-1 truncate font-medium">
                   <span className="capitalize">{feature.type || 'Location'}</span>
                   <span className="mx-1.5">•</span>
                   <span>{feature.district || 'Kangra'}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1">
-                    <div className="flex text-amber-400">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-current" />
-                      ))}
+                <div className="flex items-center justify-between mt-1">
+                  <div className="flex items-center gap-1 bg-amber-400/10 px-1.5 py-0.5 rounded-md">
+                    <div className="flex text-amber-500">
+                      <Star className="w-3 h-3 fill-current" />
                     </div>
-                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 ml-1">4.8</span>
+                    <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 ml-0.5">4.8</span>
                   </div>
-                  <span className="text-xs font-bold text-indigo-500">{((idx + 1) * 1.2).toFixed(1)} km</span>
+                  <span className="text-[10px] font-bold text-[var(--primary)] bg-[var(--primary)]/10 px-1.5 py-0.5 rounded-md">{((idx + 1) * 1.2).toFixed(1)} km</span>
                 </div>
               </div>
             </button>
           ))
         ) : (
-          toursData.map(tour => {
-            const isActive = activeTour?.id === tour.id;
-            return (
-              <div key={tour.id} className={twMerge(
-                "w-full text-left p-4 rounded-2xl border transition-colors",
-                isActive ? "bg-indigo-50/50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800/50" : "bg-transparent border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50"
-              )}>
-                <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1">{tour.name}</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">{tour.description}</p>
-                <button 
-                  onClick={() => handleStartTour(tour)}
-                  className={twMerge(
-                    "w-full py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all",
-                    isActive 
-                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/25"
-                      : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-                  )}
-                >
-                  <Route className="w-4 h-4" />
-                  {isActive ? 'Restart Route' : 'Start Route'} ({tour.stops.length} stops)
-                </button>
-              </div>
-            );
-          })
-        )}
-      </div>
-
-      <div className="p-4 border-t border-slate-100 dark:border-slate-800 shrink-0">
-        <button className="w-full py-3 text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-xl transition-colors flex items-center justify-center gap-2">
-          View all {activeTab === 'places' ? 'places' : 'routes'} <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
+          <div className="py-8 text-center text-slate-500 dark:text-slate-400 text-sm font-medium">
+            No places found matching your criteria.
+          </div>
+        )
+      ) : (
+        toursData.map(tour => {
+          const isActive = activeTour?.id === tour.id;
+          return (
+            <div key={tour.id} className={twMerge(
+              "w-full text-left p-4 rounded-2xl glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
+              isActive ? "ring-2 ring-[var(--primary)] shadow-md" : "border border-white/20 hover:border-white/40"
+            )}>
+              <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1">{tour.name}</h4>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4 line-clamp-2 leading-relaxed">{tour.description}</p>
+              <button 
+                onClick={() => handleStartTour(tour)}
+                className={twMerge(
+                  "w-full py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all",
+                  isActive 
+                    ? "bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white shadow-lg shadow-[var(--primary)]/30"
+                    : "bg-white/50 dark:bg-slate-800/50 border border-white/50 text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700"
+                )}
+              >
+                <Route className="w-4 h-4" />
+                {isActive ? 'Restart Route' : 'Start Route'} ({tour.stops.length} stops)
+              </button>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 
   return (
     <>
       {isMounted && !isMobile && (
-        <motion.div 
+        <motion.div
           initial={{ x: -400, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="absolute top-24 left-6 z-20 w-[380px] flex flex-col pointer-events-none max-h-[calc(100dvh-120px)]"
+          className="absolute top-[104px] left-[24px] pointer-events-auto w-[380px] h-[calc(100vh-128px)] glass-panel backdrop-blur-3xl bg-white/70 dark:bg-slate-900/80 rounded-[32px] border border-white/60 dark:border-slate-700/50 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col z-[40]"
         >
-          {/* Search Header */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-800/50 overflow-hidden pointer-events-auto shrink-0 mb-4 flex items-center p-2 gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            {/* Pinned Premium Search Bar */}
+            <div className="glass-panel bg-white/70 dark:bg-slate-900/70 rounded-[24px] overflow-hidden pointer-events-auto shrink-0 flex items-center p-2 shadow-xl shadow-black/5 border border-white/60 dark:border-slate-700/50">
+            <div className="relative flex-1 group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[var(--primary)] transition-colors" />
               <input 
                 type="text" 
-                placeholder="Search sacred landscapes..." 
-                className="w-full bg-slate-50 dark:bg-slate-800/50 border-none rounded-xl pl-9 pr-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 font-medium transition-all"
+                placeholder="Explore Kangra..." 
+                className="w-full bg-transparent border-none rounded-xl pl-10 pr-4 py-3 text-[15px] focus:outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-semibold transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                 <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold text-slate-400 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded">⌘ K</kbd>
-              </div>
             </div>
             <button 
               onClick={() => setShowFilters(!showFilters)}
               className={twMerge(
-                "p-3 rounded-xl border transition-all flex items-center justify-center flex-shrink-0",
+                "p-2.5 rounded-xl transition-all flex items-center justify-center flex-shrink-0 ml-1",
                 showFilters || filterReligion 
-                  ? "bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-500/25" 
-                  : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700"
+                  ? "bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white shadow-md shadow-[var(--primary)]/20" 
+                  : "bg-black/5 dark:bg-white/10 text-slate-600 dark:text-slate-300 hover:bg-black/10 dark:hover:bg-white/20"
               )}
             >
               <Filter className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] overflow-hidden pointer-events-auto flex flex-col flex-1 p-6">
-            <h3 className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">
-              Explore Places
-            </h3>
-            
-            <div className="grid grid-cols-2 gap-3 shrink-0">
+          {/* Fixed Dashboard Header Area */}
+          <div className="glass-panel backdrop-blur-2xl bg-white/60 dark:bg-slate-900/60 border border-white/50 dark:border-slate-700/50 rounded-[28px] pointer-events-auto flex flex-col overflow-hidden shadow-2xl shadow-black/10 flex-1 min-h-0">
+            <div className="p-5 pb-3 flex flex-col gap-6 shrink-0 border-b border-black/5 dark:border-white/5">
+              
+              {/* Collapsible Categories (Horizontal Pills) */}
+              <div className="flex flex-col gap-3">
+                <div 
+                  className="flex items-center justify-between cursor-pointer group"
+                  onClick={() => setShowCategories(!showCategories)}
+                >
+                  <h3 className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <MapIcon className="w-3 h-3" /> Categories
+                  </h3>
+                  <button className="text-slate-400 group-hover:text-[var(--primary)] transition-colors">
+                    {showCategories ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                </div>
+                
+                <AnimatePresence>
+                  {showCategories && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2 pt-1 -mx-2 px-2 snap-x">
+                        {CATEGORIES.map(cat => {
+                          const isActive = selectedCategory === cat.id || (cat.id === 'all' && !selectedCategory) || (cat.id === 'tours' && activeTab === 'tours');
+                          return (
+                            <button
+                              key={cat.id}
+                              onClick={() => {
+                                if (cat.id === 'tours') {
+                                  setActiveTab('tours');
+                                  setSelectedCategory(null);
+                                } else {
+                                  setActiveTab('places');
+                                  setSelectedCategory(cat.id === 'all' ? null : cat.id);
+                                }
+                              }}
+                              className={twMerge(
+                                "flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap snap-start transition-all duration-300 hover:-translate-y-0.5",
+                                isActive 
+                                  ? "bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white shadow-md shadow-[var(--primary)]/20"
+                                  : "glass-card bg-white/50 border-white/40 text-slate-600 dark:text-slate-300 hover:bg-white/80"
+                              )}
+                            >
+                              <span className="text-xs font-bold">{cat.label}</span>
+                              <span className={twMerge(
+                                "text-[10px] font-bold px-1.5 py-0.5 rounded-full",
+                                isActive ? "bg-white/20 text-white" : "bg-black/5 dark:bg-white/10 text-slate-500"
+                              )}>
+                                {getCategoryCount(cat.id)}
+                              </span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Floating Recent Places (Highly rounded thumbnails) */}
+              {recentFeatures.length > 0 && !searchQuery && (
+                <div className="flex flex-col gap-3">
+                  <div 
+                    className="flex items-center justify-between cursor-pointer group"
+                    onClick={() => setShowRecent(!showRecent)}
+                  >
+                    <h3 className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <History className="w-3 h-3" /> Recent Highlights
+                    </h3>
+                    <button className="text-slate-400 group-hover:text-[var(--primary)] transition-colors">
+                      {showRecent ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  
+                  <AnimatePresence>
+                    {showRecent && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="flex gap-3 overflow-x-auto custom-scrollbar pb-2 pt-1 -mx-2 px-2 snap-x">
+                          {recentFeatures.map(feature => (
+                            <button 
+                              key={`recent-${feature.id}`}
+                              onClick={() => handleSelectFeature(feature)}
+                              className="flex flex-col items-center gap-2 snap-start group w-[72px]"
+                            >
+                              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/50 shadow-sm group-hover:shadow-md group-hover:border-[var(--primary)] transition-all duration-300 group-hover:-translate-y-1 relative shrink-0">
+                                <img 
+                                  src={feature.image_url || `https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=150&h=150&fit=crop`} 
+                                  alt={feature.name}
+                                  className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+                              </div>
+                              <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-300 w-full truncate text-center group-hover:text-[var(--primary)] transition-colors">
+                                {feature.name}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
+
+              {/* Main Results Section (Scrollable) */}
+              <div className="flex-1 flex flex-col gap-3 min-h-0 overflow-y-auto custom-scrollbar px-5 py-3 pb-5 scroll-smooth">
+                <div className="flex items-center justify-between sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md py-1.5 -mx-1 px-1 z-10 rounded-lg">
+                  <h3 className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    {activeTab === 'places' ? (searchQuery ? 'Search Results' : 'Explore Places') : 'Pilgrimage Routes'}
+                  </h3>
+                  <motion.span 
+                    key={activeTab === 'places' ? filteredData.length : toursData.length}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="text-[10px] font-bold text-white bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] px-2.5 py-0.5 rounded-full shadow-sm"
+                  >
+                    {activeTab === 'places' ? filteredData.length : toursData.length}
+                  </motion.span>
+                </div>
+
+                {renderResultsList()}
+                
+                <button className="w-full mt-2 py-3 text-xs font-bold text-[var(--primary)] bg-[var(--primary)]/5 hover:bg-[var(--primary)]/10 dark:text-indigo-400 dark:bg-indigo-900/20 rounded-xl transition-colors flex items-center justify-center gap-2 group shrink-0">
+                  View all {activeTab === 'places' ? 'places' : 'routes'} 
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {isMounted && isMobile && (
+        <motion.div
+          drag="y"
+          dragConstraints={{ top: 0, bottom: window.innerHeight * 0.75 }}
+          dragElastic={0.1}
+          onDragEnd={(e, info) => {
+            if (info.offset.y > 50) {
+              setSheetState(sheetState === 'expanded' ? 'half' : 'collapsed');
+            } else if (info.offset.y < -50) {
+              setSheetState(sheetState === 'collapsed' ? 'half' : 'expanded');
+            }
+          }}
+          initial="half"
+          animate={sheetState}
+          variants={{
+            expanded: { y: 0 },
+            half: { y: '50vh' },
+            collapsed: { y: 'calc(100vh - 120px)' }
+          }}
+          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+          className="fixed bottom-0 left-0 w-full h-[90vh] z-30 glass-panel backdrop-blur-3xl bg-white/70 dark:bg-slate-900/80 rounded-t-[32px] border-t border-white/60 dark:border-slate-700/50 shadow-[0_-10px_40px_rgba(0,0,0,0.15)] flex flex-col pt-1"
+        >
+          {/* Drag Handle */}
+          <div className="w-full flex justify-center py-3 touch-none cursor-grab active:cursor-grabbing shrink-0" onClick={() => setSheetState(sheetState === 'collapsed' ? 'half' : 'collapsed')}>
+            <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full" />
+          </div>
+
+          {/* Mobile Search Bar */}
+          <div className="px-5 pb-4 shrink-0 flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input 
+                type="text" 
+                placeholder="Explore Kangra..." 
+                className="w-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/60 rounded-2xl pl-10 pr-4 py-3.5 text-[15px] focus:outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-semibold shadow-inner"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setSheetState('expanded')}
+              />
+            </div>
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className={twMerge(
+                "w-14 rounded-2xl transition-all flex items-center justify-center flex-shrink-0 shadow-sm",
+                showFilters || filterReligion 
+                  ? "bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white shadow-[var(--primary)]/20" 
+                  : "bg-white/80 dark:bg-slate-800/80 border border-white/60 text-slate-600 dark:text-slate-300"
+              )}
+            >
+              <Filter className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Scrollable Mobile Area */}
+          <div className="flex-1 overflow-y-auto px-5 pb-10 custom-scrollbar flex flex-col gap-6" onTouchStart={(e) => { e.stopPropagation(); }}>
+            {/* Horizontal Categories */}
+            <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2 pt-1 -mx-2 px-2 snap-x">
               {CATEGORIES.map(cat => {
                 const isActive = selectedCategory === cat.id || (cat.id === 'all' && !selectedCategory) || (cat.id === 'tours' && activeTab === 'tours');
                 return (
@@ -230,32 +423,36 @@ export default function Sidebar() {
                         setActiveTab('places');
                         setSelectedCategory(cat.id === 'all' ? null : cat.id);
                       }
+                      setSheetState('expanded');
                     }}
                     className={twMerge(
-                      "flex flex-col items-center justify-center py-4 rounded-2xl transition-all border",
+                      "flex items-center gap-2 px-4 py-2.5 rounded-[20px] whitespace-nowrap snap-start transition-all",
                       isActive 
-                        ? "bg-indigo-50/80 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 shadow-sm"
-                        : "bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-200 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/50"
+                        ? "bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white shadow-md shadow-[var(--primary)]/20"
+                        : "bg-white/60 dark:bg-slate-800/60 border border-white/40 text-slate-700 dark:text-slate-300"
                     )}
                   >
-                    <span className="text-xs font-semibold">{cat.label}</span>
-                    <span className={twMerge(
-                      "text-lg font-bold mt-1",
-                      isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-400 dark:text-slate-500"
-                    )}>
-                      {getCategoryCount(cat.id)}
-                    </span>
+                    <span className="text-[13px] font-bold">{cat.label}</span>
                   </button>
                 )
               })}
             </div>
 
-            {renderResultsList()}
+            {/* Results */}
+            <div className="flex flex-col gap-3 pb-8">
+              <div className="flex items-center justify-between sticky top-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md py-2 -mx-2 px-2 z-10 rounded-lg">
+                <h3 className="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                  {activeTab === 'places' ? (searchQuery ? 'Search Results' : 'Explore Places') : 'Pilgrimage Routes'}
+                </h3>
+                <span className="text-[10px] font-bold text-white bg-[var(--primary)] px-2.5 py-0.5 rounded-full shadow-sm">
+                  {activeTab === 'places' ? filteredData.length : toursData.length}
+                </span>
+              </div>
+              {renderResultsList()}
+            </div>
           </div>
         </motion.div>
       )}
-
-      {/* MOBILE VIEW omitted for brevity as per your focus, though can add if needed */}
     </>
   );
 }

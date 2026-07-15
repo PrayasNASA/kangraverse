@@ -7,10 +7,10 @@ import { twMerge } from 'tailwind-merge';
 
 export default function LayerControl() {
   const { showTerrain, setShowTerrain, showSatellite, setShowSatellite, showMarkers, setShowMarkers, showVulnerability, setShowVulnerability, timeOfDay, setTimeOfDay, showTreks, setShowTreks } = useStore();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
-    <div className="absolute bottom-[120px] right-2 md:bottom-6 md:right-6 z-20 flex flex-col items-end gap-2 pointer-events-none">
+    <div className="absolute bottom-[32px] right-[440px] pointer-events-none z-[45] flex flex-col items-end gap-2">
       <AnimatePresence mode="wait">
         {!isCollapsed ? (
           <motion.div
@@ -19,18 +19,18 @@ export default function LayerControl() {
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 20, opacity: 0, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="w-72 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] overflow-hidden pointer-events-auto"
+            className="w-72 glass-panel rounded-[24px] overflow-hidden pointer-events-auto shadow-2xl"
           >
-            <div className="px-4 py-3 border-b border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between gap-2">
+            <div className="px-5 py-4 border-b border-white/20 dark:border-slate-700/50 flex items-center justify-between gap-2 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md">
               <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-indigo-500" />
-                <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                <Layers className="w-4 h-4 text-[var(--primary)]" />
+                <h3 className="text-[11px] font-[800] text-slate-700 dark:text-slate-200 uppercase tracking-widest">
                   Map Controls
                 </h3>
               </div>
               <button 
                 onClick={() => setIsCollapsed(true)} 
-                className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors text-slate-500"
+                className="p-1.5 bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20 rounded-full transition-colors text-slate-500 dark:text-slate-300"
               >
                 <ChevronDown className="w-4 h-4" />
               </button>
@@ -45,7 +45,7 @@ export default function LayerControl() {
               className={twMerge(
                 "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-semibold transition-all",
                 !showSatellite
-                  ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                  ? "bg-white dark:bg-slate-700 text-[var(--primary)] shadow-sm"
                   : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
               )}
             >
@@ -57,7 +57,7 @@ export default function LayerControl() {
               className={twMerge(
                 "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-semibold transition-all",
                 showSatellite
-                  ? "bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                  ? "bg-white dark:bg-slate-700 text-[var(--primary)] shadow-sm"
                   : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
               )}
             >
@@ -68,19 +68,19 @@ export default function LayerControl() {
 
           {/* 3D Terrain Toggle */}
           <div 
-            className="flex items-center justify-between cursor-pointer px-1 py-1"
+            className="flex items-center justify-between cursor-pointer px-2 py-2 rounded-xl hover:bg-white/40 dark:hover:bg-slate-800/40 transition-colors"
             onClick={() => setShowTerrain(!showTerrain)}
           >
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-              <Mountain className="w-4 h-4 text-indigo-500" />
+            <span className="text-[13px] font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2.5">
+              <Mountain className="w-4 h-4 text-slate-500" />
               3D Terrain
             </span>
             <button className={twMerge(
-              "w-10 h-5 rounded-full transition-colors relative flex items-center shadow-inner",
-              showTerrain ? "bg-indigo-500" : "bg-slate-300 dark:bg-slate-600"
+              "w-11 h-6 rounded-full transition-colors duration-300 relative flex items-center shadow-inner border border-black/5 dark:border-white/10",
+              showTerrain ? "bg-[var(--primary)]" : "bg-slate-300 dark:bg-slate-600"
             )}>
               <span className={twMerge(
-                "w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform duration-200 ease-in-out absolute left-0.5",
+                "w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] absolute left-0.5",
                 showTerrain ? "translate-x-5" : "translate-x-0"
               )} />
             </button>
@@ -92,12 +92,12 @@ export default function LayerControl() {
             onClick={() => setShowMarkers(!showMarkers)}
           >
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-              <Navigation className="w-4 h-4 text-indigo-500" />
+              <Navigation className="w-4 h-4 text-[var(--primary)]" />
               Heritage Markers
             </span>
             <button className={twMerge(
               "w-10 h-5 rounded-full transition-colors relative flex items-center shadow-inner",
-              showMarkers ? "bg-indigo-500" : "bg-slate-300 dark:bg-slate-600"
+              showMarkers ? "bg-[var(--primary)]" : "bg-slate-300 dark:bg-slate-600"
             )}>
               <span className={twMerge(
                 "w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform duration-200 ease-in-out absolute left-0.5",
@@ -132,12 +132,12 @@ export default function LayerControl() {
             onClick={() => setShowTreks(!showTreks)}
           >
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-              <Footprints className="w-4 h-4 text-indigo-500" />
+              <Footprints className="w-4 h-4 text-[var(--primary)]" />
               Trek Routes
             </span>
             <button className={twMerge(
               "w-10 h-5 rounded-full transition-colors relative flex items-center shadow-inner",
-              showTreks ? "bg-indigo-500" : "bg-slate-300 dark:bg-slate-600"
+              showTreks ? "bg-[var(--primary)]" : "bg-slate-300 dark:bg-slate-600"
             )}>
               <span className={twMerge(
                 "w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform duration-200 ease-in-out absolute left-0.5",
@@ -149,7 +149,7 @@ export default function LayerControl() {
           <div className="flex flex-col gap-2 px-1 py-1 mt-2 border-t border-slate-200/50 dark:border-slate-700/50 pt-3">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-indigo-500" />
+                <Clock className="w-4 h-4 text-[var(--primary)]" />
                 Time of Day
               </span>
               <span className="text-xs text-slate-500 font-mono">
@@ -163,7 +163,7 @@ export default function LayerControl() {
               step="0.5" 
               value={timeOfDay}
               onChange={(e) => setTimeOfDay(parseFloat(e.target.value))}
-              className="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+              className="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]"
             />
           </div>
           </div>
@@ -175,9 +175,10 @@ export default function LayerControl() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.5, opacity: 0 }}
             onClick={() => setIsCollapsed(false)}
-            className="w-12 h-12 bg-white dark:bg-slate-900 shadow-lg border border-slate-200 dark:border-slate-800 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 pointer-events-auto hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-colors pointer-events-auto text-slate-700 dark:text-slate-200 border-white/20"
+            title="Map Layers"
           >
-            <Layers className="w-5 h-5" />
+            <Layers className="w-5 h-5 text-[var(--primary)]" />
           </motion.button>
         )}
       </AnimatePresence>

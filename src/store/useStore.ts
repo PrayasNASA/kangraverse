@@ -79,9 +79,11 @@ interface AppState {
   showFilters: boolean;
   setShowFilters: (show: boolean) => void;
 
-  // Favorites
+  // Favorites & History
   favorites: string[];
   toggleFavorite: (id: string) => void;
+  recentlyViewed: string[];
+  addRecentlyViewed: (id: string) => void;
 
   // Tours
   activeTour: Tour | null;
@@ -136,6 +138,13 @@ export const useStore = create<AppState>()(
           set({ favorites: [...favorites, id] });
         }
       },
+      recentlyViewed: [],
+      addRecentlyViewed: (id) => {
+        const { recentlyViewed } = get();
+        set({ 
+          recentlyViewed: [id, ...recentlyViewed.filter(v => v !== id)].slice(0, 10) 
+        });
+      },
 
       activeTour: null,
       setActiveTour: (tour) => set({ activeTour: tour, currentTourStep: 0, selectedFeature: null, isPlayingTour: false }),
@@ -147,7 +156,7 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'kangraverse-storage',
-      partialize: (state) => ({ favorites: state.favorites }),
+      partialize: (state) => ({ favorites: state.favorites, recentlyViewed: state.recentlyViewed }),
     }
   )
 );

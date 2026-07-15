@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { Viewer, CameraFlyTo, Entity, BillboardGraphics, ScreenSpaceEventHandler, ScreenSpaceEvent, ImageryLayer, PolylineGraphics, LabelGraphics } from 'resium';
-import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, ArcGisMapServerImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync, Cartesian2, HorizontalOrigin, LabelStyle, BoundingSphere, HeadingPitchRange } from 'cesium';
+import { Viewer, CameraFlyTo, Entity, BillboardGraphics, ScreenSpaceEventHandler, ScreenSpaceEvent, ImageryLayer, PolylineGraphics, LabelGraphics, CustomDataSource } from 'resium';
+import { Ion, Cartesian3, createWorldTerrainAsync, TerrainProvider, Color, HeightReference, ScreenSpaceEventType, PinBuilder, VerticalOrigin, Math as CesiumMath, ArcGisMapServerImageryProvider, IonImageryProvider, EllipsoidTerrainProvider, JulianDate, createOsmBuildingsAsync, Cartesian2, HorizontalOrigin, LabelStyle, BoundingSphere, HeadingPitchRange, ShadowMode, EntityCluster, CallbackProperty } from 'cesium';
+import { Compass, Plus, Minus, Maximize } from 'lucide-react';
 import heritageDataRaw from '@/data/heritage.json';
 import treksDataRaw from '@/data/treks.json';
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
+import { getMarkerSVG } from '@/utils/markers';
 
 const heritageData = heritageDataRaw as HeritageFeature[];
 const treksData = treksDataRaw as Trek[];
@@ -38,12 +40,30 @@ export default function CesiumMap() {
   const isCesiumReady = true;
   const osmAdded = useRef(false);
 
+  // Hover state
+  const [hoveredFeature, setHoveredFeature] = useState<HeritageFeature | null>(null);
+  const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
+
+  // Camera heading for compass
+  const [cameraHeading, setCameraHeading] = useState(0);
+
   // Imagery Providers
   const [baseMapProvider, setBaseMapProvider] = useState<import('cesium').ImageryProvider | null>(null);
   const [satProvider, setSatProvider] = useState<import('cesium').ImageryProvider | null | 'failed'>(null);
 
-  const pinBuilder = useMemo(() => isCesiumReady ? new PinBuilder() : null, [isCesiumReady]);
   const flatTerrainProvider = useMemo(() => isCesiumReady ? new EllipsoidTerrainProvider() : null, [isCesiumReady]);
+
+  const clusterOptions = useMemo(() => {
+    if (!isCesiumReady) return undefined;
+    return new EntityCluster({
+      enabled: true,
+      pixelRange: 40,
+      minimumClusterSize: 3,
+      clusterBillboards: true,
+      clusterLabels: true,
+      clusterPoints: true
+    });
+  }, [isCesiumReady]);
 
   useEffect(() => {
     ArcGisMapServerImageryProvider.fromUrl(
@@ -80,6 +100,11 @@ export default function CesiumMap() {
       createOsmBuildingsAsync().then(buildings => {
         viewer.scene.primitives.add(buildings);
       });
+      
+      // Camera tracker for compass
+      viewer.scene.preRender.addEventListener(() => {
+        setCameraHeading(CesiumMath.toDegrees(viewer.camera.heading));
+      });
     }
   });
 
@@ -88,8 +113,6 @@ export default function CesiumMap() {
     if (flyToLocation && viewerRef.current?.cesiumElement) {
       const viewer = viewerRef.current.cesiumElement;
       
-      // Because flyToLocation.altitude includes a ~1200m offset from earlier logic, we subtract it to find the ground
-      // Alternatively, we just use the raw altitude if it's already close to ground, but let's assume it's offset by 1200.
       const groundAltitude = flyToLocation.altitude > 1200 ? flyToLocation.altitude - 1200 : flyToLocation.altitude;
       const target = Cartesian3.fromDegrees(flyToLocation.lng, flyToLocation.lat, groundAltitude);
       
@@ -99,7 +122,7 @@ export default function CesiumMap() {
           CesiumMath.toRadians(flyToLocation.pitch), 
           1200 // Range from the target
         ),
-        duration: flyToLocation.duration || 2.5,
+        duration: flyToLocation.duration || 3.5, // Slightly longer, smoother cinematic duration
       });
     }
   }, [flyToLocation]);
@@ -120,9 +143,15 @@ export default function CesiumMap() {
       viewer.clock.currentTime = JulianDate.fromDate(date);
       viewer.scene.globe.enableLighting = true;
       
+      // Cinematic environment settings
+      viewer.scene.highDynamicRange = true;
+      if ('terrainExaggeration' in viewer.scene.globe as any) {
+        (viewer.scene.globe as any).terrainExaggeration = 1.2;
+      }
+      
       // Add Fog and Atmosphere effects
       viewer.scene.fog.enabled = true;
-      viewer.scene.fog.density = 0.0002;
+      viewer.scene.fog.density = 0.0001; // Reduced per request
       viewer.scene.fog.screenSpaceErrorFactor = 2.0;
       if (viewer.scene.skyAtmosphere) {
         viewer.scene.skyAtmosphere.hueShift = -0.05;
@@ -188,6 +217,31 @@ export default function CesiumMap() {
     }
   }, [isPlayingTour, selectedFeature]);
 
+  const handleMouseMove = (movement: { position?: import('cesium').Cartesian2; endPosition?: import('cesium').Cartesian2 }) => {
+    const viewer = viewerRef.current?.cesiumElement;
+    if (!viewer) return;
+
+    const endPos = movement.endPosition || movement.position;
+    if (!endPos) return;
+
+    const pickedObject = viewer.scene.pick(endPos);
+    if (pickedObject && pickedObject.id && pickedObject.id.properties) {
+      const props = pickedObject.id.properties.getValue(viewer.clock.currentTime);
+      const featureId = props.id || props.ID; // Handle cluster points too if needed
+      
+      const fullFeature = heritageData.find(f => f.id === featureId);
+      if (fullFeature) {
+        setHoveredFeature(fullFeature);
+        setHoverPosition({ x: endPos.x, y: endPos.y });
+        document.body.style.cursor = 'pointer';
+        return;
+      }
+    }
+    setHoveredFeature(null);
+    setHoverPosition(null);
+    document.body.style.cursor = 'default';
+  };
+
   const handlePointClick = (movement: { position: import('cesium').Cartesian2 } | { startPosition: import('cesium').Cartesian2; endPosition: import('cesium').Cartesian2 }) => {
     if (!('position' in movement)) return;
     
@@ -212,7 +266,7 @@ export default function CesiumMap() {
           lat: isTrek ? (fullFeature as Trek).coordinates[0][1] : (fullFeature as HeritageFeature).latitude,
           altitude: (fullFeature.elevation_m || 1500) + 1200, // Dynamic altitude
           pitch: -35,
-          duration: 2.5,
+          duration: 3.5, // Slower duration for cinematic effect
         });
       }
     } else {
@@ -231,129 +285,229 @@ export default function CesiumMap() {
         default: return Color.WHITE;
       }
     }
+    return Color.WHITE;
+  };
 
-    switch(feature.type.toLowerCase()) {
-      case 'temple': return Color.RED;
-      case 'fort': return Color.SLATEGRAY;
-      case 'monastery': return Color.ORANGE;
-      case 'lake': return Color.CORNFLOWERBLUE;
-      case 'village': return Color.GREEN;
-      default: return Color.YELLOW;
+  const handleZoomIn = () => {
+    viewerRef.current?.cesiumElement?.camera.zoomIn(1000);
+  };
+
+  const handleZoomOut = () => {
+    viewerRef.current?.cesiumElement?.camera.zoomOut(1000);
+  };
+
+  const handleCompassClick = () => {
+    const viewer = viewerRef.current?.cesiumElement;
+    if (viewer) {
+      viewer.camera.flyTo({
+        destination: viewer.camera.position,
+        orientation: {
+          heading: 0,
+          pitch: viewer.camera.pitch,
+          roll: 0,
+        },
+        duration: 1.5,
+      });
+    }
+  };
+
+  const handleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
     }
   };
 
   const destination = Cartesian3.fromDegrees(76.4, 32.125, 70000);
 
-  if (!terrainProvider || !baseMapProvider || satProvider === null || !pinBuilder || !flatTerrainProvider) {
+  if (!terrainProvider || !baseMapProvider || satProvider === null || !flatTerrainProvider) {
     return (
       <div className="flex items-center justify-center w-full h-full bg-slate-900 text-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
         <span className="ml-4 font-medium tracking-wide">Loading 3D Environment...</span>
       </div>
     );
   }
 
-  // The toggles for showTerrain and showSatellite come directly from the store now.
-
   return (
-    <Viewer
-      ref={viewerRef}
-      full
-      shadows={true}
-      terrainProvider={showTerrain ? terrainProvider : flatTerrainProvider}
-      baseLayer={false}
-      baseLayerPicker={false}
-      geocoder={false}
-      homeButton={false}
-      navigationHelpButton={false}
-      animation={false}
-      timeline={false}
-      fullscreenButton={false}
-      sceneModePicker={false}
-      infoBox={false}
-      selectionIndicator={false} // Custom handling via Zustand
-      className="absolute inset-0 z-0"
-    >
-      {!flyToLocation && (
-        <CameraFlyTo 
-          duration={3} 
-          destination={destination}
-        />
-      )}
-
-      {showSatellite && satProvider && satProvider !== 'failed' && <ImageryLayer imageryProvider={satProvider} />}
-      {!showSatellite && baseMapProvider && <ImageryLayer imageryProvider={baseMapProvider} />}
-
-      {showTreks && treksData.map((trek) => (
-        <Entity
-          key={trek.id}
-          name={trek.name}
-          description={trek.description}
-          properties={trek}
-        >
-          <PolylineGraphics
-            positions={Cartesian3.fromDegreesArrayHeights(trek.coordinates.flat())}
-            material={Color.fromCssColorString(trek.color).withAlpha(0.8)}
-            width={4}
-            clampToGround={true}
+    <div className="relative w-full h-full overflow-hidden">
+      <Viewer
+        ref={viewerRef}
+        full
+        shadows={true}
+        terrainShadows={1} // ENABLED
+        terrainProvider={showTerrain ? terrainProvider : flatTerrainProvider}
+        baseLayer={false}
+        baseLayerPicker={false}
+        geocoder={false}
+        homeButton={false}
+        navigationHelpButton={false}
+        animation={false}
+        timeline={false}
+        fullscreenButton={false}
+        sceneModePicker={false}
+        infoBox={false}
+        selectionIndicator={false}
+        className="absolute inset-0 z-0"
+      >
+        {!flyToLocation && (
+          <CameraFlyTo 
+            duration={4} 
+            destination={destination}
           />
-        </Entity>
-      ))}
+        )}
 
-      {/* Tour Path */}
-      {activeTour && (
-        <Entity>
-          <PolylineGraphics
-            positions={Cartesian3.fromDegreesArray(
-              activeTour.stops.flatMap(stopId => {
-                const feature = heritageData.find(f => f.id === stopId);
-                return feature ? [feature.longitude, feature.latitude] : [];
-              })
-            )}
-            material={Color.fromCssColorString('#6366f1').withAlpha(0.6)}
-            width={4}
-            clampToGround={showTerrain}
-          />
-        </Entity>
-      )}
+        {showSatellite && satProvider && satProvider !== 'failed' && <ImageryLayer imageryProvider={satProvider} />}
+        {!showSatellite && baseMapProvider && <ImageryLayer imageryProvider={baseMapProvider} />}
 
-      {showMarkers && heritageData.map((feature) => {
-        const isSelected = selectedFeature?.id === feature.id;
-        return (
+        {showTreks && treksData.map((trek) => (
           <Entity
-            key={feature.id}
-            name={feature.name}
-            position={Cartesian3.fromDegrees(feature.longitude, feature.latitude, feature.elevation_m || 0)}
-            properties={feature}
+            key={trek.id}
+            name={trek.name}
+            description={trek.description}
+            properties={trek}
           >
-            <BillboardGraphics
-              image={pinBuilder.fromColor(getFeatureColor(feature, isSelected), isSelected ? 56 : 48).toDataURL()}
-              verticalOrigin={VerticalOrigin.BOTTOM}
-              heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
-              disableDepthTestDistance={Number.POSITIVE_INFINITY}
+            <PolylineGraphics
+              positions={Cartesian3.fromDegreesArrayHeights(trek.coordinates.flat())}
+              material={Color.fromCssColorString(trek.color).withAlpha(0.8)}
+              width={6}
+              clampToGround={true}
             />
-            {isSelected && (
-              <LabelGraphics
-                text={feature.name}
-                font="bold 18px sans-serif"
-                fillColor={Color.WHITE}
-                outlineColor={Color.BLACK}
-                outlineWidth={4}
-                style={LabelStyle.FILL_AND_OUTLINE}
-                verticalOrigin={VerticalOrigin.BOTTOM}
-                horizontalOrigin={HorizontalOrigin.CENTER}
-                pixelOffset={new Cartesian2(0, -65)}
-                heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
-                disableDepthTestDistance={Number.POSITIVE_INFINITY}
-              />
-            )}
           </Entity>
-        );
-      })}
+        ))}
 
-      <ScreenSpaceEventHandler>
-        <ScreenSpaceEvent action={handlePointClick} type={ScreenSpaceEventType.LEFT_CLICK} />
-      </ScreenSpaceEventHandler>
-    </Viewer>
+        {/* Tour Path */}
+        {activeTour && (
+          <Entity>
+            <PolylineGraphics
+              positions={Cartesian3.fromDegreesArray(
+                activeTour.stops.flatMap(stopId => {
+                  const feature = heritageData.find(f => f.id === stopId);
+                  return feature ? [feature.longitude, feature.latitude] : [];
+                })
+              )}
+              material={Color.fromCssColorString('#6366f1').withAlpha(0.6)}
+              width={6}
+              clampToGround={showTerrain}
+            />
+          </Entity>
+        )}
+
+        <CustomDataSource
+          name="heritageMarkers"
+          clustering={clusterOptions}
+        >
+          {showMarkers && heritageData.map((feature) => {
+            const isSelected = selectedFeature?.id === feature.id;
+            const isHovered = hoveredFeature?.id === feature.id;
+            
+            // Generate standard icon size
+            const baseScale = isSelected ? 1.4 : (isHovered ? 1.2 : 1.0);
+            
+            // Create a pulsing effect for the selected marker
+            const scaleProperty = new CallbackProperty(() => {
+              if (isSelected) {
+                // Pulse smoothly between 1.3 and 1.5
+                return 1.4 + Math.sin(Date.now() / 200) * 0.1;
+              }
+              return baseScale;
+            }, false);
+
+            return (
+              <Entity
+                key={feature.id}
+                name={feature.name}
+                position={Cartesian3.fromDegrees(feature.longitude, feature.latitude, feature.elevation_m || 0)}
+                properties={feature}
+              >
+                <BillboardGraphics
+                  image={getMarkerSVG(feature.type, isSelected)}
+                  scale={scaleProperty}
+                  verticalOrigin={VerticalOrigin.BOTTOM}
+                  heightReference={showTerrain ? HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND}
+                  disableDepthTestDistance={Number.POSITIVE_INFINITY}
+                  color={getFeatureColor(feature, isSelected)}
+                  eyeOffset={new Cartesian3(0, 0, -50)} // Pushes the marker slightly towards the camera
+                />
+              </Entity>
+            );
+          })}
+        </CustomDataSource>
+
+        <ScreenSpaceEventHandler>
+          <ScreenSpaceEvent action={handlePointClick} type={ScreenSpaceEventType.LEFT_CLICK} />
+          <ScreenSpaceEvent action={handleMouseMove} type={ScreenSpaceEventType.MOUSE_MOVE} />
+        </ScreenSpaceEventHandler>
+      </Viewer>
+
+      {/* Floating Hover Popup */}
+      {hoveredFeature && hoverPosition && (
+        <div 
+          className="absolute z-10 pointer-events-none transform -translate-x-1/2 -translate-y-full pb-4 transition-all duration-100 ease-out"
+          style={{ left: hoverPosition.x, top: hoverPosition.y - 48 }}
+        >
+          <div className="glass-panel p-3 rounded-2xl shadow-2xl flex flex-col items-center w-[220px] border border-white/40 overflow-hidden">
+            {hoveredFeature.image_url && (
+              <div className="relative w-full h-28 mb-3 rounded-xl overflow-hidden bg-slate-100">
+                <img 
+                  src={hoveredFeature.image_url} 
+                  alt={hoveredFeature.name} 
+                  className="object-cover w-full h-full" 
+                />
+              </div>
+            )}
+            <div className="w-full text-center">
+              <h4 className="text-sm font-bold text-slate-800 leading-tight mb-1">{hoveredFeature.name}</h4>
+              <p className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-wider">{hoveredFeature.type}</p>
+            </div>
+            {/* Triangle pointer */}
+            <div className="absolute -bottom-[8px] left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white/80 filter drop-shadow-md"></div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Map Controls */}
+      <div className="absolute top-[104px] right-[24px] flex flex-col gap-4 pointer-events-auto z-[40]">
+          {/* Compass */}
+        <button 
+          onClick={handleCompassClick}
+          className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all duration-300 text-slate-700 dark:text-slate-200 hover:scale-[1.05] group"
+          title="Reset North"
+        >
+          <Compass 
+            className="w-[22px] h-[22px] transition-transform duration-75 text-[var(--primary)] group-hover:drop-shadow-[0_0_8px_rgba(108,99,255,0.5)]" 
+            style={{ transform: `rotate(${-cameraHeading}deg)` }} 
+          />
+        </button>
+
+        {/* Zoom Controls */}
+        <div className="flex flex-col rounded-full glass-panel overflow-hidden transition-all duration-300">
+          <button 
+            onClick={handleZoomIn}
+            className="w-12 h-12 flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-colors text-slate-700 dark:text-slate-200 border-b border-white/20 dark:border-slate-700/50 hover:text-[var(--primary)]"
+            title="Zoom In"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+          <button 
+            onClick={handleZoomOut}
+            className="w-12 h-12 flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-colors text-slate-700 dark:text-slate-200 hover:text-[var(--primary)]"
+            title="Zoom Out"
+          >
+            <Minus className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Fullscreen Toggle */}
+        <button 
+          onClick={handleFullscreen}
+          className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all duration-300 text-slate-700 dark:text-slate-200 hover:scale-[1.05] hover:text-[var(--primary)]"
+          title="Toggle Fullscreen"
+        >
+          <Maximize className="w-5 h-5" />
+        </button>
+        </div>
+      </div>
   );
 }

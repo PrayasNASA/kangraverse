@@ -3,10 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { 
-  Sun, Moon, User, Compass, LayoutDashboard, 
-  BookOpen, FlaskConical, Image as ImageIcon, Info
-} from 'lucide-react';
+import { Sun, Moon, User, Compass, LayoutDashboard, BookOpen, FlaskConical, Image as ImageIcon, Info } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
 export default function TopNav() {
@@ -52,17 +49,15 @@ export default function TopNav() {
 
   const isHome = pathname === '/';
 
-  return (
+  const headerContent = (
     <header className={twMerge(
-      "flex items-center justify-between transition-all duration-300 ease-in-out",
+      "flex items-center justify-between transition-all duration-300 ease-in-out z-[100]",
       isHome 
         ? twMerge(
-            "fixed top-0 left-0 w-full z-[100] h-[92px] px-[40px] lg:px-[clamp(40px,5vw,72px)]",
-            scrolled 
-              ? "bg-[rgba(255,255,255,0.70)] backdrop-blur-[24px] border-b border-[rgba(255,255,255,0.45)] shadow-[0_8px_30px_rgba(15,23,42,0.05)]" 
-              : "bg-transparent border-b-0 shadow-none"
+            "fixed top-0 left-0 w-full h-[92px] px-[40px] lg:px-[clamp(40px,5vw,72px)]",
+            scrolled ? "glass-nav" : "bg-transparent border-b-0 shadow-none"
           )
-        : "fixed top-0 left-0 right-0 h-[84px] z-[40] bg-[#FFFFFF] border-b border-[#ECEEF5] px-[40px]"
+        : "h-[72px] glass-panel rounded-full px-6 w-[calc(100vw-48px)] max-w-[1600px] shadow-lg shadow-black/5"
     )}>
       {isHome && !scrolled && (
         <div 
@@ -143,12 +138,19 @@ export default function TopNav() {
                   key={link.label}
                   href={link.href}
                   className={twMerge(
-                    "px-[16px] py-[10px] text-[14px] font-medium transition-all duration-200 rounded-[12px] flex items-center gap-[8px]",
+                    "relative px-[16px] py-[10px] text-[13px] font-bold uppercase tracking-wider transition-all duration-300 rounded-full flex items-center gap-[8px] z-10",
                     isActive 
-                      ? "bg-[#5B4CF0]/10 text-[#5B4CF0]" 
-                      : "text-[#6B7280] hover:bg-[#FAFBFC] hover:text-[#111827]"
+                      ? "text-[var(--primary)]" 
+                      : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                   )}
                 >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNavCapsule"
+                      className="absolute inset-0 bg-[var(--primary)] opacity-10 dark:opacity-20 rounded-full -z-10"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
                   <Icon className="w-[18px] h-[18px]" />
                   {link.label}
                 </Link>
@@ -173,4 +175,14 @@ export default function TopNav() {
       </div>
     </header>
   );
+
+  if (isExplorer) {
+    return (
+      <div className="fixed top-4 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:w-[calc(100%-2rem)] z-[100] max-w-[1600px]">
+        {headerContent}
+      </div>
+    );
+  }
+
+  return headerContent;
 }

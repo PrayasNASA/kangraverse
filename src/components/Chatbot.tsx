@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  X, Send, Compass, Sparkles, Settings
+  X, Send, Sparkles, User, Info
 } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
@@ -13,19 +13,17 @@ interface Message {
 }
 
 const SUGGESTED_PROMPTS = [
-  { text: "🏛 Tell me about Chamunda Temple" },
-  { text: "🌳 Explain Sacred Groves" },
-  { text: "📚 Research Findings" },
-  { text: "🧭 Pilgrimage Routes" },
-  { text: "🎤 Community Interviews" },
-  { text: "🌱 Conservation Strategy" },
+  { text: "🏛 Tell me about Chamunda Temple", icon: "🏛" },
+  { text: "🌳 Explain Sacred Groves", icon: "🌳" },
+  { text: "🧭 Pilgrimage Routes", icon: "🧭" },
+  { text: "🎤 Community Interviews", icon: "🎤" },
 ];
 
 export default function Chatbot() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', content: "Welcome to KangraVerse.\n\nI can help you explore sacred landscapes, temples, monasteries, traditional ecological knowledge, community interviews, conservation research and cultural heritage." }
+    { role: 'model', content: "Welcome to KangraVerse.\n\nI can help you explore sacred landscapes, traditional ecological knowledge, and cultural heritage." }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +33,7 @@ export default function Chatbot() {
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      if (mobile) setIsOpen(false);
+      if (!mobile) setIsOpen(true);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -74,7 +72,7 @@ export default function Chatbot() {
       setMessages((prev) => [...prev, { role: 'model', content: data.message }]);
     } catch (error: any) {
       console.error(error);
-      setMessages((prev) => [...prev, { role: 'model', content: 'Sorry, I encountered an error. Please make sure the AI service is configured correctly.' }]);
+      setMessages((prev) => [...prev, { role: 'model', content: 'Sorry, I encountered an error connecting to the intelligence module.' }]);
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +84,7 @@ export default function Chatbot() {
   };
 
   return (
-    <>
+    <div className="fixed bottom-4 right-4 md:bottom-[32px] md:right-[32px] z-[45] flex flex-col items-end justify-end pointer-events-none">
       {/* Floating Action Button */}
       <AnimatePresence>
         {!isOpen && (
@@ -96,12 +94,12 @@ export default function Chatbot() {
             exit={{ scale: 0, opacity: 0 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-[20px] md:bottom-[48px] right-[16px] md:right-[48px] z-[9999] p-[16px] bg-[#5B4CF0] text-white rounded-full shadow-[0_20px_60px_rgba(15,23,42,0.08)] hover:bg-[#4F46E5] transition-colors flex items-center justify-center group"
+            className="p-4 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-[24px] shadow-2xl hover:shadow-[var(--primary)]/30 transition-all flex items-center justify-center group border border-white/20 relative z-[45] pointer-events-auto"
           >
-            <Sparkles className="w-6 h-6" />
-            <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white shadow-sm">AI</span>
+            <Sparkles className="w-6 h-6 animate-pulse" />
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white shadow-sm">AI</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -110,114 +108,157 @@ export default function Chatbot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed bottom-0 md:bottom-[96px] right-0 md:right-[48px] z-[9999] w-full md:w-[360px] h-[80vh] md:h-auto md:max-h-[700px] flex flex-col bg-[rgba(255,255,255,0.90)] backdrop-blur-[24px] rounded-t-[30px] md:rounded-[30px] shadow-[0_20px_60px_rgba(15,23,42,0.08)] border border-[rgba(255,255,255,0.7)] overflow-hidden"
+            initial={{ opacity: 0, y: 40, scale: 0.95, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: 40, scale: 0.95, filter: "blur(10px)" }}
+            transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 30 }}
+            className="pointer-events-auto z-[70] w-[calc(100vw-48px)] md:w-[420px] h-full max-h-[650px] flex-1 min-h-[400px] flex flex-col glass-panel backdrop-blur-3xl bg-white/80 dark:bg-slate-900/80 border border-white/60 dark:border-slate-700/50 rounded-2xl md:rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-[24px] shrink-0 border-b border-[#ECEEF5]/50">
-              <div className="flex items-center gap-[16px]">
-                <div className="relative w-[48px] h-[48px] rounded-full bg-gradient-to-tr from-[#5B4CF0] to-[#8B5CF6] flex items-center justify-center text-white shadow-md">
-                  <Compass className="w-6 h-6" />
-                  <div className="absolute bottom-0 right-0 w-[12px] h-[12px] bg-green-500 rounded-full border-2 border-white"></div>
+            <div className="flex items-center justify-between p-5 shrink-0 border-b border-white/30 dark:border-slate-700/30 bg-white/30 dark:bg-slate-800/30 backdrop-blur-md z-10">
+              <div className="flex items-center gap-3">
+                <div className="relative w-10 h-10 rounded-[14px] bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-white shadow-lg shadow-[var(--primary)]/20 border border-white/20">
+                  <Sparkles className="w-5 h-5" />
+                  <div className="absolute -bottom-1 -right-1 w-[12px] h-[12px] bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
                 <div className="flex flex-col">
-                  <h3 className="font-[700] text-[#111827] text-[18px] leading-tight">KangraVerse Research Assistant</h3>
-                  <span className="text-[13px] text-[#6B7280] mt-[4px] leading-tight">Powered by Field Research & Heritage Knowledge</span>
+                  <h3 className="font-[800] text-slate-800 dark:text-slate-100 text-[15px] leading-tight flex items-center gap-1.5">
+                    Intelligence <Sparkles className="w-3 h-3 text-[var(--primary)]" />
+                  </h3>
+                  <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">Always ready to assist</span>
                 </div>
               </div>
               <div className="flex gap-[4px] shrink-0 self-start">
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="p-[8px] hover:bg-[#FAFBFC] text-[#6B7280] rounded-full transition-colors duration-200"
+                  className="p-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-slate-500 dark:text-slate-300 rounded-full transition-colors duration-200"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto px-[24px] py-[24px] custom-scrollbar flex flex-col gap-[20px]">
-              {messages.map((msg, idx) => (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  key={idx} 
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div 
-                    className={twMerge(
-                      "max-w-[85%] p-[16px] text-[16px] leading-[1.7]",
-                      msg.role === 'user' 
-                        ? "bg-[#5B4CF0] text-white rounded-[20px] rounded-br-[4px] shadow-sm" 
-                        : "bg-white text-[#111827] border border-[#ECEEF5] rounded-[20px] rounded-bl-[4px] shadow-sm whitespace-pre-wrap"
-                    )}
+            <div className="flex-1 overflow-y-auto px-5 py-6 custom-scrollbar flex flex-col gap-5">
+              <AnimatePresence initial={false}>
+                {messages.map((msg, idx) => (
+                  <motion.div 
+                    key={`msg-${idx}`}
+                    initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
                   >
-                    {msg.content}
-                  </div>
-                </motion.div>
-              ))}
+                    <div 
+                      className={twMerge(
+                        "max-w-[88%] p-4 text-[14px] leading-relaxed relative group",
+                        msg.role === 'user' 
+                          ? "bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white rounded-[24px] rounded-br-[8px] shadow-md shadow-[var(--primary)]/20 border border-white/10" 
+                          : "bg-white/80 dark:bg-slate-800/80 backdrop-blur-md text-slate-800 dark:text-slate-100 rounded-[24px] rounded-bl-[8px] shadow-sm whitespace-pre-wrap border border-white/50 dark:border-slate-600/50"
+                      )}
+                    >
+                      {msg.content}
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
 
-              {messages.length === 1 && (
+              {/* Loading / Thinking Indicator */}
+              <AnimatePresence>
+                {isLoading && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="flex justify-start items-center gap-2"
+                  >
+                    <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md p-4 rounded-[24px] rounded-bl-[8px] shadow-sm border border-white/50 dark:border-slate-600/50 flex items-center gap-1.5 h-[52px]">
+                      <motion.div 
+                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} 
+                        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                      />
+                      <motion.div 
+                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} 
+                        transition={{ duration: 1, delay: 0.2, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                      />
+                      <motion.div 
+                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} 
+                        transition={{ duration: 1, delay: 0.4, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Suggested Prompts */}
+              {messages.length === 1 && !isLoading && (
                 <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="mt-[4px]"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="mt-2 flex flex-wrap gap-2"
                 >
-                  <div className="grid grid-cols-2 gap-[8px]">
-                    {SUGGESTED_PROMPTS.map((prompt, idx) => (
-                      <motion.button
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.3, delay: 0.3 + (idx * 0.05) }}
-                        key={idx}
-                        onClick={() => sendMessage(prompt.text)}
-                        className="flex items-center gap-[8px] px-[12px] py-[10px] bg-white border border-[#ECEEF5] rounded-full hover:bg-[#F5F3FF] hover:-translate-y-[2px] transition-all duration-200 shadow-sm text-left"
-                      >
-                        <span className="text-[12px] font-[500] text-[#111827] truncate leading-none">{prompt.text}</span>
-                      </motion.button>
-                    ))}
-                  </div>
+                  {SUGGESTED_PROMPTS.map((prompt, idx) => (
+                    <motion.button
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.5 + (idx * 0.1) }}
+                      key={idx}
+                      onClick={() => sendMessage(prompt.text)}
+                      className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-full hover:bg-[var(--primary)] hover:text-white transition-all duration-300 shadow-sm border border-white/60 dark:border-slate-600/50 text-slate-700 dark:text-slate-300 group"
+                    >
+                      <span className="text-sm">{prompt.icon}</span>
+                      <span className="text-[12px] font-semibold">{prompt.text.replace(/^[^\w\s]+\s/, '')}</span>
+                    </motion.button>
+                  ))}
                 </motion.div>
               )}
-
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-white p-[16px] rounded-[20px] rounded-bl-[4px] border border-[#ECEEF5] shadow-sm flex gap-[4px]">
-                    <span className="w-2 h-2 bg-[#5B4CF0]/40 rounded-full animate-bounce"></span>
-                    <span className="w-2 h-2 bg-[#5B4CF0]/40 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-                    <span className="w-2 h-2 bg-[#5B4CF0]/40 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
+              
+              <div ref={messagesEndRef} className="h-2" />
             </div>
 
             {/* Input Area */}
-            <div className="px-[24px] pb-[24px] pt-[16px] shrink-0 border-t border-[#ECEEF5]/50 bg-[rgba(255,255,255,0.5)]">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-[12px]">
-                <div className="relative flex items-center">
+            <div className="px-5 pb-5 pt-3 shrink-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border-t border-white/40 dark:border-slate-700/50 z-10">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                <div className="relative flex items-center group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-[24px] opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 blur-md"></div>
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask about sacred landscapes..."
-                    className="w-full bg-white border border-[#ECEEF5] rounded-[18px] pl-[20px] pr-[56px] h-[56px] text-[15px] focus:outline-none focus:ring-2 focus:ring-[#5B4CF0]/20 focus:border-[#5B4CF0]/30 text-[#111827] transition-all duration-200 placeholder:text-[#94A3B8] shadow-sm"
+                    placeholder="Ask Intelligence..."
+                    className="w-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/60 dark:border-slate-600/50 rounded-[24px] pl-5 pr-14 h-[56px] text-[14px] focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-slate-800 dark:text-slate-100 transition-all duration-300 placeholder:text-slate-400 font-medium shadow-inner relative z-10"
                   />
-                  <button
-                    type="submit"
-                    disabled={!input.trim() || isLoading}
-                    className="absolute right-[8px] bg-[#5B4CF0] disabled:opacity-50 text-white rounded-full transition-transform duration-200 hover:scale-105 shrink-0 flex items-center justify-center w-[40px] h-[40px]"
-                  >
-                    <Send className="w-[18px] h-[18px] ml-[2px]" />
-                  </button>
+                  <AnimatePresence>
+                    {input.trim() ? (
+                      <motion.button
+                        initial={{ scale: 0, opacity: 0, rotate: -45 }}
+                        animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                        exit={{ scale: 0, opacity: 0, rotate: 45 }}
+                        type="submit"
+                        disabled={isLoading}
+                        className="absolute right-2 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-full transition-transform duration-200 hover:scale-105 shrink-0 flex items-center justify-center w-10 h-10 shadow-md z-20 disabled:opacity-50"
+                      >
+                        <Send className="w-[16px] h-[16px] ml-[2px]" />
+                      </motion.button>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute right-4 z-20"
+                      >
+                        <Sparkles className="w-5 h-5 text-slate-300 dark:text-slate-600" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-                <div className="text-center">
-                  <p className="text-[12px] text-[#94A3B8] leading-snug">
-                    AI responses are generated from field surveys, GIS data and heritage documentation.
+                <div className="flex items-center justify-center gap-1.5 mt-1">
+                  <Info className="w-3 h-3 text-slate-400" />
+                  <p className="text-[10px] font-medium text-slate-400 leading-none">
+                    AI responses are generated from Kangra heritage documentation
                   </p>
                 </div>
               </form>
@@ -225,6 +266,6 @@ export default function Chatbot() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

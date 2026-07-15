@@ -40,13 +40,13 @@ export default function Home() {
           >
             <motion.div 
               variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } }}
-              className="inline-flex items-center gap-[12px] px-6 py-1.5 mb-[30px] rounded-full bg-[#F4F1FF] text-[13px] font-[600] uppercase text-[#5B4CF0] tracking-wide"
+              className="inline-flex items-center gap-[12px] px-6 py-1.5 mb-[30px] rounded-full glass-card border border-[var(--primary)]/20 text-[13px] font-[600] uppercase text-[var(--primary)] tracking-wide shadow-sm"
             >
               <span>RESEARCH PROJECT</span>
-              <span className="w-1 h-1 rounded-full bg-[#6B7280]"></span>
+              <span className="w-1 h-1 rounded-full bg-slate-500"></span>
               <span className="flex items-center gap-[8px]">
-                <span className="w-4 h-4 rounded-full bg-[#5B4CF0]/20 flex items-center justify-center">
-                  <span className="w-2 h-2 rounded-full bg-[#5B4CF0]"></span>
+                <span className="w-4 h-4 rounded-full bg-[var(--primary)]/20 flex items-center justify-center">
+                  <span className="w-2 h-2 rounded-full bg-[var(--primary)]"></span>
                 </span>
                 University of Delhi
               </span>
@@ -54,9 +54,9 @@ export default function Home() {
             
             <motion.h1 
               variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } }}
-              className="font-serif font-[700] text-[#111827] leading-[0.92] text-[clamp(76px,6vw,108px)] tracking-[-0.05em] mb-[24px] m-0 max-w-[620px]"
+              className="font-serif font-[700] text-slate-900 leading-[0.92] text-[clamp(76px,6vw,108px)] tracking-[-0.05em] mb-[24px] m-0 max-w-[620px]"
             >
-              Kangra<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5B4CF0] to-[#7C6CF8]">Verse</span>
+              Kangra<span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Verse</span>
             </motion.h1>
             
             <motion.h2 
@@ -79,14 +79,14 @@ export default function Home() {
             >
               <Link 
                 href="/explorer"
-                className="group relative inline-flex items-center justify-center px-[32px] h-[58px] text-[16px] font-semibold text-white transition-all duration-200 bg-[#5B4CF0] rounded-[18px] hover:bg-[#4F46E5] shadow-[0_18px_36px_rgba(91,76,240,0.20)] hover:-translate-y-[2px]"
+                className="group relative inline-flex items-center justify-center px-[32px] h-[58px] text-[16px] font-semibold text-white transition-all duration-200 bg-[var(--primary)] rounded-full hover:opacity-90 shadow-lg hover:-translate-y-[2px]"
               >
                 Enter Explorer
                 <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
               
-              <button className="group inline-flex items-center justify-center px-[32px] h-[58px] text-[16px] font-semibold text-[#111827] transition-all duration-200 bg-white rounded-[18px] hover:-translate-y-[2px] shadow-[0_18px_36px_rgba(15,23,42,0.08)] border border-[#ECEEF5]">
-                <Play className="w-5 h-5 mr-2 text-[#5B4CF0]" />
+              <button className="group inline-flex items-center justify-center px-[32px] h-[58px] text-[16px] font-semibold text-slate-900 transition-all duration-200 glass-card rounded-full hover:-translate-y-[2px] shadow-lg border border-transparent">
+                <Play className="w-5 h-5 mr-2 text-[var(--primary)]" />
                 Watch Overview
               </button>
             </motion.div>
@@ -97,7 +97,7 @@ export default function Home() {
 
       {/* Floating Bottom Stats Bar */}
       <div className="relative z-20 flex flex-col items-center justify-center -mt-[40px] mb-[64px]">
-        <div className="bg-[rgba(255,255,255,0.90)] backdrop-blur-[22px] rounded-[32px] shadow-[0_20px_60px_rgba(15,23,42,0.08)] border border-[rgba(255,255,255,0.7)] px-[24px] md:px-[48px] py-[32px] md:py-0 md:h-[145px] flex items-center w-[calc(100%-48px)] max-w-[1600px]">
+        <div className="glass-panel rounded-[32px] px-[24px] md:px-[48px] py-[32px] md:py-0 md:h-[145px] flex items-center w-[calc(100%-48px)] max-w-[1600px]">
           
           <div className="w-full grid grid-cols-2 md:flex md:overflow-x-auto lg:grid lg:grid-cols-5 items-center gap-y-[32px] md:gap-y-0 md:divide-x divide-[#ECEEF5] no-scrollbar">
             
