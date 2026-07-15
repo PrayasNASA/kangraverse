@@ -219,7 +219,7 @@ export default function Chatbot() {
             exit={{ opacity: 0, scale: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={handleOpen}
-            className="w-16 h-16 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-[24px] shadow-2xl transition-shadow flex items-center justify-center group border border-white/30 z-[60] pointer-events-auto touch-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:ring-offset-2"
+            className="w-16 h-16 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-full shadow-2xl transition-shadow flex items-center justify-center group border border-white/30 z-[60] pointer-events-auto touch-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:ring-offset-2"
             aria-label="Open AI Assistant"
           >
             <Sparkles className="w-7 h-7 animate-pulse drop-shadow-md" />
@@ -237,7 +237,7 @@ export default function Chatbot() {
             exit={{ opacity: 0, scale: 0.1, filter: "blur(10px)" }}
             transition={{ duration: 0.4, type: "spring", stiffness: 350, damping: 30 }}
             style={{ position: 'fixed', ...chatStyle }}
-            className="z-[70] w-auto md:w-[420px] h-[700px] max-h-[80vh] flex flex-col glass-panel backdrop-blur-3xl bg-white/90 dark:bg-slate-900/95 border border-white/60 dark:border-slate-700/50 rounded-2xl md:rounded-[32px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.3)] overflow-hidden pointer-events-auto"
+            className="z-[70] w-auto md:w-[420px] h-[700px] max-h-[80vh] flex flex-col glass-panel backdrop-blur-[32px] bg-white/90 dark:bg-slate-900/95 border border-white/60 dark:border-slate-700/50 rounded-t-[32px] md:rounded-[32px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.3)] overflow-hidden pointer-events-auto"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 shrink-0 border-b border-white/30 dark:border-slate-700/30 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md z-10">
@@ -341,12 +341,12 @@ export default function Chatbot() {
             <div className="px-5 pb-5 pt-4 shrink-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border-t border-white/40 dark:border-slate-700/50 z-10">
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <div className="relative flex items-center group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-[28px] opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 blur-md"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-[18px] opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 blur-md"></div>
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask Intelligence..."
-                    className="w-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/60 dark:border-slate-600/50 rounded-[28px] pl-6 pr-14 h-[56px] text-[15px] focus:outline-none focus:border-[var(--primary)] text-slate-800 dark:text-slate-100 transition-all duration-300 placeholder:text-slate-400 font-semibold shadow-inner relative z-10"
+                    className="w-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/60 dark:border-slate-600/50 rounded-[18px] pl-5 pr-14 h-[56px] text-[15px] focus:outline-none focus:border-[var(--primary)] text-slate-800 dark:text-slate-100 transition-all duration-300 placeholder:text-slate-400 font-semibold shadow-inner relative z-10"
                   />
                   <AnimatePresence>
                     {input.trim() ? (
@@ -356,7 +356,7 @@ export default function Chatbot() {
                         exit={{ scale: 0, opacity: 0, rotate: 45 }}
                         type="submit"
                         disabled={isLoading}
-                        className="absolute right-2 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-full transition-transform duration-200 hover:scale-105 shrink-0 flex items-center justify-center w-11 h-11 shadow-md z-20 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50"
+                        className="absolute right-2 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-[14px] transition-transform duration-200 hover:scale-105 shrink-0 flex items-center justify-center w-[40px] h-[40px] shadow-md z-20 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50"
                         aria-label="Send message"
                       >
                         <Send className="w-[18px] h-[18px] ml-[2px]" />

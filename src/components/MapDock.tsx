@@ -77,7 +77,7 @@ export default function MapDock() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="absolute bottom-full mb-5 w-[300px] rounded-[24px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.2)] z-50 border border-white/60 dark:border-white/10 backdrop-blur-[24px] bg-white/70 dark:bg-[#1C1C1E]/80"
+            className="absolute bottom-full mb-5 w-[300px] rounded-[28px] overflow-hidden shadow-[0_20px_60px_rgba(15,23,42,0.15)] z-50 border border-white/60 dark:border-white/10 backdrop-blur-[24px] bg-white/70 dark:bg-[#1C1C1E]/80"
           >
             <div className="px-5 py-4 border-b border-black/5 dark:border-white/5">
               <h3 className="text-[12px] font-[800] text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] flex items-center gap-2">
@@ -153,7 +153,7 @@ export default function MapDock() {
       </AnimatePresence>
 
       {/* Main Premium Dock */}
-      <div className="backdrop-blur-[24px] bg-white/60 dark:bg-[#1C1C1E]/70 rounded-[24px] border border-white/60 dark:border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.15)] p-1.5 flex items-center z-40">
+      <div className="backdrop-blur-[24px] bg-white/70 dark:bg-[#1C1C1E]/70 rounded-full border border-white/60 dark:border-white/10 shadow-[0_20px_60px_rgba(15,23,42,0.15)] p-2 flex items-center z-40 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(15,23,42,0.2)]">
         {dockItems.map((item, index) => {
           const showDivider = [0, 1, 3, 4].includes(index);
           return (
@@ -162,7 +162,7 @@ export default function MapDock() {
                 <button
                   onClick={item.onClick}
                   className={twMerge(
-                    "w-[46px] h-[46px] sm:w-[54px] sm:h-[54px] rounded-[18px] flex items-center justify-center transition-all duration-300 relative focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50",
+                    "w-[46px] h-[46px] sm:w-[54px] sm:h-[54px] rounded-full flex items-center justify-center transition-all duration-300 ease-out relative focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50",
                     item.active 
                       ? "bg-white/90 dark:bg-white/20 text-[var(--primary)] dark:text-white shadow-sm" 
                       : "text-slate-700 dark:text-slate-200 hover:bg-white/80 dark:hover:bg-white/15 hover:scale-[1.05] active:scale-[0.95]"

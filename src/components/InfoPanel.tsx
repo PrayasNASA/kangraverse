@@ -90,12 +90,12 @@ export default function InfoPanel() {
             {/* Sticky Glass Header Overlay */}
             <div className="absolute top-0 left-0 right-0 z-50 flex justify-between p-5 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none">
               <div className="flex gap-2 pointer-events-auto">
-                <span className="px-3.5 py-1.5 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-md flex items-center justify-center">
+                <span className="px-3.5 py-1.5 rounded-[18px] bg-white/20 backdrop-blur-md border border-white/30 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-md flex items-center justify-center">
                   {selectedFeature.type || 'Location'}
                 </span>
                 {'vulnerability' in selectedFeature && selectedFeature.vulnerability && (
                   <span className={twMerge(
-                    "px-3.5 py-1.5 rounded-xl border border-white/30 text-[11px] font-extrabold uppercase tracking-widest text-white flex items-center gap-1.5 shadow-md",
+                    "px-3.5 py-1.5 rounded-[18px] border border-white/30 text-[11px] font-extrabold uppercase tracking-widest text-white flex items-center gap-1.5 shadow-md",
                     selectedFeature.vulnerability === 'High' ? 'bg-red-500/80 backdrop-blur-md' : 'bg-amber-500/80 backdrop-blur-md'
                   )}>
                     {selectedFeature.vulnerability === 'High' && <ShieldAlert className="w-3.5 h-3.5" />}
@@ -105,14 +105,14 @@ export default function InfoPanel() {
               </div>
               <div className="flex gap-2 pointer-events-auto">
                 <button 
-                  className="w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all shadow-lg focus:outline-none focus:ring-2 focus:ring-white/50"
+                  className="w-10 h-10 rounded-[16px] bg-black/20 hover:bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all duration-300 ease-out shadow-lg focus:outline-none focus:ring-2 focus:ring-white/50"
                   aria-label="Share"
                 >
                   <Share2 className="w-4 h-4" />
                 </button>
                 <button 
                   onClick={() => setSelectedFeature(null)} 
-                  className="w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all shadow-lg focus:outline-none focus:ring-2 focus:ring-white/50"
+                  className="w-10 h-10 rounded-[16px] bg-black/20 hover:bg-black/40 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all duration-300 ease-out shadow-lg focus:outline-none focus:ring-2 focus:ring-white/50"
                   aria-label="Close panel"
                 >
                   <X className="w-5 h-5" />
@@ -150,10 +150,10 @@ export default function InfoPanel() {
                       </h2>
                       <button 
                         onClick={() => toggleFavorite(selectedFeature.id)}
-                        className={twMerge("w-12 h-12 shrink-0 rounded-full flex items-center justify-center transition-all shadow-md border focus:outline-none focus:ring-2 focus:ring-rose-500/50", favorites.includes(selectedFeature.id) ? "bg-rose-50 border-rose-100 dark:bg-rose-900/30 dark:border-rose-900/50 text-rose-500" : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 hover:text-rose-500")}
+                        className={twMerge("w-12 h-12 shrink-0 rounded-[18px] flex items-center justify-center transition-all duration-300 ease-out shadow-md border focus:outline-none focus:ring-2 focus:ring-rose-500/50 hover:scale-[1.02] hover:shadow-lg", favorites.includes(selectedFeature.id) ? "bg-rose-50 border-rose-100 dark:bg-rose-900/30 dark:border-rose-900/50 text-rose-500" : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 hover:text-rose-500")}
                         aria-label="Toggle favorite"
                       >
-                        <Heart className={twMerge("w-5 h-5 transition-transform", favorites.includes(selectedFeature.id) && "fill-current scale-110")} />
+                        <Heart className={twMerge("w-5 h-5 transition-transform duration-300", favorites.includes(selectedFeature.id) && "fill-current scale-110")} />
                       </button>
                     </div>
                     
@@ -185,17 +185,17 @@ export default function InfoPanel() {
                   </div>
 
                   {/* Sticky Tabs */}
-                  <div className="sticky top-[76px] z-40 bg-white/85 dark:bg-slate-900/85 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 px-4 shadow-sm transition-colors">
+                  <div className="sticky top-[76px] z-40 bg-white/70 dark:bg-slate-900/70 backdrop-blur-[24px] border-b border-black/5 dark:border-white/5 px-4 shadow-sm transition-colors">
                     <div className="flex overflow-x-auto no-scrollbar gap-2 py-3">
                       {TABS.map(tab => (
                         <button
                           key={tab}
                           onClick={() => setActiveTab(tab)}
                           className={twMerge(
-                            "px-5 py-2.5 rounded-full text-[13px] font-bold whitespace-nowrap transition-all focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50",
+                            "px-5 py-2.5 rounded-[20px] text-[13px] font-bold whitespace-nowrap transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50",
                             activeTab === tab 
-                              ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/30" 
-                              : "text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5"
+                              ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/30 hover:-translate-y-0.5" 
+                              : "text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 hover:-translate-y-0.5"
                           )}
                           aria-pressed={activeTab === tab}
                         >
@@ -246,8 +246,8 @@ export default function InfoPanel() {
             </div>
 
             {/* Sticky Bottom Actions */}
-            <div className="absolute bottom-0 left-0 right-0 z-50 p-5 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border-t border-black/5 dark:border-white/5 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
-               <button className="w-full py-4 rounded-[16px] bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-extrabold text-[15px] shadow-lg shadow-[var(--primary)]/30 hover:shadow-[var(--primary)]/50 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2">
+            <div className="absolute bottom-0 left-0 right-0 z-50 p-5 glass-panel rounded-b-[32px] md:rounded-b-[32px] border-t border-black/5 dark:border-white/5 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+               <button className="w-full py-4 rounded-[18px] bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-extrabold text-[15px] shadow-[0_8px_24px_rgba(108,99,255,0.3)] hover:shadow-[0_12px_32px_rgba(108,99,255,0.4)] hover:scale-[1.02] transition-all duration-300 ease-out flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2">
                   <MapPin className="w-5 h-5" /> Start Navigation
                </button>
             </div>
