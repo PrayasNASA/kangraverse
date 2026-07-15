@@ -17,8 +17,8 @@ export default function MapPage() {
         <CesiumMap />
       </div>
       
-      {/* Absolute Layout Zones (z-40) */}
-      <div className="absolute inset-0 z-40 pointer-events-none p-6 pt-[140px] flex flex-col justify-between">
+      {/* Absolute Layout Zones */}
+      <div className="absolute inset-0 pointer-events-none p-6 pt-[140px] flex flex-col justify-between">
         {/* TOP ZONE (TopNav will handle this via position fixed/absolute, but we can reserve space if needed) */}
         <div id="zone-top" className="w-full shrink-0 flex justify-center"></div>
         

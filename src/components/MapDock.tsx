@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Layers, Mountain, Map as MapIcon, Navigation, Image as ImageIcon, Clock, Footprints, ShieldAlert, Compass, Plus, Minus, Maximize, Ruler } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import { twMerge } from 'tailwind-merge';
+import { Z_INDEX } from '@/utils/zIndex';
 
 export default function MapDock() {
   const { showTerrain, setShowTerrain, showSatellite, setShowSatellite, showMarkers, setShowMarkers, showVulnerability, setShowVulnerability, timeOfDay, setTimeOfDay, showTreks, setShowTreks } = useStore();
@@ -153,7 +154,7 @@ export default function MapDock() {
       </AnimatePresence>
 
       {/* Main Premium Dock */}
-      <div className="backdrop-blur-[24px] bg-white/70 dark:bg-[#1C1C1E]/70 rounded-full border border-white/60 dark:border-white/10 shadow-[0_20px_60px_rgba(15,23,42,0.15)] p-2.5 flex items-center gap-2 z-40 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(15,23,42,0.2)]">
+      <div style={{ zIndex: Z_INDEX.BOTTOM_DOCK }} className="backdrop-blur-[24px] bg-white/70 dark:bg-[#1C1C1E]/70 rounded-full border border-white/60 dark:border-white/10 shadow-[0_20px_60px_rgba(15,23,42,0.15)] p-2.5 flex items-center gap-2 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(15,23,42,0.2)]">
         {dockItems.map((item, index) => {
           const showDivider = [0, 1, 3, 4].includes(index);
           return (

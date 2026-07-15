@@ -8,6 +8,7 @@ import {
 import { useStore, HeritageFeature, Trek } from '@/store/useStore';
 import heritageDataRaw from '@/data/heritage.json';
 import { twMerge } from 'tailwind-merge';
+import { Z_INDEX } from '@/utils/zIndex';
 
 const heritageData = heritageDataRaw as HeritageFeature[];
 
@@ -83,7 +84,8 @@ export default function InfoPanel() {
           animate={isMobile ? { y: 0, opacity: 1 } : { x: 0, opacity: 1, scale: 1 }}
           exit={isMobile ? { y: '100%', opacity: 0 } : { x: 400, opacity: 0, scale: 0.95 }}
           transition={{ type: 'spring', damping: 30, stiffness: 350, mass: 0.8 }}
-          className="absolute bottom-0 right-0 md:top-[148px] md:right-6 z-[60] w-full md:w-[460px] h-[92dvh] md:h-auto md:max-h-[calc(100dvh-172px)] flex flex-col pointer-events-none"
+          style={{ zIndex: Z_INDEX.DETAILS_PANEL }}
+          className="absolute bottom-0 right-0 md:top-[148px] md:right-6 w-full md:w-[460px] h-[92dvh] md:h-auto md:max-h-[calc(100dvh-172px)] flex flex-col pointer-events-none"
         >
           <div className="relative flex flex-col h-full bg-transparent rounded-t-[32px] md:rounded-[32px] overflow-hidden pointer-events-auto shadow-[0_30px_80px_-20px_rgba(0,0,0,0.4)] border-0 md:border border-white/20 dark:border-white/10">
             

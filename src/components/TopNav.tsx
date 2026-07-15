@@ -3,8 +3,17 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, User, Compass, LayoutDashboard, BookOpen, FlaskConical, Image as ImageIcon, Info, Menu } from 'lucide-react';
+import { Map, Search, Layers, ShieldAlert, Sparkles, User, Sun, Moon, Compass, LayoutDashboard, BookOpen, FlaskConical, Image as ImageIcon, Info, Menu } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
+import { Z_INDEX } from '@/utils/zIndex';
+
+const NAV_ITEMS = [
+  { href: '/explorer', label: 'Explore', icon: Compass },
+  { href: '#', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '#', label: 'Stories', icon: BookOpen },
+  { href: '#', label: 'Research', icon: FlaskConical },
+  { href: '#', label: 'Gallery', icon: ImageIcon },
+];
 
 export default function TopNav() {
   const pathname = usePathname();
@@ -50,17 +59,19 @@ export default function TopNav() {
   const isHome = pathname === '/';
 
   const headerContent = (
-    <header className={twMerge(
-      "flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-[100]",
-      isHome 
-        ? twMerge(
-            "fixed top-0 left-0 w-full px-6 lg:px-12 transition-all duration-500",
-            scrolled 
-              ? "h-[80px] bg-white/70 dark:bg-[#1C1C1E]/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 shadow-sm" 
-              : "h-[100px] bg-transparent border-b-0 shadow-none"
-          )
-        : "h-[76px] rounded-[28px] px-6 w-full shadow-[0_20px_60px_rgba(15,23,42,0.10)] border border-white/60 dark:border-white/10 backdrop-blur-[32px] bg-white/70 dark:bg-[#1C1C1E]/70"
-    )}>
+    <header 
+      style={{ zIndex: Z_INDEX.NAVBAR }}
+      className={twMerge(
+        "flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        isHome 
+          ? twMerge(
+              "fixed top-0 left-0 w-full px-6 lg:px-12 transition-all duration-500",
+              scrolled 
+                ? "h-[80px] bg-white/70 dark:bg-[#1C1C1E]/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 shadow-sm" 
+                : "h-[100px] bg-transparent border-b-0 shadow-none"
+            )
+          : "h-[76px] rounded-[28px] px-6 w-full shadow-[0_20px_60px_rgba(15,23,42,0.10)] border border-white/60 dark:border-white/10 backdrop-blur-[32px] bg-white/70 dark:bg-[#1C1C1E]/70"
+      )}>
       {isHome && !scrolled && (
         <div 
           className="absolute inset-0 z-[-1] pointer-events-none transition-opacity duration-500"
@@ -187,7 +198,7 @@ export default function TopNav() {
 
   if (isExplorer) {
     return (
-      <div className="fixed top-6 left-6 right-6 lg:top-6 lg:left-1/2 lg:-translate-x-1/2 lg:w-[calc(100%-48px)] z-[100] max-w-[1800px] transition-all duration-500 pointer-events-auto">
+      <div style={{ zIndex: Z_INDEX.NAVBAR }} className="fixed top-6 left-6 right-6 lg:top-6 lg:left-1/2 lg:-translate-x-1/2 lg:w-[calc(100%-48px)] max-w-[1800px] transition-all duration-500 pointer-events-auto">
         {headerContent}
       </div>
     );

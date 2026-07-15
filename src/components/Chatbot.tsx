@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion';
 import { 
   X, Send, Sparkles, Info
 } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
+import { Z_INDEX } from '@/utils/zIndex';
 
 interface Message {
   role: 'user' | 'model';
@@ -77,6 +79,9 @@ export default function Chatbot() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const chatPanelRef = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -126,6 +131,50 @@ export default function Chatbot() {
     window.addEventListener('resize', handleResizeSnap);
     return () => window.removeEventListener('resize', handleResizeSnap);
   }, [isMounted, x, y]);
+
+  // Accessibility: Focus Trap and Escape key
+  useEffect(() => {
+    if (!isOpen) {
+      buttonRef.current?.focus();
+      return;
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      } else if (e.key === 'Tab') {
+        if (!chatPanelRef.current) return;
+        const focusableElements = chatPanelRef.current.querySelectorAll(
+          'a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement?.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement?.focus();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    
+    // Focus the input when opened
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 300); // slight delay for animation
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   const handleDragEnd = () => {
     const bounds = getSafeArea();
@@ -194,53 +243,50 @@ export default function Chatbot() {
   const chatStyle: any = isMobile ? {
     left: 16,
     right: 16,
-    bottom: 96,
-    transformOrigin: 'bottom right'
+    bottom: 32, // Support safe-area-bottom visually
+    transformOrigin: 'bottom center',
+    maxHeight: 'calc(100vh - env(safe-area-inset-bottom) - 64px)'
   } : {
     left: isLeftHalf ? chatPos.x : undefined,
     right: !isLeftHalf ? window.innerWidth - chatPos.x - BUTTON_SIZE : undefined,
-    top: isTopHalf ? chatPos.y : undefined,
+    top: isTopHalf ? Math.max(chatPos.y, 24) : undefined, // Ensure never cuts off top edge
     bottom: !isTopHalf ? window.innerHeight - chatPos.y - BUTTON_SIZE : undefined,
-    transformOrigin: `${chatOriginX} ${chatOriginY}`
+    transformOrigin: `${chatOriginX} ${chatOriginY}`,
+    maxHeight: 'calc(100vh - 48px)'
   };
 
-  return (
-    <>
-      {/* Floating Action Button */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            drag
-            dragMomentum={false}
-            onDragEnd={handleDragEnd}
-            style={{ x, y, position: 'fixed', top: 0, left: 0 }}
-            whileHover={{ scale: 1.1, boxShadow: '0px 0px 40px rgba(108, 99, 255, 0.6)' }}
-            whileTap={{ scale: 0.95 }}
-            whileDrag={{ scale: 0.95, cursor: 'grabbing', boxShadow: '0px 20px 50px rgba(0,0,0,0.4)' }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            onClick={handleOpen}
-            className="w-16 h-16 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-full shadow-2xl transition-shadow flex items-center justify-center group border border-white/30 z-[60] pointer-events-auto touch-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:ring-offset-2"
-            aria-label="Open AI Assistant"
-          >
-            <Sparkles className="w-7 h-7 animate-pulse drop-shadow-md" />
-            <span className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[11px] font-extrabold px-2 py-0.5 rounded-full border-2 border-white dark:border-slate-800 shadow-md">AI</span>
-          </motion.button>
-        )}
-      </AnimatePresence>
+  const portalContent = (
+    <AnimatePresence>
+      {isOpen && (
+        <div 
+          className="fixed inset-0 pointer-events-auto" 
+          style={{ zIndex: Z_INDEX.AI_CHAT_PANEL }}
+        >
+          {/* Background Overlay */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="absolute inset-0 bg-[rgba(15,23,42,0.08)] backdrop-blur-[4px]"
+            onClick={() => setIsOpen(false)}
+          />
 
-      {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
+          {/* Chat Window */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.1, filter: "blur(10px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 0.1, filter: "blur(10px)" }}
-            transition={{ duration: 0.4, type: "spring", stiffness: 350, damping: 30 }}
-            style={{ position: 'fixed', ...chatStyle }}
-            className="z-[70] w-auto md:w-[420px] h-[700px] max-h-[80vh] flex flex-col glass-panel backdrop-blur-[32px] bg-white/90 dark:bg-slate-900/95 border border-white/60 dark:border-slate-700/50 rounded-t-[32px] md:rounded-[32px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.3)] overflow-hidden pointer-events-auto"
+            ref={chatPanelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="AI Assistant"
+            initial={{ opacity: 0, scale: 0.95, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 16 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            style={{ position: 'absolute', ...chatStyle }}
+            className={twMerge(
+              "w-auto md:w-[420px] h-[700px] flex flex-col glass-panel backdrop-blur-[32px] bg-white/90 dark:bg-slate-900/95 border border-white/60 dark:border-slate-700/50 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.3)] overflow-hidden",
+              isMobile ? "rounded-[32px] w-[calc(100%-32px)] left-4 right-4" : "rounded-t-[32px] md:rounded-[32px]"
+            )}
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 shrink-0 border-b border-white/30 dark:border-slate-700/30 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md z-10">
@@ -346,6 +392,7 @@ export default function Chatbot() {
                 <div className="relative flex items-center group">
                   <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-[18px] opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 blur-md"></div>
                   <input
+                    ref={inputRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask Intelligence..."
@@ -385,8 +432,41 @@ export default function Chatbot() {
               </form>
             </div>
           </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+
+  return (
+    <>
+      {/* Floating Action Button */}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.button
+            ref={buttonRef}
+            drag
+            dragMomentum={false}
+            onDragEnd={handleDragEnd}
+            style={{ x, y, position: 'fixed', top: 0, left: 0, zIndex: Z_INDEX.AI_BUTTON }}
+            whileHover={{ scale: 1.1, boxShadow: '0px 0px 40px rgba(108, 99, 255, 0.6)' }}
+            whileTap={{ scale: 0.95 }}
+            whileDrag={{ scale: 0.95, cursor: 'grabbing', boxShadow: '0px 20px 50px rgba(0,0,0,0.4)' }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            onClick={handleOpen}
+            className="w-16 h-16 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-full shadow-2xl transition-shadow flex items-center justify-center group border border-white/30 pointer-events-auto touch-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:ring-offset-2"
+            aria-label="Open AI Assistant"
+          >
+            <Sparkles className="w-7 h-7 animate-pulse drop-shadow-md" />
+            <span className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[11px] font-extrabold px-2 py-0.5 rounded-full border-2 border-white dark:border-slate-800 shadow-md">AI</span>
+          </motion.button>
         )}
       </AnimatePresence>
+
+      {/* React Portal for Chat Window */}
+      {createPortal(portalContent, document.body)}
     </>
   );
 }

@@ -6,6 +6,7 @@ import Fuse from 'fuse.js';
 import { twMerge } from 'tailwind-merge';
 
 import { useStore, HeritageFeature, Tour } from '@/store/useStore';
+import { Z_INDEX } from '@/utils/zIndex';
 import heritageDataRaw from '@/data/heritage.json';
 import toursDataRaw from '@/data/tours.json';
 
@@ -186,7 +187,7 @@ export default function Sidebar() {
   return (
     <>
       {isMounted && !isMobile && (
-        <div className="absolute top-[140px] bottom-6 left-6 z-[40] pointer-events-none flex">
+        <div style={{ zIndex: Z_INDEX.SIDEBAR }} className="absolute top-[140px] bottom-6 left-6 pointer-events-none flex">
           <motion.aside
             initial={{ x: -400, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
