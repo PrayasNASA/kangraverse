@@ -105,39 +105,37 @@ export default function Sidebar() {
   };
 
   const renderResultsList = () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       {activeTab === 'places' ? (
         filteredData.length > 0 ? (
           filteredData.map((feature, idx) => (
             <button
               key={feature.id}
               onClick={() => handleSelectFeature(feature)}
-              className="w-full text-left p-3 rounded-2xl glass-card group flex gap-4 items-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-white/40 dark:hover:bg-slate-800/40 border border-transparent hover:border-white/40"
+              className="w-full text-left p-3 rounded-[24px] glass-card group flex gap-4 items-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:bg-white/60 dark:hover:bg-slate-800/60 border border-transparent hover:border-white/60"
             >
-              <div className="w-14 h-14 rounded-[18px] overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 shadow-sm relative">
+              <div className="w-20 h-20 rounded-[20px] overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 shadow-sm relative">
                 <img 
                   src={feature.image_url || `https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=150&h=150&fit=crop`} 
                   alt={feature.name} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
-              <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm group-hover:text-[var(--primary)] transition-colors truncate">
+              <div className="flex-1 min-w-0 flex flex-col justify-center h-full py-1">
+                <h4 className="font-extrabold text-slate-800 dark:text-slate-100 text-[15px] leading-tight group-hover:text-[var(--primary)] transition-colors truncate">
                   {feature.name}
                 </h4>
-                <div className="flex items-center text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 mb-1 truncate font-medium">
+                <div className="flex items-center text-[12px] text-slate-500 dark:text-slate-400 mt-1 mb-2 truncate font-semibold">
                   <span className="capitalize">{feature.type || 'Location'}</span>
                   <span className="mx-1.5">•</span>
                   <span>{feature.district || 'Kangra'}</span>
                 </div>
-                <div className="flex items-center justify-between mt-1">
-                  <div className="flex items-center gap-1 bg-amber-400/10 px-1.5 py-0.5 rounded-md">
-                    <div className="flex text-amber-500">
-                      <Star className="w-3 h-3 fill-current" />
-                    </div>
-                    <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 ml-0.5">4.8</span>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-center gap-1 bg-amber-400/15 px-2 py-0.5 rounded-lg border border-amber-400/20">
+                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                    <span className="text-[11px] font-bold text-amber-600 dark:text-amber-400 ml-0.5">4.8</span>
                   </div>
-                  <span className="text-[10px] font-bold text-[var(--primary)] bg-[var(--primary)]/10 px-1.5 py-0.5 rounded-md">{((idx + 1) * 1.2).toFixed(1)} km</span>
+                  <span className="text-[11px] font-bold text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-0.5 rounded-lg border border-[var(--primary)]/20">{((idx + 1) * 1.2).toFixed(1)} km</span>
                 </div>
               </div>
             </button>
@@ -152,21 +150,21 @@ export default function Sidebar() {
           const isActive = activeTour?.id === tour.id;
           return (
             <div key={tour.id} className={twMerge(
-              "w-full text-left p-4 rounded-2xl glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
+              "w-full text-left p-4 rounded-[24px] glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
               isActive ? "ring-2 ring-[var(--primary)] shadow-md" : "border border-white/20 hover:border-white/40"
             )}>
-              <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1">{tour.name}</h4>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-4 line-clamp-2 leading-relaxed">{tour.description}</p>
+              <h4 className="font-extrabold text-slate-800 dark:text-slate-100 text-[15px] mb-1.5">{tour.name}</h4>
+              <p className="text-[12px] text-slate-500 dark:text-slate-400 mb-4 line-clamp-2 leading-relaxed font-medium">{tour.description}</p>
               <button 
                 onClick={() => handleStartTour(tour)}
                 className={twMerge(
-                  "w-full py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all",
+                  "w-full py-3 px-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all",
                   isActive 
                     ? "bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white shadow-lg shadow-[var(--primary)]/30"
                     : "bg-white/50 dark:bg-slate-800/50 border border-white/50 text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700"
                 )}
               >
-                <Route className="w-4 h-4" />
+                <Route className="w-[18px] h-[18px]" />
                 {isActive ? 'Restart Route' : 'Start Route'} ({tour.stops.length} stops)
               </button>
             </div>
@@ -183,16 +181,16 @@ export default function Sidebar() {
           initial={{ x: -400, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="absolute top-[104px] left-[24px] pointer-events-auto w-[380px] h-[calc(100vh-128px)] glass-panel backdrop-blur-3xl bg-white/70 dark:bg-slate-900/80 rounded-[32px] border border-white/60 dark:border-slate-700/50 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col z-[40]"
+          className="relative pointer-events-auto w-[380px] h-full flex flex-col gap-5 z-[40]"
         >
-            {/* Pinned Premium Search Bar */}
-            <div className="glass-panel bg-white/70 dark:bg-slate-900/70 rounded-[24px] overflow-hidden pointer-events-auto shrink-0 flex items-center p-2 shadow-xl shadow-black/5 border border-white/60 dark:border-slate-700/50">
-            <div className="relative flex-1 group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[var(--primary)] transition-colors" />
+          {/* Search Bar - Fixed Top */}
+          <div className="glass-panel bg-white/70 dark:bg-slate-900/80 rounded-[18px] pointer-events-auto shrink-0 flex items-center p-2 shadow-xl shadow-black/5 border border-white/60 dark:border-slate-700/50 h-[56px] backdrop-blur-3xl">
+            <div className="relative flex-1 group h-full">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400 group-focus-within:text-[var(--primary)] transition-colors" />
               <input 
                 type="text" 
                 placeholder="Explore Kangra..." 
-                className="w-full bg-transparent border-none rounded-xl pl-10 pr-4 py-3 text-[15px] focus:outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-semibold transition-all"
+                className="w-full h-full bg-transparent border-none rounded-xl pl-10 pr-4 text-[15px] focus:outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-semibold transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -200,28 +198,28 @@ export default function Sidebar() {
             <button 
               onClick={() => setShowFilters(!showFilters)}
               className={twMerge(
-                "p-2.5 rounded-xl transition-all flex items-center justify-center flex-shrink-0 ml-1",
+                "h-full px-3 rounded-[12px] transition-all flex items-center justify-center flex-shrink-0 ml-1",
                 showFilters || filterReligion 
-                  ? "bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white shadow-md shadow-[var(--primary)]/20" 
+                  ? "bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white shadow-md shadow-[var(--primary)]/30" 
                   : "bg-black/5 dark:bg-white/10 text-slate-600 dark:text-slate-300 hover:bg-black/10 dark:hover:bg-white/20"
               )}
             >
-              <Filter className="w-4 h-4" />
+              <Filter className="w-[18px] h-[18px]" />
             </button>
           </div>
 
-          {/* Fixed Dashboard Header Area */}
-          <div className="glass-panel backdrop-blur-2xl bg-white/60 dark:bg-slate-900/60 border border-white/50 dark:border-slate-700/50 rounded-[28px] pointer-events-auto flex flex-col overflow-hidden shadow-2xl shadow-black/10 flex-1 min-h-0">
-            <div className="p-5 pb-3 flex flex-col gap-6 shrink-0 border-b border-black/5 dark:border-white/5">
+          {/* Main Panel (Categories + Results) */}
+          <div className="glass-panel backdrop-blur-3xl bg-white/70 dark:bg-slate-900/80 border border-white/60 dark:border-slate-700/50 rounded-[24px] pointer-events-auto flex flex-col overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] flex-1 min-h-0">
+            {/* Categories Section - Fixed Below Search */}
+            <div className="p-5 pb-3 flex flex-col gap-4 shrink-0 border-b border-white/40 dark:border-white/5">
               
-              {/* Collapsible Categories (Horizontal Pills) */}
               <div className="flex flex-col gap-3">
                 <div 
                   className="flex items-center justify-between cursor-pointer group"
                   onClick={() => setShowCategories(!showCategories)}
                 >
-                  <h3 className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                    <MapIcon className="w-3 h-3" /> Categories
+                  <h3 className="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <MapIcon className="w-3.5 h-3.5 text-[var(--primary)]" /> Categories
                   </h3>
                   <button className="text-slate-400 group-hover:text-[var(--primary)] transition-colors">
                     {showCategories ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -236,7 +234,7 @@ export default function Sidebar() {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2 pt-1 -mx-2 px-2 snap-x">
+                      <div className="grid grid-cols-2 gap-2 pt-1">
                         {CATEGORIES.map(cat => {
                           const isActive = selectedCategory === cat.id || (cat.id === 'all' && !selectedCategory) || (cat.id === 'tours' && activeTab === 'tours');
                           return (
@@ -252,15 +250,15 @@ export default function Sidebar() {
                                 }
                               }}
                               className={twMerge(
-                                "flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap snap-start transition-all duration-300 hover:-translate-y-0.5",
+                                "flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-300 w-full hover:-translate-y-0.5",
                                 isActive 
-                                  ? "bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white shadow-md shadow-[var(--primary)]/20"
-                                  : "glass-card bg-white/50 border-white/40 text-slate-600 dark:text-slate-300 hover:bg-white/80"
+                                  ? "bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white shadow-lg shadow-[var(--primary)]/30 border border-transparent"
+                                  : "bg-white/60 dark:bg-slate-800/60 border border-white/60 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-white/90 shadow-sm"
                               )}
                             >
-                              <span className="text-xs font-bold">{cat.label}</span>
+                              <span className="text-[12px] font-bold truncate">{cat.label}</span>
                               <span className={twMerge(
-                                "text-[10px] font-bold px-1.5 py-0.5 rounded-full",
+                                "text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ml-2",
                                 isActive ? "bg-white/20 text-white" : "bg-black/5 dark:bg-white/10 text-slate-500"
                               )}>
                                 {getCategoryCount(cat.id)}

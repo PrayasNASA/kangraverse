@@ -84,7 +84,7 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 md:bottom-[32px] md:right-[32px] z-[45] flex flex-col items-end justify-end pointer-events-none">
+    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[45] flex flex-col items-end justify-end pointer-events-none h-full max-h-[85vh]">
       {/* Floating Action Button */}
       <AnimatePresence>
         {!isOpen && (
@@ -96,10 +96,10 @@ export default function Chatbot() {
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsOpen(true)}
-            className="p-4 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-[24px] shadow-2xl hover:shadow-[var(--primary)]/30 transition-all flex items-center justify-center group border border-white/20 relative z-[45] pointer-events-auto"
+            className="p-4 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-[20px] shadow-2xl hover:shadow-[var(--primary)]/30 transition-all flex items-center justify-center group border border-white/20 relative z-[45] pointer-events-auto"
           >
             <Sparkles className="w-6 h-6 animate-pulse" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white shadow-sm">AI</span>
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[var(--primary)] shadow-sm">AI</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -112,7 +112,7 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             exit={{ opacity: 0, y: 40, scale: 0.95, filter: "blur(10px)" }}
             transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 30 }}
-            className="pointer-events-auto z-[70] w-[calc(100vw-48px)] md:w-[420px] h-full max-h-[650px] flex-1 min-h-[400px] flex flex-col glass-panel backdrop-blur-3xl bg-white/80 dark:bg-slate-900/80 border border-white/60 dark:border-slate-700/50 rounded-2xl md:rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden"
+            className="pointer-events-auto z-[70] w-[calc(100vw-48px)] md:w-[420px] h-full flex-1 flex flex-col glass-panel backdrop-blur-3xl bg-white/80 dark:bg-slate-900/80 border border-white/60 dark:border-slate-700/50 rounded-2xl md:rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 shrink-0 border-b border-white/30 dark:border-slate-700/30 bg-white/30 dark:bg-slate-800/30 backdrop-blur-md z-10">

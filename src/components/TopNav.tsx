@@ -57,7 +57,7 @@ export default function TopNav() {
             "fixed top-0 left-0 w-full h-[92px] px-[40px] lg:px-[clamp(40px,5vw,72px)]",
             scrolled ? "glass-nav" : "bg-transparent border-b-0 shadow-none"
           )
-        : "h-[72px] glass-panel rounded-full px-6 w-[calc(100vw-48px)] max-w-[1600px] shadow-lg shadow-black/5"
+        : "h-[72px] glass-panel rounded-full px-6 w-[calc(100vw-48px)] max-w-[1600px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] border border-white/60 dark:border-slate-700/50 backdrop-blur-3xl bg-white/70 dark:bg-slate-900/80"
     )}>
       {isHome && !scrolled && (
         <div 

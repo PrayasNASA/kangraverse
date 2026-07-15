@@ -319,7 +319,20 @@ export default function CesiumMap() {
     }
   };
 
-  const destination = Cartesian3.fromDegrees(76.4, 32.125, 70000);
+  useEffect(() => {
+    window.addEventListener('map-zoom-in', handleZoomIn);
+    window.addEventListener('map-zoom-out', handleZoomOut);
+    window.addEventListener('map-reset-north', handleCompassClick);
+    window.addEventListener('map-fullscreen', handleFullscreen);
+    return () => {
+      window.removeEventListener('map-zoom-in', handleZoomIn);
+      window.removeEventListener('map-zoom-out', handleZoomOut);
+      window.removeEventListener('map-reset-north', handleCompassClick);
+      window.removeEventListener('map-fullscreen', handleFullscreen);
+    };
+  }, []);
+
+  const destination = Cartesian3.fromDegrees(76.4, 32.125, 84000);
 
   if (!terrainProvider || !baseMapProvider || satProvider === null || !flatTerrainProvider) {
     return (
@@ -466,48 +479,6 @@ export default function CesiumMap() {
           </div>
         </div>
       )}
-
-      {/* Custom Map Controls */}
-      <div className="absolute top-[104px] right-[24px] flex flex-col gap-4 pointer-events-auto z-[40]">
-          {/* Compass */}
-        <button 
-          onClick={handleCompassClick}
-          className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all duration-300 text-slate-700 dark:text-slate-200 hover:scale-[1.05] group"
-          title="Reset North"
-        >
-          <Compass 
-            className="w-[22px] h-[22px] transition-transform duration-75 text-[var(--primary)] group-hover:drop-shadow-[0_0_8px_rgba(108,99,255,0.5)]" 
-            style={{ transform: `rotate(${-cameraHeading}deg)` }} 
-          />
-        </button>
-
-        {/* Zoom Controls */}
-        <div className="flex flex-col rounded-full glass-panel overflow-hidden transition-all duration-300">
-          <button 
-            onClick={handleZoomIn}
-            className="w-12 h-12 flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-colors text-slate-700 dark:text-slate-200 border-b border-white/20 dark:border-slate-700/50 hover:text-[var(--primary)]"
-            title="Zoom In"
-          >
-            <Plus className="w-5 h-5" />
-          </button>
-          <button 
-            onClick={handleZoomOut}
-            className="w-12 h-12 flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-colors text-slate-700 dark:text-slate-200 hover:text-[var(--primary)]"
-            title="Zoom Out"
-          >
-            <Minus className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Fullscreen Toggle */}
-        <button 
-          onClick={handleFullscreen}
-          className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all duration-300 text-slate-700 dark:text-slate-200 hover:scale-[1.05] hover:text-[var(--primary)]"
-          title="Toggle Fullscreen"
-        >
-          <Maximize className="w-5 h-5" />
-        </button>
-        </div>
-      </div>
+    </div>
   );
 }
