@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion';
 import { 
-  X, Send, Sparkles, User, Info
+  X, Send, Sparkles, Info
 } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
@@ -19,9 +19,55 @@ const SUGGESTED_PROMPTS = [
   { text: "🎤 Community Interviews", icon: "🎤" },
 ];
 
+const BUTTON_SIZE = 64; 
+const MARGIN = 24;
+
+const getSafeArea = () => {
+  if (typeof window === 'undefined') return { minX: 0, maxX: 0, minY: 0, maxY: 0 };
+  const isMobile = window.innerWidth < 768;
+
+  if (isMobile) {
+    return {
+      minX: MARGIN,
+      maxX: Math.max(MARGIN, window.innerWidth - BUTTON_SIZE - MARGIN),
+      minY: MARGIN + 80,
+      maxY: Math.max(MARGIN + 80, window.innerHeight - BUTTON_SIZE - MARGIN - 80)
+    };
+  } else {
+    // Sidebar: 420, Details Panel: 400, Top Nav: 80, Bottom Dock: 100
+    const minX = 420 + MARGIN;
+    const maxX = Math.max(minX, window.innerWidth - 400 - BUTTON_SIZE - MARGIN);
+    const minY = MARGIN + 80;
+    const maxY = Math.max(minY, window.innerHeight - 100 - BUTTON_SIZE - MARGIN);
+
+    return { minX, maxX, minY, maxY };
+  }
+};
+
+const snapToEdge = (currentX: number, currentY: number, safeArea: ReturnType<typeof getSafeArea>) => {
+  let x = Math.max(safeArea.minX, Math.min(currentX, safeArea.maxX));
+  let y = Math.max(safeArea.minY, Math.min(currentY, safeArea.maxY));
+
+  const distLeft = x - safeArea.minX;
+  const distRight = safeArea.maxX - x;
+  const distTop = y - safeArea.minY;
+  const distBottom = safeArea.maxY - y;
+
+  const min = Math.min(distLeft, distRight, distTop, distBottom);
+
+  if (min === distLeft) x = safeArea.minX;
+  else if (min === distRight) x = safeArea.maxX;
+  else if (min === distTop) y = safeArea.minY;
+  else if (min === distBottom) y = safeArea.maxY;
+
+  return { x, y };
+};
+
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  
   const [messages, setMessages] = useState<Message[]>([
     { role: 'model', content: "Welcome to KangraVerse.\n\nI can help you explore sacred landscapes, traditional ecological knowledge, and cultural heritage." }
   ]);
@@ -29,16 +75,69 @@ export default function Chatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const [chatPos, setChatPos] = useState({ x: 0, y: 0 });
+
   useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      if (!mobile) setIsOpen(true);
-    };
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
+
+    const bounds = getSafeArea();
+    const saved = localStorage.getItem('aiButtonPos');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        let startX = Math.max(bounds.minX, Math.min(parsed.x, bounds.maxX));
+        let startY = Math.max(bounds.minY, Math.min(parsed.y, bounds.maxY));
+        const snapped = snapToEdge(startX, startY, bounds);
+        x.set(snapped.x);
+        y.set(snapped.y);
+      } catch (e) {
+        x.set(bounds.maxX);
+        y.set(bounds.maxY);
+      }
+    } else {
+      x.set(bounds.maxX);
+      y.set(bounds.maxY);
+    }
+    
+    setIsMounted(true);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [x, y]);
+
+  // Recalculate snap on window resize if outside bounds
+  useEffect(() => {
+    if (!isMounted) return;
+    const handleResizeSnap = () => {
+      const bounds = getSafeArea();
+      const currentX = x.get();
+      const currentY = y.get();
+      if (currentX < bounds.minX || currentX > bounds.maxX || currentY < bounds.minY || currentY > bounds.maxY) {
+        const snapped = snapToEdge(currentX, currentY, bounds);
+        x.set(snapped.x);
+        y.set(snapped.y);
+      }
+    };
+    window.addEventListener('resize', handleResizeSnap);
+    return () => window.removeEventListener('resize', handleResizeSnap);
+  }, [isMounted, x, y]);
+
+  const handleDragEnd = () => {
+    const bounds = getSafeArea();
+    const snapped = snapToEdge(x.get(), y.get(), bounds);
+    
+    animate(x, snapped.x, { type: 'spring', damping: 25, stiffness: 300 });
+    animate(y, snapped.y, { type: 'spring', damping: 25, stiffness: 300 });
+    
+    localStorage.setItem('aiButtonPos', JSON.stringify({ x: snapped.x, y: snapped.y }));
+  };
+
+  const handleOpen = () => {
+    setChatPos({ x: x.get(), y: y.get() });
+    setIsOpen(true);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -46,7 +145,7 @@ export default function Chatbot() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isOpen]);
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
@@ -65,9 +164,7 @@ export default function Chatbot() {
 
       const data = await response.json();
       
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to get response');
-      }
+      if (!response.ok) throw new Error(data.error || 'Failed to get response');
 
       setMessages((prev) => [...prev, { role: 'model', content: data.message }]);
     } catch (error: any) {
@@ -83,23 +180,50 @@ export default function Chatbot() {
     sendMessage(input);
   };
 
+  if (!isMounted) return null;
+
+  const isLeftHalf = chatPos.x < window.innerWidth / 2;
+  const isTopHalf = chatPos.y < window.innerHeight / 2;
+
+  const chatOriginX = isLeftHalf ? '0%' : '100%';
+  const chatOriginY = isTopHalf ? '0%' : '100%';
+
+  const chatStyle: any = isMobile ? {
+    left: 16,
+    right: 16,
+    bottom: 96,
+    transformOrigin: 'bottom right'
+  } : {
+    left: isLeftHalf ? chatPos.x : undefined,
+    right: !isLeftHalf ? window.innerWidth - chatPos.x - BUTTON_SIZE : undefined,
+    top: isTopHalf ? chatPos.y : undefined,
+    bottom: !isTopHalf ? window.innerHeight - chatPos.y - BUTTON_SIZE : undefined,
+    transformOrigin: `${chatOriginX} ${chatOriginY}`
+  };
+
   return (
-    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[45] flex flex-col items-end justify-end pointer-events-none h-full max-h-[85vh]">
+    <>
       {/* Floating Action Button */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.05 }}
+            drag
+            dragMomentum={false}
+            onDragEnd={handleDragEnd}
+            style={{ x, y, position: 'fixed', top: 0, left: 0 }}
+            whileHover={{ scale: 1.1, boxShadow: '0px 0px 30px rgba(108, 99, 255, 0.5)' }}
             whileTap={{ scale: 0.95 }}
+            whileDrag={{ scale: 0.95, cursor: 'grabbing', boxShadow: '0px 15px 40px rgba(0,0,0,0.3)' }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            onClick={() => setIsOpen(true)}
-            className="p-4 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-[20px] shadow-2xl hover:shadow-[var(--primary)]/30 transition-all flex items-center justify-center group border border-white/20 relative z-[45] pointer-events-auto"
+            onClick={handleOpen}
+            className="w-16 h-16 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-[24px] shadow-2xl transition-shadow flex items-center justify-center group border border-white/30 z-[60] pointer-events-auto touch-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:ring-offset-2"
+            aria-label="Open AI Assistant"
           >
-            <Sparkles className="w-6 h-6 animate-pulse" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[var(--primary)] shadow-sm">AI</span>
+            <Sparkles className="w-7 h-7 animate-pulse drop-shadow-md" />
+            <span className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[11px] font-extrabold px-2 py-0.5 rounded-full border-2 border-white dark:border-slate-800 shadow-md">AI</span>
           </motion.button>
         )}
       </AnimatePresence>
@@ -108,34 +232,34 @@ export default function Chatbot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.95, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: 40, scale: 0.95, filter: "blur(10px)" }}
-            transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 30 }}
-            className="pointer-events-auto z-[70] w-[calc(100vw-48px)] md:w-[420px] h-full flex-1 flex flex-col glass-panel backdrop-blur-3xl bg-white/80 dark:bg-slate-900/80 border border-white/60 dark:border-slate-700/50 rounded-2xl md:rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden"
+            initial={{ opacity: 0, scale: 0.1, filter: "blur(10px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.1, filter: "blur(10px)" }}
+            transition={{ duration: 0.4, type: "spring", stiffness: 350, damping: 30 }}
+            style={{ position: 'fixed', ...chatStyle }}
+            className="z-[70] w-auto md:w-[420px] h-[700px] max-h-[80vh] flex flex-col glass-panel backdrop-blur-3xl bg-white/90 dark:bg-slate-900/95 border border-white/60 dark:border-slate-700/50 rounded-2xl md:rounded-[32px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.3)] overflow-hidden pointer-events-auto"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 shrink-0 border-b border-white/30 dark:border-slate-700/30 bg-white/30 dark:bg-slate-800/30 backdrop-blur-md z-10">
+            <div className="flex items-center justify-between p-5 shrink-0 border-b border-white/30 dark:border-slate-700/30 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md z-10">
               <div className="flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-[14px] bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-white shadow-lg shadow-[var(--primary)]/20 border border-white/20">
+                <div className="relative w-11 h-11 rounded-[16px] bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-white shadow-lg shadow-[var(--primary)]/20 border border-white/20">
                   <Sparkles className="w-5 h-5" />
                   <div className="absolute -bottom-1 -right-1 w-[12px] h-[12px] bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
                 <div className="flex flex-col">
-                  <h3 className="font-[800] text-slate-800 dark:text-slate-100 text-[15px] leading-tight flex items-center gap-1.5">
-                    Intelligence <Sparkles className="w-3 h-3 text-[var(--primary)]" />
+                  <h3 className="font-[800] text-slate-800 dark:text-slate-100 text-[16px] leading-tight flex items-center gap-1.5">
+                    Intelligence <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
                   </h3>
-                  <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">Always ready to assist</span>
+                  <span className="text-[12px] font-semibold text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">Always ready to assist</span>
                 </div>
               </div>
-              <div className="flex gap-[4px] shrink-0 self-start">
-                <button 
-                  onClick={() => setIsOpen(false)}
-                  className="p-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-slate-500 dark:text-slate-300 rounded-full transition-colors duration-200"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="w-9 h-9 flex items-center justify-center bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 hover:scale-105 text-slate-500 dark:text-slate-300 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                aria-label="Close Assistant"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
             {/* Messages Area */}
@@ -151,10 +275,10 @@ export default function Chatbot() {
                   >
                     <div 
                       className={twMerge(
-                        "max-w-[88%] p-4 text-[14px] leading-relaxed relative group",
+                        "max-w-[88%] p-4 text-[14px] leading-relaxed relative group font-medium",
                         msg.role === 'user' 
                           ? "bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white rounded-[24px] rounded-br-[8px] shadow-md shadow-[var(--primary)]/20 border border-white/10" 
-                          : "bg-white/80 dark:bg-slate-800/80 backdrop-blur-md text-slate-800 dark:text-slate-100 rounded-[24px] rounded-bl-[8px] shadow-sm whitespace-pre-wrap border border-white/50 dark:border-slate-600/50"
+                          : "bg-white/80 dark:bg-slate-800/80 backdrop-blur-md text-slate-800 dark:text-slate-100 rounded-[24px] rounded-bl-[8px] shadow-sm whitespace-pre-wrap border border-black/5 dark:border-white/5"
                       )}
                     >
                       {msg.content}
@@ -163,7 +287,7 @@ export default function Chatbot() {
                 ))}
               </AnimatePresence>
 
-              {/* Loading / Thinking Indicator */}
+              {/* Loading Indicator */}
               <AnimatePresence>
                 {isLoading && (
                   <motion.div 
@@ -172,22 +296,15 @@ export default function Chatbot() {
                     exit={{ opacity: 0, scale: 0.9 }}
                     className="flex justify-start items-center gap-2"
                   >
-                    <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md p-4 rounded-[24px] rounded-bl-[8px] shadow-sm border border-white/50 dark:border-slate-600/50 flex items-center gap-1.5 h-[52px]">
-                      <motion.div 
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} 
-                        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
-                      />
-                      <motion.div 
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} 
-                        transition={{ duration: 1, delay: 0.2, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
-                      />
-                      <motion.div 
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} 
-                        transition={{ duration: 1, delay: 0.4, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
-                      />
+                    <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md px-5 py-4 rounded-[24px] rounded-bl-[8px] shadow-sm border border-black/5 dark:border-white/5 flex items-center gap-2 h-[52px]">
+                      {[0, 0.2, 0.4].map((delay, i) => (
+                        <motion.div 
+                          key={i}
+                          animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} 
+                          transition={{ duration: 1, delay, repeat: Infinity, ease: "easeInOut" }}
+                          className="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                        />
+                      ))}
                     </div>
                   </motion.div>
                 )}
@@ -208,10 +325,10 @@ export default function Chatbot() {
                       transition={{ duration: 0.3, delay: 0.5 + (idx * 0.1) }}
                       key={idx}
                       onClick={() => sendMessage(prompt.text)}
-                      className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-full hover:bg-[var(--primary)] hover:text-white transition-all duration-300 shadow-sm border border-white/60 dark:border-slate-600/50 text-slate-700 dark:text-slate-300 group"
+                      className="flex items-center gap-2 px-4 py-2.5 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full hover:bg-[var(--primary)] hover:border-[var(--primary)] hover:text-white transition-all duration-300 shadow-sm border border-white/60 dark:border-slate-600/50 text-slate-700 dark:text-slate-300 group focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
                     >
-                      <span className="text-sm">{prompt.icon}</span>
-                      <span className="text-[12px] font-semibold">{prompt.text.replace(/^[^\w\s]+\s/, '')}</span>
+                      <span className="text-sm drop-shadow-sm">{prompt.icon}</span>
+                      <span className="text-[13px] font-bold">{prompt.text.replace(/^[^\w\s]+\s/, '')}</span>
                     </motion.button>
                   ))}
                 </motion.div>
@@ -221,15 +338,15 @@ export default function Chatbot() {
             </div>
 
             {/* Input Area */}
-            <div className="px-5 pb-5 pt-3 shrink-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border-t border-white/40 dark:border-slate-700/50 z-10">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+            <div className="px-5 pb-5 pt-4 shrink-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border-t border-white/40 dark:border-slate-700/50 z-10">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <div className="relative flex items-center group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-[24px] opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 blur-md"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-[28px] opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 blur-md"></div>
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask Intelligence..."
-                    className="w-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/60 dark:border-slate-600/50 rounded-[24px] pl-5 pr-14 h-[56px] text-[14px] focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-slate-800 dark:text-slate-100 transition-all duration-300 placeholder:text-slate-400 font-medium shadow-inner relative z-10"
+                    className="w-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/60 dark:border-slate-600/50 rounded-[28px] pl-6 pr-14 h-[56px] text-[15px] focus:outline-none focus:border-[var(--primary)] text-slate-800 dark:text-slate-100 transition-all duration-300 placeholder:text-slate-400 font-semibold shadow-inner relative z-10"
                   />
                   <AnimatePresence>
                     {input.trim() ? (
@@ -239,25 +356,26 @@ export default function Chatbot() {
                         exit={{ scale: 0, opacity: 0, rotate: 45 }}
                         type="submit"
                         disabled={isLoading}
-                        className="absolute right-2 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-full transition-transform duration-200 hover:scale-105 shrink-0 flex items-center justify-center w-10 h-10 shadow-md z-20 disabled:opacity-50"
+                        className="absolute right-2 bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)] text-white rounded-full transition-transform duration-200 hover:scale-105 shrink-0 flex items-center justify-center w-11 h-11 shadow-md z-20 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50"
+                        aria-label="Send message"
                       >
-                        <Send className="w-[16px] h-[16px] ml-[2px]" />
+                        <Send className="w-[18px] h-[18px] ml-[2px]" />
                       </motion.button>
                     ) : (
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="absolute right-4 z-20"
+                        className="absolute right-5 z-20"
                       >
                         <Sparkles className="w-5 h-5 text-slate-300 dark:text-slate-600" />
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-                <div className="flex items-center justify-center gap-1.5 mt-1">
+                <div className="flex items-center justify-center gap-1.5">
                   <Info className="w-3 h-3 text-slate-400" />
-                  <p className="text-[10px] font-medium text-slate-400 leading-none">
+                  <p className="text-[11px] font-medium text-slate-400 leading-none">
                     AI responses are generated from Kangra heritage documentation
                   </p>
                 </div>
@@ -266,6 +384,6 @@ export default function Chatbot() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }
