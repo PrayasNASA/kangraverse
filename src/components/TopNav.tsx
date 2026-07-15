@@ -9,8 +9,8 @@ import { Z_INDEX } from '@/utils/zIndex';
 
 const NAV_ITEMS = [
   { href: '/explorer', label: 'Explore', icon: Compass },
-  { href: '#', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '#', label: 'Stories', icon: BookOpen },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/stories', label: 'Stories', icon: BookOpen },
   { href: '#', label: 'Research', icon: FlaskConical },
   { href: '#', label: 'Gallery', icon: ImageIcon },
 ];
@@ -49,8 +49,8 @@ export default function TopNav() {
 
   const navLinks = [
     { href: '/explorer', label: 'Explore', icon: Compass },
-    { href: '#', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '#', label: 'Stories', icon: BookOpen },
+    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/stories', label: 'Stories', icon: BookOpen },
     { href: '#', label: 'Research', icon: FlaskConical },
     { href: '#', label: 'Gallery', icon: ImageIcon },
     ...(!isExplorer ? [{ href: '#', label: 'About Us', icon: Info }] : []),
