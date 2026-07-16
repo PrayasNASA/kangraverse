@@ -7,13 +7,7 @@ import { Map, Search, Layers, ShieldAlert, Sparkles, User, Sun, Moon, Compass, L
 import { twMerge } from 'tailwind-merge';
 import { Z_INDEX } from '@/utils/zIndex';
 
-const NAV_ITEMS = [
-  { href: '/explorer', label: 'Explore', icon: Compass },
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/stories', label: 'Stories', icon: BookOpen },
-  { href: '#', label: 'Research', icon: FlaskConical },
-  { href: '#', label: 'Gallery', icon: ImageIcon },
-];
+
 
 export default function TopNav() {
   const pathname = usePathname();
@@ -54,7 +48,7 @@ export default function TopNav() {
     { href: '/stories', label: 'Stories', icon: BookOpen },
     { href: '/research', label: 'Research', icon: FlaskConical },
     { href: '/gallery', label: 'Gallery', icon: ImageIcon },
-    ...(!isAppRoute ? [{ href: '#', label: 'About Us', icon: Info }] : []),
+    { href: '/about', label: 'About Us', icon: Info },
   ];
 
   const headerContent = (
