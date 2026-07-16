@@ -33,8 +33,8 @@ const APPROACH = [
 ];
 
 const TEAM = [
-  { name: 'Prof. B. W. Pandey', role: 'Supervisor', image: 'https://ibb.co/fzBr65h4' },
-  { name: 'Ms Honiya  Dakpe', role: 'Mentor', image: 'https://ibb.co/TCyqTzP' },
+  { name: 'Prof. B. W. Pandey', role: 'Supervisor', image: 'https://i.ibb.co/Hf1GwsWn/Whats-App-Image-2026-07-16-at-1-28-43-PM.jpg' },
+  { name: 'Ms Honiya  Dakpe', role: 'Mentor', image: 'https://i.ibb.co/FkTDH8Wh/Whats-App-Image-2026-07-16-at-1-28-24-PM.jpg' },
   { name: 'Prayas', role: 'Project Supervisor', image: 'https://i.ibb.co/6RqCyQCj/Whats-App-Image-2026-07-16-at-7-14-19-AM.jpg' },
   { name: 'Rimpi Negi', role: 'GIS Developer', image: 'https://i.ibb.co/MDdj15HQ/Whats-App-Image-2026-07-16-at-7-19-36-AM.jpg' },
   { name: 'Prajval Verma', role: 'Field Researcher', image: 'https://i.ibb.co/kg6DD0hj/Whats-App-Image-2026-07-16-at-7-21-06-AM.jpg' },
