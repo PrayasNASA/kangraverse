@@ -22,7 +22,7 @@ const STATS = [
   { label: 'Villages Covered', value: '32+', icon: MapPin, color: 'text-emerald-500', from: 'from-emerald-500/20' },
   { label: 'Media Archive', value: '850+', icon: Camera, color: 'text-blue-500', from: 'from-blue-500/20' },
   { label: 'Videos & Oral Histories', value: '45+', icon: PlaySquare, color: 'text-rose-500', from: 'from-rose-500/20' },
-  { label: 'Research Period', value: '2023–25', icon: Calendar, color: 'text-orange-500', from: 'from-orange-500/20' }
+  { label: 'Research Period', value: '2025–26', icon: Calendar, color: 'text-orange-500', from: 'from-orange-500/20' }
 ];
 
 const APPROACH = [
@@ -33,10 +33,11 @@ const APPROACH = [
 ];
 
 const TEAM = [
-  { name: 'Dr. Jane Smith', role: 'Project Supervisor', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80' },
-  { name: 'Alex Johnson', role: 'GIS Developer', image: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&q=80' },
-  { name: 'Sarah Lee', role: 'Field Researcher', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80' },
-  { name: 'Raj Kumar', role: 'Community Volunteer', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' }
+  { name: 'Prayas', role: 'Project Supervisor', image: 'https://i.ibb.co/6RqCyQCj/Whats-App-Image-2026-07-16-at-7-14-19-AM.jpg' },
+  { name: 'Rimpi Negi', role: 'GIS Developer', image: 'https://i.ibb.co/MDdj15HQ/Whats-App-Image-2026-07-16-at-7-19-36-AM.jpg' },
+  { name: 'Prajval Verma', role: 'Field Researcher', image: 'https://i.ibb.co/kg6DD0hj/Whats-App-Image-2026-07-16-at-7-21-06-AM.jpg' },
+  { name: 'Drishti Singh', role: 'Community Volunteer', image: 'https://i.ibb.co/rfk8kcJ6/Whats-App-Image-2026-07-16-at-7-22-30-AM.jpg' },
+  { name: 'Kareena', role: 'Community Volunteer', image: 'https://i.ibb.co/R8hQ2Zj/Kareena.jpg' }
 ];
 
 export default function AboutView() {

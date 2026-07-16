@@ -15,7 +15,7 @@ const FEATURED_STORIES = [
     category: "Architecture",
     readTime: "8 min read",
     desc: "Discover the intricate Kath Kuni style of construction that allows Kangra's ancient temples to survive devastating earthquakes.",
-    image: "https://images.unsplash.com/photo-1626242331562-b1d556a319f3?w=800&q=80",
+    image: "https://plus.unsplash.com/premium_photo-1697730331645-5ca8244b708a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const FEATURED_STORIES = [
     category: "Sacred Groves",
     readTime: "6 min read",
     desc: "How local village deities (Devtas) have inadvertently become the greatest conservationists of the Western Himalayas.",
-    image: "https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1703323047375-7f07c3ec6142?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 3,
@@ -56,12 +56,12 @@ const VOICES = [
 ];
 
 const GALLERY = [
-  "https://images.unsplash.com/photo-1626242331562-b1d556a319f3?w=800&q=80",
-  "https://images.unsplash.com/photo-1542382156909-9240b97cb724?w=800&q=80",
-  "https://images.unsplash.com/photo-1565499298418-8687ba1bd46e?w=800&q=80",
-  "https://images.unsplash.com/photo-1582650508535-cda225bd4122?w=800&q=80",
-  "https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=800&q=80",
-  "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=800&q=80",
+  "https://images.unsplash.com/photo-1642474606747-76312351789d?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1572972875738-b1642a656d96?q=80&w=1137&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1652501836149-ab1b0f220a37?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1669304944449-4a1dc72cada4?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  
+  
 ];
 
 // --- ANIMATION VARIANTS ---
@@ -197,7 +197,7 @@ export default function StoriesView() {
             variants={fadeUp}
             className="rounded-[40px] overflow-hidden mb-16 shadow-[0_30px_60px_rgba(0,0,0,0.15)] relative h-[60vh]"
           >
-            <img src="https://images.unsplash.com/photo-1565499298418-8687ba1bd46e?w=1600&q=80" className="w-full h-full object-cover" alt="Masroor" />
+            <img src="https://plus.unsplash.com/premium_photo-1661964372197-876e0034f333?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" className="w-full h-full object-cover" alt="Masroor" />
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12">

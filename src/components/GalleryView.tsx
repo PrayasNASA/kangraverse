@@ -14,7 +14,7 @@ const STATS = [
   { label: 'Photos', value: '850+', icon: Camera, color: 'text-purple-500', from: 'from-purple-500/20' },
   { label: 'Videos', value: '45+', icon: ImageIcon, color: 'text-blue-500', from: 'from-blue-500/20' },
   { label: 'Mapped Locations', value: '120+', icon: MapPin, color: 'text-emerald-500', from: 'from-emerald-500/20' },
-  { label: 'Captured Years', value: '2023–25', icon: Calendar, color: 'text-orange-500', from: 'from-orange-500/20' }
+  { label: 'Captured Years', value: '2026–27', icon: Calendar, color: 'text-orange-500', from: 'from-orange-500/20' }
 ];
 
 const CATEGORIES = [
@@ -29,11 +29,11 @@ const CATEGORIES = [
 
 const FEATURED_COLLECTIONS = [
   { title: 'Temples', photos: '142 Photos', videos: '12 Videos', image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=800&q=80' },
-  { title: 'Monasteries', photos: '89 Photos', videos: '5 Videos', image: 'https://images.unsplash.com/photo-1570146059632-4161bb7d577a?w=800&q=80' },
+  { title: 'Monasteries', photos: '89 Photos', videos: '5 Videos', image: 'https://plus.unsplash.com/premium_photo-1697730331645-5ca8244b708a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
   { title: 'Sacred Landscapes', photos: '210 Photos', videos: '18 Videos', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80' },
   { title: 'Rivers', photos: '64 Photos', videos: '2 Videos', image: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=800&q=80' },
-  { title: 'People & Culture', photos: '156 Photos', videos: '4 Videos', image: 'https://images.unsplash.com/photo-1533038590840-1c73797ac097?w=800&q=80' },
-  { title: 'Festivals', photos: '78 Photos', videos: '8 Videos', image: 'https://images.unsplash.com/photo-1601058269784-9a4f478e5ab1?w=800&q=80' },
+  { title: 'People & Culture', photos: '156 Photos', videos: '4 Videos', image: 'https://images.unsplash.com/photo-1552761814-7e3fd0b3aa86?q=80&w=1092&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+  { title: 'Festivals', photos: '78 Photos', videos: '8 Videos', image: 'https://images.unsplash.com/photo-1717049887318-9b80628d2cea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
 ];
 
 export default function GalleryView() {
@@ -101,7 +101,7 @@ export default function GalleryView() {
         {/* Right: 55% */}
         <div className="w-full md:w-[55%] h-[400px] md:h-full relative overflow-hidden rounded-[32px] shrink-0 shadow-sm group">
           <img 
-            src="https://images.unsplash.com/photo-1548050965-0639d675b871?w=1600&q=80" 
+            src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
             alt="Western Himalayas" 
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" 
           />
