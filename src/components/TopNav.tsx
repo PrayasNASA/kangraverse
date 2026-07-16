@@ -52,7 +52,7 @@ export default function TopNav() {
     { href: '/explorer', label: 'Explore', icon: Compass },
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/stories', label: 'Stories', icon: BookOpen },
-    { href: '#', label: 'Research', icon: FlaskConical },
+    { href: '/research', label: 'Research', icon: FlaskConical },
     { href: '#', label: 'Gallery', icon: ImageIcon },
     ...(!isAppRoute ? [{ href: '#', label: 'About Us', icon: Info }] : []),
   ];
