@@ -85,7 +85,7 @@ export default function AboutView() {
         {/* Right */}
         <div className="w-full xl:w-[55%] h-[400px] xl:h-auto relative overflow-hidden rounded-[32px] shrink-0 border border-slate-200/50 dark:border-white/10 shadow-sm group">
           <img 
-            src="https://images.unsplash.com/photo-1548050965-0639d675b871?w=1600&q=80" 
+            src="https://images.unsplash.com/photo-1503265192943-9d7eea6fc77a?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
             alt="Western Himalayas Sunrise" 
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" 
           />
